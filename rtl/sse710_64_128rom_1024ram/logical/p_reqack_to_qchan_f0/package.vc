@@ -1,0 +1,4 @@
+$LOGICAL_PATH/p_reqack_to_qchan_f0/p_reqack_to_qchan_f0_top/verilog/p_reqack_to_qchan_f0_top.v
+$LOGICAL_PATH/p_reqack_to_qchan_f0/models/modules/generic/p_reqack_to_qchan_f0_std_or3.v
+$LOGICAL_PATH/p_reqack_to_qchan_f0/models/modules/generic/p_reqack_to_qchan_f0_cdc_capt_sync.v
+$LOGICAL_PATH/p_reqack_to_qchan_f0/models/modules/generic/p_reqack_to_qchan_f0_std_xor2.v

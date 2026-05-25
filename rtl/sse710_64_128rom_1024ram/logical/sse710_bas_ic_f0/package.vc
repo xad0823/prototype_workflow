@@ -1,0 +1,10 @@
+$LOGICAL_PATH/sse710_bas_ic_f0/sse710_bas_switch/verilog/sse710_bas_ic_or_tree.v
+$LOGICAL_PATH/sse710_bas_ic_f0/sse710_bas_switch/verilog/sse710_bas_switch_core.v
+$LOGICAL_PATH/sse710_bas_ic_f0/sse710_bas_switch/verilog/sse710_bas_switch_16x1.v
+$LOGICAL_PATH/sse710_bas_ic_f0/sse710_bas_switch/verilog/sse710_bas_arbiter_pri.v
+$LOGICAL_PATH/sse710_bas_ic_f0/sse710_bas_switch/verilog/sse710_bas_arbiter_fair.v
+$LOGICAL_PATH/sse710_bas_ic_f0/sse710_bas_switch/verilog/sse710_bas_switch_2x1.v
+$LOGICAL_PATH/sse710_bas_ic_f0/models/cells/sse710_bas_ic_or2.v
+$LOGICAL_PATH/sse710_bas_ic_f0/models/cells/sse710_bas_ic_syncn.v
+$LOGICAL_PATH/sse710_bas_ic_f0/models/cells/sse710_bas_ic_sync_flop.v
+$LOGICAL_PATH/sse710_bas_ic_f0/sse710_bas_ic_top/verilog/sse710_bas_ic_top.v

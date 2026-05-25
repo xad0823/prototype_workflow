@@ -1,0 +1,16 @@
+$LOGICAL_PATH/arm_cells/package.vc
+$LOGICAL_PATH/arm_element_tech_models/package.vc
+$LOGICAL_PATH/bu_adb400_f0/package.vc
+$LOGICAL_PATH/bu_cortex_a53_crypto_f0/package.vc
+$LOGICAL_PATH/bu_cortex_a53_f0/package.vc
+$LOGICAL_PATH/bu_cortex_a53_neon_fp_f0/package.vc
+$LOGICAL_PATH/bu_css600_f0/package.vc
+$LOGICAL_PATH/bu_gic400_f0/package.vc
+$LOGICAL_PATH/bu_pck600_f0/package.vc
+$LOGICAL_PATH/clkrst_f1/package.vc
+$LOGICAL_PATH/clkselNway_f0_2/package.vc
+$LOGICAL_PATH/clkselNway_f0_3/package.vc
+$LOGICAL_PATH/e_clk_f1_clustop/package.vc
+$LOGICAL_PATH/sse710_adb400_r3_wrapper/package.vc
+$LOGICAL_PATH/sse710_power_control_glue_logic/package.vc
+$LOGICAL_PATH/pd_clustop/package.vc

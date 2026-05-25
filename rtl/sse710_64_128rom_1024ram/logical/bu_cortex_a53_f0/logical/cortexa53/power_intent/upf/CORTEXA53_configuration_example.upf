@@ -1,0 +1,551 @@
+#-------------------------------------------------------------------------------
+# The confidential and proprietary information contained in this file may
+# only be used by a person authorised under and to the extent permitted
+# by a subsisting licensing agreement from ARM Limited.
+#
+#                 (C) COPYRIGHT 2012-2015 ARM Limited.
+#                       ALL RIGHTS RESERVED
+#
+# This entire notice must be reproduced on all copies of this file
+# and copies of this file may only be made by a person if such person is
+# permitted to do so under the terms of a subsisting license agreement
+# from ARM Limited.
+#
+#      SVN Information
+#
+#      Checked In          : $Date: 2012-09-28 11:48:18 +0100 (Fri, 28 Sep 2012) $
+#
+#      Revision            : $Revision: 224055 $
+#
+#      Release Information : CORTEXA53-r0p4-51rel0
+#
+#-------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
+# Function: UPF file for Configuration
+#-------------------------------------------------------------------------------
+# This UPF is an unconfigured multi switched power domain with isolated outputs
+
+#-------------------------------------------------------------------------------
+# Supply Sets
+#-------------------------------------------------------------------------------
+
+#------CPU0-------
+create_supply_set PDCPU0.primary -update
+  
+create_supply_set PDCPU0.default_retention -update
+
+create_supply_set PDCPUADVSIMD0.primary -update
+  
+create_supply_set PDCPUADVSIMD0.default_retention -update
+
+#------CPU1-------
+create_supply_set PDCPU1.primary -update
+  
+create_supply_set PDCPU1.default_retention -update
+
+create_supply_set PDCPUADVSIMD1.primary -update
+  
+create_supply_set PDCPUADVSIMD1.default_retention -update
+
+#------CPU2-------
+create_supply_set PDCPU2.primary -update
+  
+create_supply_set PDCPU2.default_retention -update
+
+create_supply_set PDCPUADVSIMD2.primary -update
+  
+create_supply_set PDCPUADVSIMD2.default_retention -update
+
+#------CPU3-------
+create_supply_set PDCPU3.primary -update
+  
+create_supply_set PDCPU3.default_retention -update
+
+create_supply_set PDCPUADVSIMD3.primary -update
+  
+create_supply_set PDCPUADVSIMD3.default_retention -update
+
+
+#------L2 & CA53-------  
+create_supply_set PDL2.primary -update
+  
+create_supply_set PDL2.default_retention -update
+  
+create_supply_set PDCORTEXA53.primary -update 
+  
+create_supply_set PDCORTEXA53.default_isolation -update
+
+#-------------------------------------------------------------------------------
+# Power Switch Control Signals
+#-------------------------------------------------------------------------------
+
+create_logic_port -direction in nPWRUPCORTEXA53
+create_logic_port -direction in nPWRUPL2
+create_logic_port -direction in nPWRUPCPU0ADVSIMD
+create_logic_port -direction in nPWRUPCPU0
+create_logic_port -direction in nPWRUPCPU1ADVSIMD
+create_logic_port -direction in nPWRUPCPU1
+create_logic_port -direction in nPWRUPCPU2ADVSIMD
+create_logic_port -direction in nPWRUPCPU2
+create_logic_port -direction in nPWRUPCPU3ADVSIMD
+create_logic_port -direction in nPWRUPCPU3
+
+create_logic_port -direction in nPWRUPRetnL2
+create_logic_port -direction in nPWRUPRetnCPU0ADVSIMD
+create_logic_port -direction in nPWRUPRetnCPU0
+create_logic_port -direction in nPWRUPRetnCPU1ADVSIMD
+create_logic_port -direction in nPWRUPRetnCPU1
+create_logic_port -direction in nPWRUPRetnCPU2ADVSIMD
+create_logic_port -direction in nPWRUPRetnCPU2
+create_logic_port -direction in nPWRUPRetnCPU3ADVSIMD
+create_logic_port -direction in nPWRUPRetnCPU3
+
+create_logic_net nPWRUPCORTEXA53
+create_logic_net nPWRUPL2
+create_logic_net nPWRUPCPU0ADVSIMD
+create_logic_net nPWRUPCPU0
+create_logic_net nPWRUPCPU1ADVSIMD
+create_logic_net nPWRUPCPU1
+create_logic_net nPWRUPCPU2ADVSIMD
+create_logic_net nPWRUPCPU2
+create_logic_net nPWRUPCPU3ADVSIMD
+create_logic_net nPWRUPCPU3
+
+create_logic_net nPWRUPRetnL2
+create_logic_net nPWRUPRetnCPU0ADVSIMD
+create_logic_net nPWRUPRetnCPU0
+create_logic_net nPWRUPRetnCPU1ADVSIMD
+create_logic_net nPWRUPRetnCPU1
+create_logic_net nPWRUPRetnCPU2ADVSIMD
+create_logic_net nPWRUPRetnCPU2
+create_logic_net nPWRUPRetnCPU3ADVSIMD
+create_logic_net nPWRUPRetnCPU3
+
+connect_logic_net nPWRUPCORTEXA53       -ports nPWRUPCORTEXA53
+connect_logic_net nPWRUPL2	        -ports nPWRUPL2
+connect_logic_net nPWRUPCPU0ADVSIMD     -ports nPWRUPCPU0ADVSIMD
+connect_logic_net nPWRUPCPU0	        -ports nPWRUPCPU0
+connect_logic_net nPWRUPCPU1ADVSIMD     -ports nPWRUPCPU1ADVSIMD
+connect_logic_net nPWRUPCPU1	        -ports nPWRUPCPU1
+connect_logic_net nPWRUPCPU2ADVSIMD	-ports nPWRUPCPU2ADVSIMD
+connect_logic_net nPWRUPCPU2		-ports nPWRUPCPU2
+connect_logic_net nPWRUPCPU3ADVSIMD	-ports nPWRUPCPU3ADVSIMD
+connect_logic_net nPWRUPCPU3		-ports nPWRUPCPU3
+
+connect_logic_net nPWRUPRetnL2	        -ports nPWRUPRetnL2
+connect_logic_net nPWRUPRetnCPU0ADVSIMD -ports nPWRUPRetnCPU0ADVSIMD
+connect_logic_net nPWRUPRetnCPU0	-ports nPWRUPRetnCPU0
+connect_logic_net nPWRUPRetnCPU1ADVSIMD -ports nPWRUPRetnCPU1ADVSIMD
+connect_logic_net nPWRUPRetnCPU1	-ports nPWRUPRetnCPU1
+connect_logic_net nPWRUPRetnCPU2ADVSIMD -ports nPWRUPRetnCPU2ADVSIMD
+connect_logic_net nPWRUPRetnCPU2	-ports nPWRUPRetnCPU2
+connect_logic_net nPWRUPRetnCPU3ADVSIMD -ports nPWRUPRetnCPU3ADVSIMD
+connect_logic_net nPWRUPRetnCPU3	-ports nPWRUPRetnCPU3
+
+#-------------------------------------------------------------------------------
+# Isolation Strategy
+#-------------------------------------------------------------------------------
+
+create_logic_port -direction in nISOLATECORTEXA53
+create_logic_port -direction in nISOLATEL2
+create_logic_port -direction in nISOLATECPU0
+create_logic_port -direction in nISOLATECPU0ADVSIMD
+create_logic_port -direction in nISOLATECPU1
+create_logic_port -direction in nISOLATECPU1ADVSIMD 
+create_logic_port -direction in nISOLATECPU2
+create_logic_port -direction in nISOLATECPU2ADVSIMD
+create_logic_port -direction in nISOLATECPU3
+create_logic_port -direction in nISOLATECPU3ADVSIMD	
+     
+create_logic_net nISOLATECORTEXA53
+create_logic_net nISOLATEL2
+create_logic_net nISOLATECPU0
+create_logic_net nISOLATECPU0ADVSIMD
+create_logic_net nISOLATECPU1
+create_logic_net nISOLATECPU1ADVSIMD
+create_logic_net nISOLATECPU2
+create_logic_net nISOLATECPU2ADVSIMD
+create_logic_net nISOLATECPU3
+create_logic_net nISOLATECPU3ADVSIMD
+
+connect_logic_net nISOLATECORTEXA53   -ports nISOLATECORTEXA53
+connect_logic_net nISOLATEL2	      -ports nISOLATEL2
+connect_logic_net nISOLATECPU0	      -ports nISOLATECPU0
+connect_logic_net nISOLATECPU0ADVSIMD -ports nISOLATECPU0ADVSIMD
+connect_logic_net nISOLATECPU1        -ports nISOLATECPU1
+connect_logic_net nISOLATECPU1ADVSIMD -ports nISOLATECPU1ADVSIMD
+connect_logic_net nISOLATECPU2        -ports nISOLATECPU2
+connect_logic_net nISOLATECPU2ADVSIMD -ports nISOLATECPU2ADVSIMD
+connect_logic_net nISOLATECPU3        -ports nISOLATECPU3
+connect_logic_net nISOLATECPU3ADVSIMD -ports nISOLATECPU3ADVSIMD
+
+#-------- CA53 iso --------- 
+
+set_isolation iso_ca53_0 -domain PDCORTEXA53 \
+    -isolation_supply_set PDCORTEXA53.default_isolation \
+    -clamp_value 0 \
+    -applies_to outputs \
+    -isolation_signal nISOLATECORTEXA53 \
+    -isolation_sense low \
+    -location self	 
+    
+set_isolation iso_ca53_1 -domain PDCORTEXA53 \
+    -isolation_supply_set PDCORTEXA53.default_isolation \
+    -clamp_value 1 \
+    -elements "$CA53_CLAMP1" \
+    -isolation_signal nISOLATECORTEXA53 \
+    -isolation_sense low \
+    -location self
+    
+    
+#-------- L2 iso ---------    
+
+set_isolation iso_l2_out_0 -domain PDL2 \
+    -isolation_supply_set PDCORTEXA53.primary \
+    -clamp_value 0 \
+    -applies_to outputs \
+    -isolation_signal nISOLATEL2 \
+    -isolation_sense low \
+    -location parent
+        
+# -------- cpu 0 iso ---------  
+
+set_isolation iso_cpu0_0 -domain PDCPU0 \
+    -isolation_supply_set PDCORTEXA53.primary \
+    -clamp_value 0 \
+    -applies_to outputs \
+    -isolation_signal nISOLATECPU0 \
+    -isolation_sense low \
+    -location parent
+    
+set_isolation iso_cpu0_1 -domain PDCPU0 \
+    -isolation_supply_set PDCORTEXA53.primary \
+    -clamp_value 1 \
+    -elements "$CPU0_CLAMP1" \
+    -isolation_signal nISOLATECPU0 \
+    -isolation_sense low \
+    -location parent 
+
+# -------- cpu 0 iso advsimd ---------  
+
+set_isolation iso_cpu0advsimd_0 -domain PDCPUADVSIMD0 \
+    -isolation_supply_set PDCPU0.primary \
+    -clamp_value 0 \
+    -applies_to outputs \
+    -isolation_signal nISOLATECPU0ADVSIMD \
+    -isolation_sense low \
+    -location parent
+    
+# -------- cpu 1 iso ---------  
+
+set_isolation iso_cpu1_0 -domain PDCPU1 \
+    -isolation_supply_set PDCORTEXA53.primary \
+    -clamp_value 0 \
+    -applies_to outputs \
+    -isolation_signal nISOLATECPU1 \
+    -isolation_sense low \
+    -location parent
+    
+set_isolation iso_cpu1_1 -domain PDCPU1 \
+    -isolation_supply_set PDCORTEXA53.primary \
+    -clamp_value 1 \
+    -elements "$CPU1_CLAMP1" \
+    -isolation_signal nISOLATECPU1 \
+    -isolation_sense low \
+    -location parent 
+
+# -------- cpu 1 iso advsimd ---------  
+
+set_isolation iso_cpu1advsimd_0 -domain PDCPUADVSIMD1 \
+    -isolation_supply_set PDCPU1.primary \
+    -clamp_value 0 \
+    -applies_to outputs \
+    -isolation_signal nISOLATECPU1ADVSIMD \
+    -isolation_sense low \
+    -location parent    
+
+# -------- cpu 2 iso ---------  
+
+set_isolation iso_cpu2_0 -domain PDCPU2 \
+    -isolation_supply_set PDCORTEXA53.primary \
+    -clamp_value 0 \
+    -applies_to outputs \
+    -isolation_signal nISOLATECPU2 \
+    -isolation_sense low \
+    -location parent
+    
+set_isolation iso_cpu2_1 -domain PDCPU2 \
+    -isolation_supply_set PDCORTEXA53.primary \
+    -clamp_value 1 \
+    -elements "$CPU2_CLAMP1" \
+    -isolation_signal nISOLATECPU2 \
+    -isolation_sense low \
+    -location parent 
+
+# -------- cpu 2 iso advsimd ---------  
+
+set_isolation iso_cpu2advsimd_0 -domain PDCPUADVSIMD2 \
+    -isolation_supply_set PDCPU2.primary \
+    -clamp_value 0 \
+    -applies_to outputs \
+    -isolation_signal nISOLATECPU2ADVSIMD \
+    -isolation_sense low \
+    -location parent 
+
+# -------- cpu 3 iso ---------  
+
+set_isolation iso_cpu3_0 -domain PDCPU3 \
+    -isolation_supply_set PDCORTEXA53.primary \
+    -clamp_value 0 \
+    -applies_to outputs \
+    -isolation_signal nISOLATECPU3 \
+    -isolation_sense low \
+    -location parent
+    
+set_isolation iso_cpu3_1 -domain PDCPU3 \
+    -isolation_supply_set PDCORTEXA53.primary \
+    -clamp_value 1 \
+    -elements "$CPU3_CLAMP1" \
+    -isolation_signal nISOLATECPU3 \
+    -isolation_sense low \
+    -location parent 
+
+# -------- cpu 3 iso advsimd ---------  
+
+set_isolation iso_cpu3advsimd_0 -domain PDCPUADVSIMD3 \
+    -isolation_supply_set PDCPU3.primary \
+    -clamp_value 0 \
+    -applies_to outputs \
+    -isolation_signal nISOLATECPU3ADVSIMD \
+    -isolation_sense low \
+    -location parent 
+        
+#-------------------------------------------------------------------------------
+# Retention Strategy
+#-------------------------------------------------------------------------------
+
+create_logic_port -direction in nRETNL2
+create_logic_port -direction in nRETNCPU0
+create_logic_port -direction in nRETNCPU0ADVSIMD
+create_logic_port -direction in nRETNCPU1
+create_logic_port -direction in nRETNCPU1ADVSIMD
+create_logic_port -direction in nRETNCPU2
+create_logic_port -direction in nRETNCPU2ADVSIMD
+create_logic_port -direction in nRETNCPU3
+create_logic_port -direction in nRETNCPU3ADVSIMD
+
+create_logic_net nRETNL2
+create_logic_net nRETNCPU0
+create_logic_net nRETNCPU0ADVSIMD
+create_logic_net nRETNCPU1
+create_logic_net nRETNCPU1ADVSIMD
+create_logic_net nRETNCPU2
+create_logic_net nRETNCPU2ADVSIMD
+create_logic_net nRETNCPU3
+create_logic_net nRETNCPU3ADVSIMD
+
+connect_logic_net nRETNL2	   -ports nRETNL2
+connect_logic_net nRETNCPU0	   -ports nRETNCPU0
+connect_logic_net nRETNCPU0ADVSIMD -ports nRETNCPU0ADVSIMD
+connect_logic_net nRETNCPU1	   -ports nRETNCPU1
+connect_logic_net nRETNCPU1ADVSIMD -ports nRETNCPU1ADVSIMD
+connect_logic_net nRETNCPU2	   -ports nRETNCPU2
+connect_logic_net nRETNCPU2ADVSIMD -ports nRETNCPU2ADVSIMD
+connect_logic_net nRETNCPU3	   -ports nRETNCPU3
+connect_logic_net nRETNCPU3ADVSIMD -ports nRETNCPU3ADVSIMD
+
+# -------- L2 ret ---------    
+
+set_retention ret_l2 -domain PDL2 -retention_supply_set PDL2.default_retention -update \
+    -save_signal "nRETNL2 negedge" -restore_signal "nRETNL2 posedge"
+
+# -------- cpu 0 ret --------- 
+
+set_retention ret_cpu0 -domain PDCPU0 -retention_supply_set PDCPU0.default_retention -update \
+    -save_signal "nRETNCPU0 negedge" -restore_signal "nRETNCPU0 posedge"
+
+# -------- cpu 0 ret advsimd --------- 
+
+set_retention ret_cpuadvsimd0 -domain PDCPUADVSIMD0 -retention_supply_set PDCPUADVSIMD0.default_retention -update \
+    -save_signal "nRETNCPU0ADVSIMD negedge" -restore_signal "nRETNCPU0ADVSIMD posedge"
+
+# -------- cpu 1 ret --------- 
+
+set_retention ret_cpu1 -domain PDCPU1 -retention_supply_set PDCPU1.default_retention -update \
+    -save_signal "nRETNCPU1 negedge" -restore_signal "nRETNCPU1 posedge"
+
+# -------- cpu 1 ret advsimd --------- 
+
+set_retention ret_cpuadvsimd1 -domain PDCPUADVSIMD1 -retention_supply_set PDCPUADVSIMD1.default_retention -update \
+    -save_signal "nRETNCPU1ADVSIMD negedge" -restore_signal "nRETNCPU1ADVSIMD posedge"
+    
+# -------- cpu 2 ret --------- 
+
+set_retention ret_cpu2 -domain PDCPU2 -retention_supply_set PDCPU2.default_retention -update \
+    -save_signal "nRETNCPU2 negedge" -restore_signal "nRETNCPU2 posedge"
+
+# -------- cpu 2 ret advsimd --------- 
+
+set_retention ret_cpuadvsimd2 -domain PDCPUADVSIMD2 -retention_supply_set PDCPUADVSIMD2.default_retention -update \
+    -save_signal "nRETNCPU2ADVSIMD negedge" -restore_signal "nRETNCPU2ADVSIMD posedge"    
+
+# -------- cpu 3 ret --------- 
+
+set_retention ret_cpu3 -domain PDCPU3 -retention_supply_set PDCPU3.default_retention -update \
+    -save_signal "nRETNCPU3 negedge" -restore_signal "nRETNCPU3 posedge"
+
+# -------- cpu 3 ret advsimd --------- 
+
+set_retention ret_cpuadvsimd3 -domain PDCPUADVSIMD3 -retention_supply_set PDCPUADVSIMD3.default_retention -update \
+    -save_signal "nRETNCPU3ADVSIMD negedge" -restore_signal "nRETNCPU3ADVSIMD posedge"
+    
+#-------------------------------------------------------------------------------
+# Power State
+#-------------------------------------------------------------------------------
+
+# -------- Domain Update based on Pwrup signals ---------
+
+#------CPU0-------
+add_power_state PDCPU0 -update \
+  -state RUN {-logic_expr {nPWRUPCPU0 == 0 && nPWRUPRetnCPU0 == 0}} \
+  -state RET {-logic_expr {nPWRUPCPU0 == 1 && nPWRUPRetnCPU0 == 0 && nRETNCPU0 == 0 && nISOLATECPU0 == 0}} \
+  -state SHD {-logic_expr {nPWRUPCPU0 == 1 && nPWRUPRetnCPU0 == 1}} \
+  
+add_power_state PDCPUADVSIMD0 -update \
+  -state RUN {-logic_expr {nPWRUPCPU0ADVSIMD == 0 && nPWRUPRetnCPU0ADVSIMD == 0}} \
+  -state RET {-logic_expr {nPWRUPCPU0ADVSIMD == 1 && nPWRUPRetnCPU0ADVSIMD == 0 && nRETNCPU0ADVSIMD == 0 && nISOLATECPU0ADVSIMD == 0}} \
+  -state SHD {-logic_expr {nPWRUPCPU0ADVSIMD == 1 && nPWRUPRetnCPU0ADVSIMD == 1}}  
+  
+#------CPU1-------
+add_power_state PDCPU1 -update \
+  -state RUN {-logic_expr {nPWRUPCPU1 == 0 && nPWRUPRetnCPU1 == 0}} \
+  -state RET {-logic_expr {nPWRUPCPU1 == 1 && nPWRUPRetnCPU1 == 0 && nRETNCPU1 == 0 && nISOLATECPU1 == 0}} \
+  -state SHD {-logic_expr {nPWRUPCPU1 == 1 && nPWRUPRetnCPU1 == 1}} \
+  
+add_power_state PDCPUADVSIMD1 -update \
+  -state RUN {-logic_expr {nPWRUPCPU1ADVSIMD == 0 && nPWRUPRetnCPU1ADVSIMD == 0}} \
+  -state RET {-logic_expr {nPWRUPCPU1ADVSIMD == 1 && nPWRUPRetnCPU1ADVSIMD == 0 && nRETNCPU1ADVSIMD == 0 && nISOLATECPU1ADVSIMD == 0}} \
+  -state SHD {-logic_expr {nPWRUPCPU1ADVSIMD == 1 && nPWRUPRetnCPU1ADVSIMD == 1}}  
+
+#------CPU2-------
+add_power_state PDCPU2 -update \
+  -state RUN {-logic_expr {nPWRUPCPU2 == 0 && nPWRUPRetnCPU2 == 0}} \
+  -state RET {-logic_expr {nPWRUPCPU2 == 1 && nPWRUPRetnCPU2 == 0 && nRETNCPU2 == 0 && nISOLATECPU2 == 0}} \
+  -state SHD {-logic_expr {nPWRUPCPU2 == 1 && nPWRUPRetnCPU2 == 1}} \
+  
+add_power_state PDCPUADVSIMD2 -update \
+  -state RUN {-logic_expr {nPWRUPCPU2ADVSIMD == 0 && nPWRUPRetnCPU2ADVSIMD == 0}} \
+  -state RET {-logic_expr {nPWRUPCPU2ADVSIMD == 1 && nPWRUPRetnCPU2ADVSIMD == 0 && nRETNCPU2ADVSIMD == 0 && nISOLATECPU2ADVSIMD == 0}} \
+  -state SHD {-logic_expr {nPWRUPCPU2ADVSIMD == 1 && nPWRUPRetnCPU2ADVSIMD == 1}}  
+
+#------CPU3-------
+add_power_state PDCPU3 -update \
+  -state RUN {-logic_expr {nPWRUPCPU3 == 0 && nPWRUPRetnCPU3 == 0}} \
+  -state RET {-logic_expr {nPWRUPCPU3 == 1 && nPWRUPRetnCPU3 == 0 && nRETNCPU3 == 0 && nISOLATECPU3 == 0}} \
+  -state SHD {-logic_expr {nPWRUPCPU3 == 1 && nPWRUPRetnCPU3 == 1}} \
+  
+add_power_state PDCPUADVSIMD3 -update \
+  -state RUN {-logic_expr {nPWRUPCPU3ADVSIMD == 0 && nPWRUPRetnCPU3ADVSIMD == 0}} \
+  -state RET {-logic_expr {nPWRUPCPU3ADVSIMD == 1 && nPWRUPRetnCPU3ADVSIMD == 0 && nRETNCPU3ADVSIMD == 0 && nISOLATECPU3ADVSIMD == 0}} \
+  -state SHD {-logic_expr {nPWRUPCPU3ADVSIMD == 1 && nPWRUPRetnCPU3ADVSIMD == 1}}  
+    
+#------L2 & CA53-------   
+  add_power_state PDL2 -update \
+  -state RUN {-logic_expr {nPWRUPL2 == 0 && nPWRUPRetnL2 == 0}} \
+  -state RET {-logic_expr {nPWRUPL2 == 1 && nPWRUPRetnL2 == 0 && nRETNL2 == 0 && nISOLATEL2 == 0}} \
+  -state SHD {-logic_expr {nPWRUPL2 == 1 && nPWRUPRetnL2 == 1}}   
+
+add_power_state PDCORTEXA53 -update \
+  -state RUN	    {-logic_expr {nPWRUPCORTEXA53 == 0 && nISOLATECORTEXA53 == 1}} \
+  -state L2_RET     {-logic_expr {nPWRUPCORTEXA53 == 0 && nISOLATECORTEXA53 == 1}} \
+  -state DMT	    {-logic_expr {nPWRUPCORTEXA53 == 1 && nISOLATECORTEXA53 == 0}} \
+  -state SHD	    {-logic_expr {nPWRUPCORTEXA53 == 1 }}  
+  
+# -------- Supply Update with supply expressions ---------
+  
+#------CPU0-------
+add_power_state PDCPU0.primary -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON} -logic_expr {nPWRUPCPU0 == 0}} \
+  -state OFF {-supply_expr {power == OFF     || ground == OFF}     -logic_expr {nPWRUPCPU0 == 1}}
+  
+add_power_state PDCPU0.default_retention -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON} -logic_expr {nPWRUPRetnCPU0 == 0}} \
+  -state OFF {-supply_expr {power == OFF     || ground == OFF}     -logic_expr {nPWRUPRetnCPU0 == 1}}
+    
+add_power_state PDCPUADVSIMD0.primary -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON} -logic_expr {nPWRUPCPU0ADVSIMD == 0}} \
+  -state OFF {-supply_expr {power == OFF     || ground == OFF}     -logic_expr {nPWRUPCPU0ADVSIMD == 1}} 
+  
+add_power_state PDCPUADVSIMD0.default_retention -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON} -logic_expr {nPWRUPRetnCPU0ADVSIMD == 0}} \
+  -state OFF {-supply_expr {power == OFF    || ground == OFF}	   -logic_expr {nPWRUPRetnCPU0ADVSIMD == 1}}	   
+  
+#------CPU1-------
+add_power_state PDCPU1.primary -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON} -logic_expr {nPWRUPCPU1 == 0}} \
+  -state OFF {-supply_expr {power == OFF     || ground == OFF}     -logic_expr {nPWRUPCPU1 == 1}}
+  
+add_power_state PDCPU1.default_retention -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON} -logic_expr {nPWRUPRetnCPU1 == 0}} \
+  -state OFF {-supply_expr {power == OFF     || ground == OFF}     -logic_expr {nPWRUPRetnCPU1 == 1}}
+    
+add_power_state PDCPUADVSIMD1.primary -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON} -logic_expr {nPWRUPCPU1ADVSIMD == 0}} \
+  -state OFF {-supply_expr {power == OFF     || ground == OFF}     -logic_expr {nPWRUPCPU1ADVSIMD == 1}} 
+  
+add_power_state PDCPUADVSIMD1.default_retention -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON} -logic_expr {nPWRUPRetnCPU1ADVSIMD == 0}} \
+  -state OFF {-supply_expr {power == OFF    || ground == OFF}	   -logic_expr {nPWRUPRetnCPU1ADVSIMD == 1}}	   
+
+#------CPU2-------
+add_power_state PDCPU2.primary -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON} -logic_expr {nPWRUPCPU2 == 0}} \
+  -state OFF {-supply_expr {power == OFF     || ground == OFF}     -logic_expr {nPWRUPCPU2 == 1}}
+  
+add_power_state PDCPU2.default_retention -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON} -logic_expr {nPWRUPRetnCPU2 == 0}} \
+  -state OFF {-supply_expr {power == OFF     || ground == OFF}     -logic_expr {nPWRUPRetnCPU2 == 1}}
+    
+add_power_state PDCPUADVSIMD2.primary -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON} -logic_expr {nPWRUPCPU2ADVSIMD == 0}} \
+  -state OFF {-supply_expr {power == OFF     || ground == OFF}     -logic_expr {nPWRUPCPU2ADVSIMD == 1}} 
+  
+add_power_state PDCPUADVSIMD2.default_retention -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON} -logic_expr {nPWRUPRetnCPU2ADVSIMD == 0}} \
+  -state OFF {-supply_expr {power == OFF    || ground == OFF}	   -logic_expr {nPWRUPRetnCPU2ADVSIMD == 1}}
+
+#------CPU3-------
+add_power_state PDCPU3.primary -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON} -logic_expr {nPWRUPCPU3 == 0}} \
+  -state OFF {-supply_expr {power == OFF     || ground == OFF}     -logic_expr {nPWRUPCPU3 == 1}}
+  
+add_power_state PDCPU3.default_retention -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON} -logic_expr {nPWRUPRetnCPU3 == 0}} \
+  -state OFF {-supply_expr {power == OFF     || ground == OFF}     -logic_expr {nPWRUPRetnCPU3 == 1}}
+    
+add_power_state PDCPUADVSIMD3.primary -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON} -logic_expr {nPWRUPCPU3ADVSIMD == 0}} \
+  -state OFF {-supply_expr {power == OFF     || ground == OFF}     -logic_expr {nPWRUPCPU3ADVSIMD == 1}} 
+  
+add_power_state PDCPUADVSIMD3.default_retention -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON} -logic_expr {nPWRUPRetnCPU3ADVSIMD == 0}} \
+  -state OFF {-supply_expr {power == OFF    || ground == OFF}	   -logic_expr {nPWRUPRetnCPU3ADVSIMD == 1}}
+  
+#------L2 & CA53-------   
+add_power_state PDL2.primary -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON} -logic_expr {nPWRUPL2 == 0}} \
+  -state OFF {-supply_expr {power == OFF    || ground == OFF}	   -logic_expr {nPWRUPL2 == 1}} 
+  
+add_power_state PDL2.default_retention -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON} -logic_expr {nPWRUPRetnL2 == 0}} \
+  -state OFF {-supply_expr {power == OFF    || ground == OFF}	   -logic_expr {nPWRUPRetnL2 == 1}}	   
+
+add_power_state PDCORTEXA53.primary -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON} -logic_expr {nPWRUPCORTEXA53 == 0}} \
+  -state OFF {-supply_expr {power == OFF     || ground == OFF}     -logic_expr {nPWRUPCORTEXA53 == 1}} 
+  
+add_power_state PDCORTEXA53.default_isolation -update \
+  -state ON  {-supply_expr {power == FULL_ON && ground == FULL_ON}} \
+  -state OFF {-supply_expr {power == OFF     || ground == OFF}} 
+  

@@ -1,0 +1,8 @@
+$LOGICAL_PATH/e_clk_f1_secenc_32k/e_clk_f1_top_secenc_32k/verilog/e_clk_f1_top_secenc_32k.v
+$LOGICAL_PATH/e_clk_f1_secenc_32k/e_clk_f1_top_secenc_32k/verilog/e_clk_f1_unit_s32kclk_secenc_secenc_32k.v
+$LOGICAL_PATH/e_clk_f1_secenc_32k/e_clk_f1_top_secenc_32k/verilog/e_clk_f1_unit_s32kclk_aon_secenc_32k.v
+$LOGICAL_PATH/e_clk_f1_secenc_32k/models/modules/generic/e_clk_f1_reset_buffer_secenc_32k.v
+$LOGICAL_PATH/e_clk_f1_secenc_32k/models/modules/generic/e_clk_f1_cdc_capt_sync_secenc_32k.v
+$LOGICAL_PATH/e_clk_f1_secenc_32k/models/modules/generic/e_clk_f1_reset_sync_secenc_32k.v
+$LOGICAL_PATH/e_clk_f1_secenc_32k/models/modules/generic/e_clk_f1_clock_gate_secenc_32k.v
+$LOGICAL_PATH/e_clk_f1_secenc_32k/models/modules/generic/e_clk_f1_clock_buffer_secenc_32k.v

@@ -1,0 +1,281 @@
+*//*---------------------------------------------------------------------------
+*//*  The confidential and proprietary information contained in this file may
+*//*  only be used by a person authorised under and to the extent permitted
+*//*  by a subsisting licensing agreement from ARM Limited.
+*//*
+*//*             (C) COPYRIGHT 2013-2014 ARM Limited.
+*//*                 ALL RIGHTS RESERVED
+*//*
+*//*  This entire notice must be reproduced on all copies of this file
+*//*  and copies of this file may only be made by a person if such person is
+*//*  permitted to do so under the terms of a subsisting license agreement
+*//*  from ARM Limited.
+*//*
+*//*       SVN Information
+*//*
+*//*       Checked In          : $Date: 2014-07-02 16:52:21 +0100 (Wed, 02 Jul 2014) $
+*//*
+*//*       Revision            : $Revision: 283836 $
+*//*
+*//*       Release Information : CORTEXA53-r0p4-00rel0
+*//*---------------------------------------------------------------------------
+*//*
+*//* CoreSight SoC 400 System Description CSV File
+*//*
+*//* This template file can be used to simplify the process of creating the
+*//* cx_system.c system description for your SoC.
+*//*
+*//* You can edit this file using a text editor or any application program
+*//* that can import and export Comma Separated Variable (CSV) files.
+*//*
+*//* After editing and saving the .csv file, you must convert it to a .c
+*//* file using the convert.pl script supplied in the CoreSight SoC main
+*//* bundle:
+*//*
+*//* <TM100-bundle>/coresight_soc/shared/tools/bin/input_format/convert.pl
+*//*
+*//*   % convert.pl <system_description.csv> <cx_system.c>
+*//*
+*//*
+*//* Lines beginning with "*//*" are comments.
+*//*
+*//* DO NOT EDIT HEADER ROWS or COLUMN DESCRIPTIONS
+*//*
+*//* Empty sections are allowed, conversion script will generate the correct
+*//* empty structures in the c file.
+*//*
+*//* Number of fields given should strictly match the number expected.
+*//* Note that a trailing comma will be parsed as an extra empty field.
+*//*
+*//* NOTE:
+*//* The minimal valid description of a SoC that the initial discovery
+*//* test running on CXDT can work with has the correct number of DP entries.
+*//* The test will output the discovered APS and COMPONENTS in this CSV format
+*//* to be fed back into the sections below. Non-discovery tests will
+*//* expect valid contents of the aforementioned sections.
+*//*
+*//*---------------------------------------------------------------------------
+*//*
+*//* Section: DPS
+*//*
+*//* The data in this section describes the DPs in your SoC.
+*//*
+*//* Reminder: this is the only section that is mandatory for correct
+*//* system discovery via CXDT.
+*//*
+*//* DP Number corresponds to the DP part of a component address.
+*//* DPs numbering is expected to start from zero and be contiguous.
+*//*
+*//* DP Type must be a valid dptype_e enum value (defined in cx_enums.h)
+*//*
+*//* Target ID and Target Instance must be valid for Serial Wire Multi Drop DPs.
+*//*
+*//* Final AP must be the index value of the highest numbered AP attached to the DP.
+*//*
+*//* Max power up retries specifies how many times the acknowledge for DAP
+*//* powerup is polled. Default value of zero will poll enough times for most
+*//* systems. Increase this if you are seeing slow power acknowledge.
+*//*
+*//* Comment field should be present, but contents can be arbitrary
+*//* (including empty). Enclose the field in double quotes if you are using
+*//* whitespace or commas as part of the comment.
+
+DPS
+DP Number, Type, Target ID, Target Instance, Final AP, Max pwrup retries, Comment
+0, JTAG, 0x00000000, 0x0, 0, 0, "CoreSight JTAG-DP"
+
+*//*---------------------------------------------------------------------------
+*//*
+*//* Section: APS
+*//*
+*//* This section describes the APs in your SoC.
+*//*
+*//* NOT required for CXDT discovery test.
+*//*
+*//* DP Number corresponds to the DP part of a component address. The DPS
+*//* section should have a valid entry for DPs referenced in this section.
+*//*
+*//* AP Number corresponds to the AP part of a component address.
+*//*
+*//* AP Type must be a valid aptype_e enum value (defined in cx_enums.h)
+*//*
+*//* Comment field should be present, but contents can be arbitrary
+*//* (including empty). Enclose the field in double quotes if you are using
+*//* whitespace or commas as part of the comment.
+
+APS
+DP Number, AP Number, AP Type, Comment
+0, 0, MEMAP, "ARM AMBA APB2/3 Mem-AP r0p4"
+
+*//*---------------------------------------------------------------------------
+*//*
+*//* Section: COMPONENTS
+*//*
+*//* The data in this section describes all the CoreSight components in your SoC.
+*//*
+*//* NOT required for CXDT discovery test.
+*//*
+*//* DP, AP, MemAddr are the address of the component.
+*//*
+*//* PID, CID, DevType are the CoreSight ID of the component. DevType must
+*//* be valid for CID class 0x9 components.
+*//*
+*//* InstName is a text label used to refer to the component within this
+*//* file and in some tests. InstName labels must be unique, but can be any
+*//* double quoted text string, for example "PowerSubSystemCPU".
+*//*
+*//* Comment field should be present, but contents can be arbitrary
+*//* (including empty). Enclose the field in double quotes if you are using
+*//* whitespace or commas as part of the comment.
+*//*
+*//* Note that other sections in this file refer to components using
+*//* their InstName label, so you must ensure all labels are consistent.
+
+COMPONENTS
+DP, AP, MemAddr, PID, CID, DevType, InstName, Comment
+
+0, 0, 0x0000000080000000, 0x0000000000080000, 0xb105100d, 0x00, "dp0_ap000_0x0000000080000000", "(unknown JEP), (unknown PID) (unknown revision), (ROM Table) ***ERROR*** Unrecognised Revision ***ERROR*** Unrecognised Peripheral ID ***ERROR*** Unrecognised Jedec JEP ID"
+0, 0, 0x0000000080800000, 0x00000004004bb4a1, 0xb105100d, 0x00, "dp0_ap000_0x0000000080800000", "ARM, Cortex-A53 Integration Level r0p4, (ROM Table)"
+0, 0, 0x0000000080810000, 0x00000004004bbd03, 0xb105900d, 0x15, "dp0_ap000_0x0000000080810000", "ARM, Cortex-A53 DBG r0p4, (CoreSight Debug Component: Debug Logic, Processor core)"
+0, 0, 0x0000000080820000, 0x00000004004bb9a8, 0xb105900d, 0x14, "dp0_ap000_0x0000000080820000", "ARM, Cortex-A53 CTI r0p4, (CoreSight Debug Component: Debug Control, Trigger Matrix)"
+0, 0, 0x0000000080830000, 0x00000004004bb9d3, 0xb105900d, 0x16, "dp0_ap000_0x0000000080830000", "ARM, Cortex-A53 PMU r0p4, (CoreSight Debug Component: Performance Monitor, Associated with a processor)"
+0, 0, 0x0000000080840000, 0x00000004004bb95d, 0xb105900d, 0x13, "dp0_ap000_0x0000000080840000", "ARM, Cortex-A53 ETM r0p4, (CoreSight Debug Component: Trace Source, Associated with a processor core)"
+0, 0, 0x0000000081000000, 0x00000004004bb912, 0xb105900d, 0x11, "dp0_ap000_0x0000000081000000", "ARM, CoreSight Trace Port Interface Unit (TPIU) r4, (CoreSight Debug Component: Trace Sink, Trace port)"
+0, 0, 0x0000000081001000, 0x00000004003bb907, 0xb105900d, 0x21, "dp0_ap000_0x0000000081001000", "ARM, CoreSight Embedded Trace Buffer (ETB) r3, (CoreSight Debug Component: Trace Sink, Buffer)"
+0, 0, 0x0000000081002000, 0x00000004001bb909, 0xb105900d, 0x22, "dp0_ap000_0x0000000081002000", "ARM, CoreSight ATB Replicator r1, (CoreSight Debug Component: Trace Link, Filter)"
+0, 0, 0x0000000081003000, 0x00000004004bb906, 0xb105900d, 0x14, "dp0_ap000_0x0000000081003000", "ARM, CoreSight Cross Trigger Interface (CTI) r4, (CoreSight Debug Component: Debug Control, Trigger Matrix)"
+0, 0, 0x0000000081004000, 0x00000004001bb101, 0xb105f00d, 0x00, "dp0_ap000_0x0000000081004000", "ARM, TimeStamp Generator r1, (CoreLink / PrimeCell / System Component)"
+
+
+*//*---------------------------------------------------------------------------
+*//*
+*//* Section: System Memory Defines
+*//*
+*//* Some components, for example STM and TMC, occupy space in the
+*//* processor's main address map as well as the debug addres map. The
+*//* data in this section describes the base address and size of these
+*//* components.
+*//*
+*//* The InstName in each line must be a valid Component InstName label
+*//* (do not forget to double quote labels).
+
+System Memory Defines
+InstName, System Addr, System MemSize
+
+*//* Example entry:
+*//* "CompoentLabel", 0x00000000FFFE0000, 0x00004000
+
+*//*---------------------------------------------------------------------------
+*//*
+*//* Section: CPUS
+*//*
+*//* This section describes the processors in your SoC, the base address of
+*//* debug components within the procesor's address map, and the CoreSight
+*//* components that are closely coupled to each processor.
+*//*
+*//* Each processor within a multi-processor cluster must be described.
+*//*
+*//* Base ROM Table instance should be the label for the ROM Table
+*//* describing that particular CPU's subsystem.
+*//*
+*//* Arch version must be a valid cpuarch_e enum value (defined in cx_enums.h)
+*//*
+*//* System Address Mask must be a value that removes non-address bits (such as
+*//* PADDRDBG31) when ANDed with a component memory address. Typically this
+*//* is 0x7FFFFFFF for Cortex-A and Cortex-R processors. Zero is treated as
+*//* a special case of no-mask, so may be used for Cortex-M procesors.
+*//*
+*//* System address must be the base address in the processor's memory map
+*//* where the debug components are accessed. This is SoC specific for
+*//* Cortex-A and Cortex-R systems, and typically 0x0 for Cortex-M systems.
+*//*
+*//* All other cells in this section must be valid Component InstName labels.
+*//* If there are fewer than 3 trace sources, entries can be left empty.
+
+CPUS
+Base ROM Table Instance, CPU Component Instance, Arch Version, System Address Mask, System Address, CTI Instance, Trace src 1 Instance, Trace src 2 Instance, Trace src 3 Instance
+"dp0_ap000_0x0000000080000000", "dp0_ap000_0x0000000080810000", V8A,0x000000007fffffff, 0x0000000040000000, "dp0_ap000_0x0000000080820000","dp0_ap000_0x0000000080840000",,
+
+
+*//*---------------------------------------------------------------------------
+*//*
+*//* Section: TRIGGERS
+*//*
+*//* The Triggers section describes point-to-point CTI trigger connectivity.
+*//*
+*//* Driver Instance and Observer Instance must be valid Component InstName
+*//* labels.
+*//*
+*//* Signal must be a valid signal_e enum value (defined in cx_enums.h)
+*//*
+*//* Port field specifies which port the connection describes for
+*//* multiport components
+
+TRIGGERS
+Driver Instance, Signal, Port, Observer Instance, Signal, Port
+"dp0_ap000_0x0000000081003000",EVENTINTFOUT0,0,"dp0_ap000_0x0000000081000000",TRIGIN,0
+"dp0_ap000_0x0000000081003000",EVENTINTFOUT1,0,"dp0_ap000_0x0000000081000000",FLUSHIN,0
+"dp0_ap000_0x0000000081003000",EVENTINTFOUT2,0,"dp0_ap000_0x0000000081001000",FLUSHIN,0
+"dp0_ap000_0x0000000081003000",EVENTINTFOUT3,0,"dp0_ap000_0x0000000081001000",TRIGIN,0
+"dp0_ap000_0x0000000081001000",ACQCOMP,0,"dp0_ap000_0x0000000081003000",EVENTINTFIN0,0
+"dp0_ap000_0x0000000081001000",FULL,0,"dp0_ap000_0x0000000081003000",EVENTINTFIN1,0
+"dp0_ap000_0x0000000080820000",EVENTINTFOUT0,0,"dp0_ap000_0x0000000080810000",DBGHALT,0
+"dp0_ap000_0x0000000080820000",EVENTINTFOUT1,0,"dp0_ap000_0x0000000080810000",DBGRESTART,0
+"dp0_ap000_0x0000000080820000",EVENTINTFOUT2,0,"dp0_ap000_0x0000000080810000",INTERRUPT,0
+
+*//*---------------------------------------------------------------------------
+*//*
+*//* Section: TRACE
+*//*
+*//* Each line in the Trace section describes a list of trace components
+*//* from Source through to Sink, to be tested by the trace test.
+*//*
+*//* The first (Instance, Width, Port) tuple on each line must be a trace source component.
+*//* The final (Instance, Width, Port) tuple on each line must be a trace sink component.
+*//* All other (Instance, Width, Port) tuples on each line must be trace link components.
+*//*
+*//* Instance must be valid Component InstName labels.
+
+TRACE
+Instance, Width, Port ...
+"dp0_ap000_0x0000000080840000",32,0,"dp0_ap000_0x0000000081002000",32,0,"dp0_ap000_0x0000000081000000",32,0
+"dp0_ap000_0x0000000080840000",32,0,"dp0_ap000_0x0000000081002000",32,1,"dp0_ap000_0x0000000081001000",32,0
+
+
+*//*---------------------------------------------------------------------------
+*//*---------------------------------------------------------------------------
+*//* NOTE: all sections below provide test-specific information and can be
+*//* safely omitted if the respective tests are not going to be run.
+*//*---------------------------------------------------------------------------
+*//*---------------------------------------------------------------------------
+
+
+*//*---------------------------------------------------------------------------
+*//*
+*//* Section: CTIMASSLV
+*//*
+*//* Each line in this section describes a CTI master - slave pair to be
+*//* tested by the cross_halt test.
+*//*
+*//* MASTER_CTI must be valid Component InstName label.
+*//* OBS_CPU must be valid Component InstName label or a special value of ALL.
+
+CTIMASSLV
+MASTER_CTI,OBS_CPU
+"dp0_ap000_0x0000000080820000","dp0_ap000_0x0000000080810000"
+"dp0_ap000_0x0000000081003000",ALL
+
+
+*//*---------------------------------------------------------------------------
+*//*
+*//* Section: TEST_MEMAP_CHECK
+*//*
+*//* Each entry specifies a range of addresses to check with the memap_check test.
+
+TEST_MEMAP_CHECK
+DP, AP, Start Addr, End Addr
+
+*//* Example entry:
+*//* 0,0,0x50000,0x54000
+
+*//*---------------------------------------------------------------------------

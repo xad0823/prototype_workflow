@@ -1,0 +1,26 @@
+=============================================================================
+ The confidential and proprietary information contained in this file may
+ only be used by a person authorised under and to the extent permitted
+ by a subsisting licensing agreement from Arm Limited or its affiliates.
+
+ (C) COPYRIGHT 2018-2019 Arm Limited or its affiliates.
+ ALL RIGHTS RESERVED
+
+ This entire notice must be reproduced on all copies of this file
+ and copies of this file may only be made by a person if such person is
+ permitted to do so under the terms of a subsisting license agreement
+ from Arm Limited or its affiliates.
+
+=============================================================================
+
+The IP-XACT file is used to configure the pck600_lpc_q. The configuration options are:
+
+NUM_CTRL_Q_CHL      :  Configures the number of CTRL Q-Channels. Default value is 2. Range is 2 to 3. This maps to the NUM_CTRL_Q_CHL verilog parameter.
+
+NUM_DEV_Q_CHL       :  Configures the number of DEV Q-Channels. Default value is 1. Range is 1 to 32.
+
+CTRL_Q_CH_SYNC      :  Includes or excludes synchronizers on CTRL Q-Channels. Default value is 1. Possible values are {0,1}. This maps to the CTRL_Q_CH_SYNC verilog parameter.
+
+DEV_Q_CH_SYNC       :  Includes or excludes synchronizers on DEV Q-Channels. Default value is 1. Possible values are {0,1}. This maps to the DEV_Q_CH_SYNC verilog parameter.
+
+

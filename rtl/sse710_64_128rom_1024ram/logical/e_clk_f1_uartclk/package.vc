@@ -1,0 +1,7 @@
+$LOGICAL_PATH/e_clk_f1_uartclk/e_clk_f1_top_uartclk/verilog/e_clk_f1_unit_hostuartclk_uartclk.v
+$LOGICAL_PATH/e_clk_f1_uartclk/e_clk_f1_top_uartclk/verilog/e_clk_f1_top_uartclk.v
+$LOGICAL_PATH/e_clk_f1_uartclk/models/modules/generic/e_clk_f1_clock_gate_uartclk.v
+$LOGICAL_PATH/e_clk_f1_uartclk/models/modules/generic/e_clk_f1_reset_sync_uartclk.v
+$LOGICAL_PATH/e_clk_f1_uartclk/models/modules/generic/e_clk_f1_clock_buffer_uartclk.v
+$LOGICAL_PATH/e_clk_f1_uartclk/models/modules/generic/e_clk_f1_reset_buffer_uartclk.v
+$LOGICAL_PATH/e_clk_f1_uartclk/models/modules/generic/e_clk_f1_cdc_capt_sync_uartclk.v

@@ -1,0 +1,59 @@
+#------------------------------------------------------------------------------
+#  The confidential and proprietary information contained in this file may
+#  only be used by a person authorised under and to the extent permitted
+#  by a subsisting licensing agreement from ARM Limited or its affiliates.
+#
+#             (C) COPYRIGHT 2015-2016 ARM Limited or its affiliates.
+#                 ALL RIGHTS RESERVED
+#
+#  This entire notice must be reproduced on all copies of this file
+#  and copies of this file may only be made by a person if such person is
+#  permitted to do so under the terms of a subsisting license agreement
+#  from ARM Limited or its affiliates.
+#
+#       Checked In          : Thu Nov 10 09:29:29 2016 +0000
+#
+#       Revision            : 8cc35c5
+#
+#       Release Information : CoreLink SIE-200 System IP for Embedded - Global Bundle r3p2-00rel0
+#
+#------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+#- Abstract : Unit level UPF file for AHB5 to AHB5 and APB4 Asynchronous Bridge
+#-            slave module
+#------------------------------------------------------------------------------
+
+set_port_attributes \
+  -ports {
+    s_active_reg
+    pwr_ext_wake
+    m_lp_done_n
+    pwr_lp_req_n
+    s_semaphore
+    reg_hsel_apb_s
+    reg_hnonsec_s
+    reg_haddr_s
+    reg_hsize_s
+    reg_hwrite_s
+    reg_hprot_s
+    reg_hmastlock_s
+    reg_hwdata_s
+    reg_hexcl_s
+    reg_hmaster_s
+    reg_hauser_s
+    reg_hwuser_s
+    reg_unlock_s
+    q_hmastlock_s
+    pwr_qactive_s
+    pwr_qacceptn_s
+    pwr_qdeny_s
+    ext_gate_ack
+  }                 \
+  -clamp_value 0
+
+
+set_port_attributes \
+  -ports {
+    s_mask
+  }                 \
+  -clamp_value 1

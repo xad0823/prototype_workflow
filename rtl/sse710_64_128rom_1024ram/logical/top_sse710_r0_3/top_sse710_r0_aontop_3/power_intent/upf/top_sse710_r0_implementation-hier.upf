@@ -1,0 +1,717 @@
+
+#-----------------------------------------------------------------------------
+#    The confidential and proprietary information contained in this file may
+#    only be used by a person authorised under and to the extent permitted
+#    by a subsisting licensing agreement from Arm Limited or its affiliates.
+# 
+#           (C) COPYRIGHT 2018-2021 Arm Limited or its affiliates.
+#               ALL RIGHTS RESERVED
+# 
+#    This entire notice must be reproduced on all copies of this file
+#    and copies of this file may only be made by a person if such person is
+#    permitted to do so under the terms of a subsisting license agreement
+#    from Arm Limited or its affiliates.
+#-----------------------------------------------------------------------------
+#
+#
+#
+# Release Information : SSE710-r0p0-00eac0
+#
+# -----------------------------------------------------------------------------
+#
+# Description : Example Implementation UPF for top_sse710
+# Vendor      : arm.com
+# Library     : IOT Kits
+# Version     : 1
+#
+# -----------------------------------------------------------------------------
+# Unified Power Format (IEEE Std 1801-2013)
+# -----------------------------------------------------------------------------
+
+puts ""
+puts "###########################################################################"
+puts "# Reading sse710_top implementation UPF ..."
+puts "###########################################################################"
+puts ""
+
+#===============================================================================
+# Supply Ports, Supply nets
+#===============================================================================
+#-------------------------------------------------------------------------------
+# Core supplies ...
+#-------------------------------------------------------------------------------
+create_supply_port -direction in VDD
+create_supply_net  VDD
+connect_supply_net VDD -ports { VDD } 
+
+create_supply_port -direction in VSS
+create_supply_net  VSS
+connect_supply_net VSS -ports { VSS } 
+
+#-------------------------------------------------------------------------------
+# Update supply sets with the supply net
+#-------------------------------------------------------------------------------
+create_supply_net VAON_VSS_sw_p
+create_supply_net VAON_VSS_sw_c
+create_supply_net VSYSTOP_SW -resolve parallel
+create_supply_net VCLUSTOP_SW -resolve parallel
+create_supply_net VCLUSTOP_VSS_sw_p
+create_supply_net VCLUSTOP_VSS_sw_c
+create_supply_net VEXTSYS0TOP_SW -resolve parallel
+create_supply_net VEXTSYS1TOP_SW -resolve parallel
+create_supply_net VDBGTOP_SW -resolve parallel
+create_supply_net VSECENCTOP_SW -resolve parallel
+create_supply_net VSECENC_VSS_sw_p
+create_supply_net VSECENC_VSS_sw_c
+
+create_supply_net VCPU0_VDD_sw
+create_supply_net VCPU1_VDD_sw
+create_supply_net VCPU2_VDD_sw
+create_supply_net VCPU3_VDD_sw
+
+create_supply_net VCPU0_VSS_sw_p
+create_supply_net VCPU1_VSS_sw_p
+create_supply_net VCPU2_VSS_sw_p
+create_supply_net VCPU3_VSS_sw_p
+
+create_supply_net VCPU0_VSS_sw_c
+create_supply_net VCPU1_VSS_sw_c
+create_supply_net VCPU2_VSS_sw_c
+create_supply_net VCPU3_VSS_sw_c
+
+# Always-on supply sets...
+create_supply_set PD_AON.primary -update \
+    -function { power  VDD } \
+    -function { nwell  VDD } \
+    -function { pwell  VSS } \
+    -function { ground VSS }
+
+create_supply_set PD_SYSTOP.primary -update \
+    -function { power  VSYSTOP_SW } \
+    -function { nwell  VDD } \
+    -function { pwell  VSS } \
+    -function { ground VSS }
+
+create_supply_set PD_CLUSTOP.primary -update \
+    -function { power  VCLUSTOP_SW } \
+    -function { nwell  VDD } \
+    -function { pwell  VSS } \
+    -function { ground VSS }
+
+create_supply_set PD_EXTSYS0TOP.primary -update \
+    -function { power  VEXTSYS0TOP_SW } \
+    -function { nwell  VDD } \
+    -function { pwell  VSS } \
+    -function { ground VSS }
+
+create_supply_set PD_EXTSYS1TOP.primary -update \
+    -function { power  VEXTSYS1TOP_SW } \
+    -function { nwell  VDD } \
+    -function { pwell  VSS } \
+    -function { ground VSS }
+
+create_supply_set PD_DBGTOP.primary -update \
+    -function { power  VDBGTOP_SW } \
+    -function { nwell  VDD } \
+    -function { pwell  VSS } \
+    -function { ground VSS }
+
+create_supply_set PD_SECENCTOP.primary -update \
+    -function { power  VSECENCTOP_SW } \
+    -function { nwell  VDD } \
+    -function { pwell  VSS } \
+    -function { ground VSS }
+
+create_supply_set PD_CPU0.primary -update \
+    -function { power  VCPU0_VDD_sw } \
+    -function { ground VSS } \
+    -function { nwell  VDD } \
+    -function { pwell  VSS }
+
+create_supply_set PD_CPU1.primary -update \
+    -function { power  VCPU1_VDD_sw } \
+    -function { ground VSS } \
+    -function { nwell  VDD } \
+    -function { pwell  VSS }
+
+create_supply_set PD_CPU2.primary -update \
+    -function { power  VCPU2_VDD_sw } \
+    -function { ground VSS } \
+    -function { nwell  VDD } \
+    -function { pwell  VSS }
+
+create_supply_set PD_CPU3.primary -update \
+    -function { power  VCPU3_VDD_sw } \
+    -function { ground VSS } \
+    -function { nwell  VDD } \
+    -function { pwell  VSS }
+
+#-------------------------------------------------------------------------------
+# Supply sets for RAM internal supplies
+#-------------------------------------------------------------------------------
+create_supply_set PD_AON.ram_p -update \
+    -function { power  VDD } \
+    -function { ground VAON_VSS_sw_p }
+
+create_supply_set PD_AON.ram_c -update \
+    -function { power  VDD } \
+    -function { ground VAON_VSS_sw_c }
+
+create_supply_set PD_SECENCTOP.ram_p -update \
+    -function { power  VDD } \
+    -function { ground VSECENC_VSS_sw_p }
+
+create_supply_set PD_SECENCTOP.ram_c -update \
+    -function { power  VDD } \
+    -function { ground VSECENC_VSS_sw_c }
+
+create_supply_set PD_CLUSTOP.ram_p -update \
+    -function { power  VDD} \
+    -function { ground VCLUSTOP_VSS_sw_p }
+    
+create_supply_set PD_CLUSTOP.ram_c -update \
+    -function { power  VDD} \
+    -function { ground VCLUSTOP_VSS_sw_c }
+
+#-------------------------------------------------------------------------------
+# Power supply connection to macros
+#-------------------------------------------------------------------------------
+connect_supply_net VDD               -ports $PD_SECENCTOP_memports(VDDPE) \
+    -vct UPF2SV_LOGIC
+connect_supply_net VDD               -ports $PD_SECENCTOP_memports(VDDCE) \
+    -vct UPF2SV_LOGIC
+connect_supply_net VSS               -ports $PD_SECENCTOP_memports(VSSE) \
+    -vct UPF_GNDZERO2SV_LOGIC
+connect_supply_net VSECENC_VSS_sw_p  -ports $PD_SECENCTOP_memports(VSS) \
+    -vct UPF_GNDZERO2SV_LOGIC
+
+connect_supply_net VDD               -ports $PD_SECENCTOP_rom_memports(VDDE) \
+    -vct UPF2SV_LOGIC
+connect_supply_net VSS               -ports $PD_SECENCTOP_rom_memports(VSSE) \
+    -vct UPF_GNDZERO2SV_LOGIC
+connect_supply_net VSECENC_VSS_sw_p  -ports $PD_SECENCTOP_rom_memports(VSS) \
+    -vct UPF_GNDZERO2SV_LOGIC
+
+connect_supply_net VDD               -ports $PD_CLUSTOP_memports(VDDPE) \
+    -vct UPF2SV_LOGIC
+connect_supply_net VDD               -ports $PD_CLUSTOP_memports(VDDCE) \
+    -vct UPF2SV_LOGIC
+connect_supply_net VSS               -ports $PD_CLUSTOP_memports(VSSE) \
+    -vct UPF_GNDZERO2SV_LOGIC
+connect_supply_net VCLUSTOP_VSS_sw_p -ports $PD_CLUSTOP_memports(VSS) \
+    -vct UPF_GNDZERO2SV_LOGIC
+
+connect_supply_net VDD               -ports $PD_AON_memports(VDDPE) \
+    -vct UPF2SV_LOGIC
+connect_supply_net VDD               -ports $PD_AON_memports(VDDCE) \
+    -vct UPF2SV_LOGIC
+connect_supply_net VSS               -ports $PD_AON_memports(VSSE) \
+    -vct UPF_GNDZERO2SV_LOGIC
+connect_supply_net VAON_VSS_sw_p     -ports $PD_AON_memports(VSS) \
+    -vct UPF_GNDZERO2SV_LOGIC
+
+connect_supply_net VDD -ports [list \
+        $PD_CPU0_path/VDD \
+        $PD_CPU1_path/VDD \
+        $PD_CPU2_path/VDD \
+        $PD_CPU3_path/VDD \
+    ]
+
+connect_supply_net VSS -ports \
+    [list \
+        $PD_CPU0_path/VSS \
+        $PD_CPU1_path/VSS \
+        $PD_CPU2_path/VSS \
+        $PD_CPU3_path/VSS \
+    ] 
+
+
+#===============================================================================
+# Power Switches
+#===============================================================================
+create_power_switch pwrSwVsystop \
+    -input_supply_port  { VDDG      VDD } \
+    -output_supply_port { VDD       VSYSTOP_SW } \
+    -control_port       " SLEEPN    $PD_SYSTOP_pcsm_path/lgcpwrn_o " \
+    -on_state           { on_state  VDDG {!SLEEPN} } \
+    -off_state          { off_state {SLEEPN} } \
+    -domain PD_SYSTOP
+
+create_power_switch pwrSwVclustop \
+    -input_supply_port  { VDDG      VDD } \
+    -output_supply_port { VDD       VCLUSTOP_SW } \
+    -control_port       " SLEEPN    $PD_CLUSTOP_pcsm_path/lgcpwrn_o " \
+    -on_state           { on_state  VDDG {!SLEEPN} } \
+    -off_state          { off_state {SLEEPN} } \
+    -domain PD_CLUSTOP
+
+create_power_switch pwrSwVEXTSYS0TOP \
+    -input_supply_port  { VDDG      VDD } \
+    -output_supply_port { VDD       VEXTSYS0TOP_SW } \
+    -control_port       { SLEEPN    LP_LPWRNEXTSYS0TOP } \
+    -on_state           { on_state  VDDG {!SLEEPN} } \
+    -off_state          { off_state {SLEEPN} } \
+    -domain PD_EXTSYS0TOP
+
+create_power_switch pwrSwVEXTSYS1TOP \
+    -input_supply_port  { VDDG      VDD } \
+    -output_supply_port { VDD       VEXTSYS1TOP_SW } \
+    -control_port       { SLEEPN    LP_LPWRNEXTSYS1TOP } \
+    -on_state           { on_state  VDDG {!SLEEPN} } \
+    -off_state          { off_state {SLEEPN} } \
+    -domain PD_EXTSYS1TOP
+
+create_power_switch pwrSwVDBGTOP \
+    -input_supply_port  { VDDG      VDD } \
+    -output_supply_port { VDD      VDBGTOP_SW } \
+    -control_port      " SLEEPN    $PD_DBGTOP_pcsm_path/lgcpwrn_o " \
+    -on_state          { on_state  VDDG {!SLEEPN} } \
+    -off_state         { off_state {SLEEPN} } \
+    -domain PD_DBGTOP
+
+create_power_switch pwrSwVSECENCTOP \
+    -input_supply_port  { VDDG      VDD } \
+    -output_supply_port { VDD       VSECENCTOP_SW } \
+    -control_port       " SLEEPN    $PD_SECENCTOP_pcsm_path/lgcpwrn_o " \
+    -on_state           { on_state  VDDG {!SLEEPN} } \
+    -off_state          { off_state {SLEEPN} } \
+    -domain PD_SECENCTOP
+
+#-------------------------------------------------------------------------------
+# Need to add a power switch for the internal RAM supply sets for simulation
+#-------------------------------------------------------------------------------
+if { $::env(QUESTA_PA) == 1 } {
+   create_power_switch sw_p_FW_RAM \
+       -input_supply_port  "sw_in     PD_AON.primary.ground " \
+       -output_supply_port "sw_out    PD_AON.ram_p.ground " \
+       -control_port       "sw_ctrl   $PD_AON_fwpcsm_path/rampwrn_o" \
+       -on_state           "on_state  sw_in {!sw_ctrl}" \
+       -off_state          "off_state {sw_ctrl}" \
+       -domain PD_AON
+
+   create_power_switch sw_c_FW_RAM \
+       -input_supply_port  "sw_in     PD_AON.primary.ground " \
+       -output_supply_port "sw_out    PD_AON.ram_c.ground " \
+       -control_port       "sw_ctrl1  $PD_AON_fwpcsm_path/rampwrn_o" \
+       -control_port       "sw_ctrl2  $PD_AON_fwpcsm_path/ramretn_o" \
+       -on_state           "on_state  sw_in {!{sw_ctrl1 && sw_ctrl2}}" \
+       -off_state          "off_state {sw_ctrl1 && sw_ctrl2}" \
+       -domain PD_AON 
+
+   create_power_switch sw_p_SECENCTOP_RAM \
+       -input_supply_port  "sw_in     PD_SECENCTOP.primary.ground" \
+       -output_supply_port "sw_out    PD_SECENCTOP.ram_p.ground" \
+       -control_port       "sw_ctrl   $PD_SECENCTOP_pcsm_path/rampwrn_o" \
+       -on_state           "on_state  sw_in {!sw_ctrl}" \
+       -off_state          "off_state {sw_ctrl}" \
+       -domain PD_AON
+   
+   create_power_switch sw_c_SECENCTOP_RAM \
+       -input_supply_port  "sw_in     PD_SECENCTOP.primary.ground" \
+       -output_supply_port "sw_out    PD_SECENCTOP.ram_c.ground" \
+       -control_port       "sw_ctrl1   $PD_SECENCTOP_pcsm_path/rampwrn_o" \
+       -control_port       "sw_ctrl2   $PD_SECENCTOP_pcsm_path/ramretn_o" \
+       -on_state           "on_state  sw_in {!{sw_ctrl1 && sw_ctrl2}}" \
+       -off_state          "off_state {sw_ctrl1 && sw_ctrl2}" \
+       -domain PD_AON 
+
+   create_power_switch sw_p_CLUSTOP_RAM \
+       -input_supply_port  "sw_in     PD_CLUSTOP.primary.ground" \
+       -output_supply_port "sw_out    PD_CLUSTOP.ram_p.ground" \
+       -control_port       "sw_ctrl   $PD_CLUSTOP_pcsm_path/rampwrn_o" \
+       -on_state           "on_state  sw_in {!sw_ctrl}" \
+       -off_state          "off_state {sw_ctrl}" \
+       -domain PD_AON
+
+   create_power_switch sw_c_CLUSTOP_RAM \
+       -input_supply_port  "sw_in     PD_CLUSTOP.primary.ground" \
+       -output_supply_port "sw_out    PD_CLUSTOP.ram_c.ground" \
+       -control_port       "sw_ctrl1  $PD_CLUSTOP_pcsm_path/rampwrn_o" \
+       -control_port       "sw_ctrl2  $PD_CLUSTOP_pcsm_path/ramretn_o" \
+       -on_state           "on_state  sw_in {!{sw_ctrl1 && sw_ctrl2}}" \
+       -off_state          "off_state {sw_ctrl1 && sw_ctrl2}" \
+       -domain PD_AON 
+
+}
+#===============================================================================
+# Update Isolation strategies with the supply port connections
+#===============================================================================
+set_isolation iso_PD_SYSTOP_Low -update \
+    -domain PD_SYSTOP \
+    -isolation_supply_set PD_AON.primary \
+    -location other
+
+set_isolation iso_PD_SYSTOP_CLUSTOP_Low -update \
+    -domain PD_SYSTOP \
+    -isolation_supply_set PD_AON.primary \
+    -location other
+
+set_isolation iso_PD_SYSTOP_High -update \
+    -domain PD_SYSTOP \
+    -isolation_supply_set PD_AON.primary \
+    -location other
+
+if {[llength $PD_SYSTOP_CPU_PCSMs_ClampLow] > 0} {
+    set_isolation iso_PD_SYSTOP_CPU_PCSMs_Low -update \
+        -domain PD_SYSTOP \
+        -isolation_supply_set PD_AON.primary \
+        -location self
+}
+
+if {[llength $PD_SYSTOP_CPU_PCSMs_ClampHigh] > 0} {
+    set_isolation iso_PD_SYSTOP_CPU_PCSMs_High -update \
+        -domain PD_SYSTOP \
+        -isolation_supply_set PD_AON.primary \
+        -location self
+}
+
+set_isolation iso_PD_CLUSTOP_Low -update \
+    -domain PD_CLUSTOP \
+    -isolation_supply_set PD_SYSTOP.primary \
+    -location other
+
+set_isolation iso_PD_CLUSTOP_High -update \
+    -domain PD_CLUSTOP \
+    -isolation_supply_set PD_SYSTOP.primary \
+    -location other
+
+set_isolation iso_PD_EXTSYS0TOP_Low -update \
+    -domain PD_EXTSYS0TOP \
+    -isolation_supply_set PD_AON.primary \
+    -location parent
+
+if {[llength $PD_EXTSYS0TOP_ClampHigh] > 0} { 
+    set_isolation iso_PD_EXTSYS0TOP_High -update \
+        -domain PD_EXTSYS0TOP \
+        -isolation_supply_set PD_AON.primary \
+        -location parent
+}
+
+set_isolation iso_PD_EXTSYS1TOP_Low -update \
+    -domain PD_EXTSYS1TOP \
+    -isolation_supply_set PD_AON.primary \
+    -location parent
+
+if {[llength $PD_EXTSYS1TOP_ClampHigh] > 0} { 
+    set_isolation iso_PD_EXTSYS1TOP_High -update \
+        -domain PD_EXTSYS1TOP \
+        -isolation_supply_set PD_AON.primary \
+        -location parent
+}
+
+set_isolation iso_PD_DBGTOP_Low -update \
+    -domain PD_DBGTOP \
+    -isolation_supply_set PD_AON.primary \
+    -location parent
+
+if {[llength $PD_DBGTOP_ClampHigh] > 0} { 
+    set_isolation iso_PD_DBGTOP_High -update \
+        -domain PD_DBGTOP \
+        -isolation_supply_set PD_AON.primary \
+        -location parent
+}
+
+set_isolation iso_PD_SECENCTOP_Low -update \
+    -domain PD_SECENCTOP \
+    -isolation_supply_set PD_AON.primary \
+    -location parent
+
+if {[llength $PD_SECENCTOP_ClampHigh] > 0} { 
+    set_isolation iso_PD_SECENCTOP_High -update \
+        -domain PD_SECENCTOP \
+        -isolation_supply_set PD_AON.primary \
+        -location parent
+}
+
+set_isolation iso_PD_CPU0_Low  -update \
+    -domain PD_CPU0 \
+    -isolation_supply_set PD_CLUSTOP.primary \
+    -location parent
+
+if {[llength [set PD_CPU0_ClampHigh]] > 0} { 
+  set_isolation iso_PD_CPU0_High -update \
+      -domain PD_CPU0 \
+      -isolation_supply_set PD_CLUSTOP.primary \
+      -location parent
+}  
+set_isolation iso_PD_CPU1_Low  -update \
+    -domain PD_CPU1 \
+    -isolation_supply_set PD_CLUSTOP.primary \
+    -location parent
+
+if {[llength [set PD_CPU1_ClampHigh]] > 0} { 
+  set_isolation iso_PD_CPU1_High -update \
+      -domain PD_CPU1 \
+      -isolation_supply_set PD_CLUSTOP.primary \
+      -location parent
+}  
+set_isolation iso_PD_CPU2_Low  -update \
+    -domain PD_CPU2 \
+    -isolation_supply_set PD_CLUSTOP.primary \
+    -location parent
+
+if {[llength [set PD_CPU2_ClampHigh]] > 0} { 
+  set_isolation iso_PD_CPU2_High -update \
+      -domain PD_CPU2 \
+      -isolation_supply_set PD_CLUSTOP.primary \
+      -location parent
+}  
+set_isolation iso_PD_CPU3_Low  -update \
+    -domain PD_CPU3 \
+    -isolation_supply_set PD_CLUSTOP.primary \
+    -location parent
+
+if {[llength [set PD_CPU3_ClampHigh]] > 0} { 
+  set_isolation iso_PD_CPU3_High -update \
+      -domain PD_CPU3 \
+      -isolation_supply_set PD_CLUSTOP.primary \
+      -location parent
+}  
+
+
+#===============================================================================
+# Level Shifting Policy
+#===============================================================================
+# No LS required
+
+#===============================================================================
+# Power State supply expr update for Supply Sets
+#===============================================================================
+
+#-------------------------------------------------------------------------------
+# PD_AON
+#-------------------------------------------------------------------------------
+add_power_state PD_AON.primary -update \
+    -state {ON  -supply_expr { power == { FULL_ON 1.1 } && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } }
+
+add_power_state PD_AON.ram_p -update \
+    -state {ON   -supply_expr { power == { FULL_ON 1.1 } && ground == { FULL_ON 0 } } } \
+    -state {OFF  -supply_expr { power == { FULL_ON 1.1 } && ground == OFF } } \
+
+add_power_state PD_AON.ram_c -update \
+    -state {ON   -supply_expr { power == { FULL_ON 1.1 } && ground == { FULL_ON 0 } } } \
+    -state {OFF  -supply_expr { power == { FULL_ON 1.1 } && ground == OFF } } \
+
+#-------------------------------------------------------------------------------
+# PD_SECENCTOP
+#-------------------------------------------------------------------------------
+add_power_state PD_SECENCTOP.primary -update \
+    -state {ON  -supply_expr { power == { FULL_ON 1.1 } && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } } \
+    -state {OFF -supply_expr { power == OFF             && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } }
+
+add_power_state PD_SECENCTOP.ram_p -update \
+    -state {ON      -supply_expr { power == { FULL_ON 1.1 } && ground == { FULL_ON 0 } } } \
+    -state {OFF     -supply_expr { power == { FULL_ON 1.1 } && ground == OFF } }
+
+add_power_state PD_SECENCTOP.ram_c -update \
+    -state {ON      -supply_expr { power == { FULL_ON 1.1 } && ground == { FULL_ON 0 } } } \
+    -state {OFF     -supply_expr { power == { FULL_ON 1.1 } && ground == OFF } }
+
+#-------------------------------------------------------------------------------
+# PD_EXTSYS0TOP
+#-------------------------------------------------------------------------------
+add_power_state PD_EXTSYS0TOP.primary -update \
+    -state {ON  -supply_expr { power == { FULL_ON 1.1 } && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } } \
+    -state {OFF -supply_expr { power == OFF             && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } }
+
+#-------------------------------------------------------------------------------
+# PD_EXTSYS1TOP
+#-------------------------------------------------------------------------------
+add_power_state PD_EXTSYS1TOP.primary -update \
+    -state {ON  -supply_expr { power == { FULL_ON 1.1 } && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } } \
+    -state {OFF -supply_expr { power == OFF             && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } }
+
+#-------------------------------------------------------------------------------
+# PD_DBGTOP
+#-------------------------------------------------------------------------------
+add_power_state PD_DBGTOP.primary -update \
+    -state {ON  -supply_expr { power == { FULL_ON 1.1 } && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } } \
+    -state {OFF -supply_expr { power == OFF             && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } }
+
+#-------------------------------------------------------------------------------
+# PD_SYSTOP
+#-------------------------------------------------------------------------------
+add_power_state PD_SYSTOP.primary -update \
+    -state {ON   -supply_expr { power == { FULL_ON 1.1 } && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } } \
+    -state {OFF  -supply_expr { power == OFF             && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } }
+
+#-------------------------------------------------------------------------------
+# PD_CLUSTOP
+#-------------------------------------------------------------------------------
+add_power_state PD_CLUSTOP.primary -update \
+    -state {ON   -supply_expr { power == { FULL_ON 1.1 } && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } } \
+    -state {OFF  -supply_expr { power == OFF             && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } }
+
+add_power_state PD_CLUSTOP.ram_p -update \
+    -state {ON   -supply_expr { power == { FULL_ON 1.1 } && ground == { FULL_ON 0 } } } \
+    -state {OFF  -supply_expr { power == { FULL_ON 1.1 } && ground == OFF } }
+
+add_power_state PD_CLUSTOP.ram_c -update \
+    -state {ON   -supply_expr { power == { FULL_ON 1.1 } && ground == { FULL_ON 0 } } } \
+    -state {OFF  -supply_expr { power == { FULL_ON 1.1 } && ground == OFF } }
+
+#-------------------------------------------------------------------------------
+# PD_CPU0 
+#-------------------------------------------------------------------------------
+add_power_state PD_CPU0.primary -update \
+    -state {ON  -supply_expr { power == { FULL_ON 1.1 } && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } } \
+    -state {OFF -supply_expr { power == OFF             && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } }
+
+#-------------------------------------------------------------------------------
+# PD_CPU1 
+#-------------------------------------------------------------------------------
+add_power_state PD_CPU1.primary -update \
+    -state {ON  -supply_expr { power == { FULL_ON 1.1 } && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } } \
+    -state {OFF -supply_expr { power == OFF             && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } }
+
+#-------------------------------------------------------------------------------
+# PD_CPU2 
+#-------------------------------------------------------------------------------
+add_power_state PD_CPU2.primary -update \
+    -state {ON  -supply_expr { power == { FULL_ON 1.1 } && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } } \
+    -state {OFF -supply_expr { power == OFF             && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } }
+
+#-------------------------------------------------------------------------------
+# PD_CPU3 
+#-------------------------------------------------------------------------------
+add_power_state PD_CPU3.primary -update \
+    -state {ON  -supply_expr { power == { FULL_ON 1.1 } && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } } \
+    -state {OFF -supply_expr { power == OFF             && nwell == { FULL_ON 1.1 }  && pwell == { FULL_ON 0}  && ground == { FULL_ON 0 } } }
+
+#===============================================================================
+# Map strategies to library cell - but not in the simulation environment
+#===============================================================================
+if {$env(QUESTA_PA) == 0} {
+    use_interface_cell uic_iso_PD_SYSTOP_Low \
+        -strategy iso_PD_SYSTOP_Low \
+        -domain PD_SYSTOP \
+        -lib_cells $isolate_low_cells
+
+    use_interface_cell uic_iso_PD_SYSTOP_CLUSTOP_Low \
+        -strategy iso_PD_SYSTOP_CLUSTOP_Low \
+        -domain PD_SYSTOP \
+        -lib_cells $isolate_low_cells
+
+    use_interface_cell uic_iso_PD_SYSTOP_High \
+        -strategy iso_PD_SYSTOP_High \
+        -domain PD_SYSTOP \
+        -lib_cells $isolate_high_cells 
+
+    if {[llength $PD_SYSTOP_CPU_PCSMs_ClampLow] > 0} { 
+        use_interface_cell uic_iso_PD_SYSTOP_CPU_PCSMs_Low \
+            -strategy iso_PD_SYSTOP_CPU_PCSMs_Low \
+            -domain PD_SYSTOP \
+            -lib_cells $isolate_source_low_cells
+    }
+
+    use_interface_cell uic_iso_PD_SYSTOP_CPU_PCSMs_High \
+        -strategy iso_PD_SYSTOP_CPU_PCSMs_High \
+        -domain PD_SYSTOP \
+        -lib_cells $isolate_source_high_cells
+
+    use_interface_cell uic_iso_PD_CLUSTOP_Low \
+        -strategy iso_PD_CLUSTOP_Low \
+        -domain PD_CLUSTOP \
+        -lib_cells $isolate_low_cells
+
+    use_interface_cell uic_iso_PD_CLUSTOP_High \
+        -strategy iso_PD_CLUSTOP_High \
+        -domain PD_CLUSTOP \
+        -lib_cells $isolate_high_cells 
+
+    use_interface_cell uic_iso_PD_EXTSYS0TOP_Low \
+        -strategy iso_PD_EXTSYS0TOP_Low \
+        -domain PD_EXTSYS0TOP \
+        -lib_cells $isolate_low_cells
+
+    if {[llength $PD_EXTSYS0TOP_ClampHigh] > 0} { 
+        use_interface_cell uic_iso_PD_EXTSYS0TOP_High \
+            -strategy iso_PD_EXTSYS0TOP_High \
+            -domain PD_EXTSYS0TOP \
+            -lib_cells $isolate_high_cells 
+    }
+
+    use_interface_cell uic_iso_PD_EXTSYS1TOP_Low \
+        -strategy iso_PD_EXTSYS1TOP_Low \
+        -domain PD_EXTSYS1TOP \
+        -lib_cells $isolate_low_cells
+
+    if {[llength $PD_EXTSYS1TOP_ClampHigh] > 0} { 
+        use_interface_cell uic_iso_PD_EXTSYS1TOP_High \
+            -strategy iso_PD_EXTSYS1TOP_High \
+            -domain PD_EXTSYS1TOP \
+            -lib_cells $isolate_high_cells 
+    }
+
+    use_interface_cell uic_iso_PD_DBGTOP_Low \
+        -strategy iso_PD_DBGTOP_Low \
+        -domain PD_DBGTOP \
+        -lib_cells $isolate_low_cells
+
+    if {[llength $PD_DBGTOP_ClampHigh] > 0} { 
+        use_interface_cell uic_iso_PD_DBGTOP_High \
+            -strategy iso_PD_DBGTOP_High \
+            -domain PD_DBGTOP \
+            -lib_cells $isolate_high_cells 
+    }
+
+    use_interface_cell uic_iso_PD_SECENCTOP_Low \
+        -strategy iso_PD_SECENCTOP_Low \
+        -domain PD_SECENCTOP \
+        -lib_cells $isolate_low_cells
+
+    if {[llength $PD_SECENCTOP_ClampHigh] > 0} { 
+        use_interface_cell uic_iso_PD_SECENCTOP_High \
+            -strategy iso_PD_SECENCTOP_High \
+            -domain PD_SECENCTOP \
+            -lib_cells $isolate_high_cells 
+    }
+
+ 
+    use_interface_cell uic_iso_PD_CPU0_Low \
+        -strategy iso_PD_CPU0_Low \
+        -domain PD_CPU0 \
+        -lib_cells $isolate_low_cells
+
+    if {[llength [set PD_CPU0_ClampHigh]] > 0} { 
+        use_interface_cell uic_iso_PD_CPU0_High \
+            -strategy iso_PD_CPU0_High \
+            -domain PD_CPU0 \
+            -lib_cells $isolate_high_cells 
+    }
+    use_interface_cell uic_iso_PD_CPU1_Low \
+        -strategy iso_PD_CPU1_Low \
+        -domain PD_CPU1 \
+        -lib_cells $isolate_low_cells
+
+    if {[llength [set PD_CPU1_ClampHigh]] > 0} { 
+        use_interface_cell uic_iso_PD_CPU1_High \
+            -strategy iso_PD_CPU1_High \
+            -domain PD_CPU1 \
+            -lib_cells $isolate_high_cells 
+    }
+    use_interface_cell uic_iso_PD_CPU2_Low \
+        -strategy iso_PD_CPU2_Low \
+        -domain PD_CPU2 \
+        -lib_cells $isolate_low_cells
+
+    if {[llength [set PD_CPU2_ClampHigh]] > 0} { 
+        use_interface_cell uic_iso_PD_CPU2_High \
+            -strategy iso_PD_CPU2_High \
+            -domain PD_CPU2 \
+            -lib_cells $isolate_high_cells 
+    }
+    use_interface_cell uic_iso_PD_CPU3_Low \
+        -strategy iso_PD_CPU3_Low \
+        -domain PD_CPU3 \
+        -lib_cells $isolate_low_cells
+
+    if {[llength [set PD_CPU3_ClampHigh]] > 0} { 
+        use_interface_cell uic_iso_PD_CPU3_High \
+            -strategy iso_PD_CPU3_High \
+            -domain PD_CPU3 \
+            -lib_cells $isolate_high_cells 
+    }
+}
+
+

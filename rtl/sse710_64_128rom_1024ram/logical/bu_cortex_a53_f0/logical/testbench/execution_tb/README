@@ -1,0 +1,271 @@
+#-----------------------------------------------------------------------------
+# The confidential and proprietary information contained in this file may
+# only be used by a person authorised under and to the extent permitted
+# by a subsisting licensing agreement from ARM Limited.
+#
+#            (C) COPYRIGHT 2013-2014 ARM Limited.
+#                ALL RIGHTS RESERVED
+#
+# This entire notice must be reproduced on all copies of this file
+# and copies of this file may only be made by a person if such person is
+# permitted to do so under the terms of a subsisting license agreement
+# from ARM Limited.
+#
+#      SVN Information
+#
+#      Checked In          : $Date: 2014-07-25 09:52:11 +0100 (Fri, 25 Jul 2014) $
+#
+#      Revision            : $Revision: 285788 $
+#
+#      Release Information : CORTEXA53-r0p4-00rel0
+#
+#-----------------------------------------------------------------------------
+
+================================================================================
+Cortex-A53 execution testbench README
+================================================================================
+
+The Cortex-A53 Configuration and Signoff Guide documents how to set up and
+run the Cortex-A53 execution testbench.  This README file contains supplementary
+information in the form of examples to show how you can install the
+dependencies required to run certain parts of the testbench.
+
+This README file is split into two sections:
+
+  Section 1: describes how to install Protocol Buffers which are required to
+             generate Tarmac instruction trace when running the tests.
+
+  Section 2: describes how to install a compatible GCC toolchain that you
+             can use if you want to re-compile any of the supplied tests
+
+
+--------------------------------------------------------------------------------
+SECTION 1: Installing Protocol Buffers
+--------------------------------------------------------------------------------
+
+If you want to enable Tarmac instruction trace when running tests in the
+execution testbench, you must first install Protocol Buffers.  The following
+package is required:
+
+  1. Google Protocol Buffers 2.4.1
+       Web:          https://code.google.com/p/protobuf
+       Package name: protobuf-2.4.1.tar.bz2
+
+You must build and install a 32-bit version of the protocol buffers regardless
+of whether you are running 32-bit or 64-bit simulations.  After you have
+downloaded and extracted the protocol buffers package, you can configure and
+install using the following commands from the protocol buffers source directory:
+
+  $ ./configure --with-zlib --prefix=/path/to/install/root CXX='g++ -m32'
+  $ make install
+
+
+
+--------------------------------------------------------------------------------
+SECTION 2: Installing GCC toolchains
+--------------------------------------------------------------------------------
+
+All tests in the execution testbench are provided with pre-compiled ELF files
+and memory initialization files.  It is therefore not necessary to re-compile
+the tests unless you modify the source code.
+
+If you do re-compile the tests, or if you write any new tests, you must use a
+version of GCC that supports the ARMv8 architecture.  In GCC support for the
+ARMv8 architecture is split between two separate toolchains: one which supports
+AArch32 and one which supports AArch64.  Both toolchains are required to compile
+all of the execution testbench tests.
+
+The toolchains must be built for 'baremetal' targets, because the execution
+testbench tests contain standalone code that does not require an operating
+system.
+
+ARM recommends that you:
+
+ - use Linaro GCC toolchains, see http://www.linaro.org
+
+ - compile your own toolchains from source, in order to create a toolchain for
+   the correct target
+
+The headings below contain examples to show how you can build a compatible GCC
+toolchain from source.
+
+
+----------------
+Required sources
+----------------
+
+The following source packages are required and can be downloaded from the
+websites indicated.
+
+  1. Linaro GCC 4.9, 2014.06-1 release
+       Web:     http://releases.linaro.org/14.06/components/toolchain/gcc-linaro/4.9
+       Package: gcc-linaro-4.9-2014.06-1.tar.xz
+
+  2. Linaro Newlib 2.1.0, 2014.02 release
+       Web:     http://releases.linaro.org/14.02/components/toolchain/newlib-linaro
+       Package: newlib-linaro-2.1.0-2014.02.tar.bz2
+
+  3. Linaro Binutils 2.24.0, 2014.06 release
+       Web:     http://releases.linaro.org/14.06/components/toolchain/binutils-linaro
+       Package: binutils-linaro-2.24.0-2014.06.tar.bz2
+
+
+Note: ARM has tested the execution testbench using the tool versions above.
+      Other tool versions might be supported but have not been tested.
+
+
+-----------------------------------------
+Prerequisites for building the toolchains
+-----------------------------------------
+
+To build the ARM GCC tools your host workstation must have a native version of
+GCC installed and set up correctly.
+
+
+-----------------------
+Building the toolchains
+-----------------------
+
+Two target toolchains must be built:
+
+  1. arm-none-eabi         (armeb-none-eabi for big-endian)
+  2. aarch64-none-elf      (aarch64_be-none-elf for big-endian)
+
+The first target toolchain is used to compile AArch32 code and the second is
+used to compile AArch64 code.  Both of these toolchains can be built from the
+same GCC, Newlib and Binutils sources.
+
+The commands below can be used as a guide for building the toolchains.  This set
+of commands must be run twice - once for the arm-none-eabi target and once for
+the aarch64-none-elf target.
+
+In the following commands substitute:
+  <target>      with the current target, e.g. arm-none-eabi
+  <install_dir> with your preferred tools installation directory (absolute path)
+
+The example commands assume that you are using the tool versions listed under
+the "Required sources" heading in this README and that you have saved these
+files to your desired build directory.
+
+In the following example commands the '\' character is used to break up long
+lines.  When writing these commands you can join the lines together and omit the
+'\' character.
+
+  1. Extract the sources
+
+       $ tar Jxf gcc-linaro-4.9-2014.06-1.tar.xz
+       $ tar jxf newlib-linaro-2.1.0-2014.02.tar.bz2
+       $ tar jxf binutils-linaro-2.24.0-2014.06.tar.bz2
+
+  2. Download GCC prerequisites.
+
+       $ cd gcc-linaro-4.9-2014.06-1
+       $ ./contrib/download_prerequisites
+       $ cd ..
+
+  3. Make build directories.
+
+       $ mkdir -p build-<target>/binutils
+       $ mkdir -p build-<target>/gcc_stage1
+       $ mkdir -p build-<target>/gcc_stage2
+       $ mkdir -p build-<target>/newlib
+
+  4. Configure, build and install binutils.
+
+       $ cd build-<target>/binutils
+       $ ../../binutils-linaro-2.24.0-2014.06/configure --target=<target>                     \
+                                                        --prefix=<install_dir>                \
+                                                        --with-sysroot=<install_dir>/<target> \
+                                                        --disable-werror
+       $ make all-binutils all-gas all-ld
+       $ make install-binutils install-gas install-ld
+       $ cd ../..
+
+  5. Configure, build and install ARM GCC stage 1.  This step creates a
+     bootstrap ARM toolchain without any of the standard C libraries. Note that
+     in the following commands any text within square brackets must only be used
+     when building the arm-none-eabi (or armeb-none-eabi) toolchain.  
+     You do not type the square brackets themselves, only the text between them.
+
+       $ cd build-<target>/gcc_stage1
+       $ ../../gcc-linaro-4.9-2014.06-1/configure --target=<target>                     \
+                                                  --prefix=<install_dir>                \
+                                                  --with-sysroot=<install_dir>/<target> \
+                                                  --with-arch=armv8-a+crc               \
+                                                  --with-cpu=cortex-a53                 \
+                                                  [--with-fpu=crypto-neon-fp-armv8]     \
+                                                  --disable-werror                      \
+                                                  --enable-languages=c                  \
+                                                  --disable-shared                      \
+                                                  --disable-threads                     \
+                                                  --without-headers                     \
+                                                  --with-newlib                         \
+                                                  --with-gnu-as                         \
+                                                  --with-gnu-ld
+       $ make all-gcc
+       $ make install-gcc
+       $ cd ../..
+
+  6. Add the new GCC toolchain to your PATH so that it can be found during the
+     next setup stages.
+
+     If you are using a Bourne shell or equivalent:
+       $ PATH="<install_dir>/bin:$PATH"
+
+     If you are using a C-shell or equivalent:
+       $ setenv PATH "<install_dir>/bin:$PATH"
+
+  7. Configure, build and install Newlib using the bootstrap ARM compiler.
+     Note that in the following commands any text within square brackets must only be used
+     when building the big-endian toolchain (for armeb-none-eabi or aarch64_be-none-elf target).  
+     You do not type the square brackets themselves, only the text between them.
+
+       $ cd build-<target>/newlib
+       $ ../../newlib-linaro-2.1.0-2014.02/configure --target=<target>                     \
+                                                     --prefix=<install_dir>                \
+                                                     --with-sysroot=<install_dir>/<target> \
+                                                     --disable-werror                      \
+                                                     --enable-newlib-io-long-long          \
+                                                     CFLAGS_FOR_TARGET="-D__ARM_ARCH_7A__ [-mbig-endian -g -O2]"
+       $ make all-target-newlib all-target-libgloss
+       $ make install-target-newlib install-target-libgloss
+
+     Note: you might need to run the above command for a second time, if the
+           first invocation exits with an error.
+
+       $ cd ../..
+
+  8. Configure, build and install ARM GCC stage 2.  This step creates the final
+     ARM toolchain that includes the libraries that were built in the previous
+     step. Note that in the following commands any text within square brackets
+     must only be used when building the arm-none-eabi (or armeb-none-eabi) toolchain.  
+     You do not type the square brackets themselves, only the text between them.
+
+       $ cd build-<target>/gcc_stage2
+       $ ../../gcc-linaro-4.9-2014.06-1/configure --target=<target>                     \
+                                                  --prefix=<install_dir>                \
+                                                  --with-sysroot=<install_dir>/<target> \
+                                                  --with-arch=armv8-a+crc               \
+                                                  --with-cpu=cortex-a53                 \
+                                                  [--with-fpu=crypto-neon-fp-armv8]     \
+                                                  --disable-werror                      \
+                                                  --enable-languages=c,c++              \
+                                                  --disable-shared                      \
+                                                  --disable-threads                     \
+                                                  --disable-nls                         \
+                                                  --disable-tls                         \
+                                                  --with-newlib                         \
+                                                  --with-gnu-as                         \
+                                                  --with-gnu-ld
+       $ make all
+       $ make install
+
+
+The resulting GCC toolchain will now be available in your installation
+directory, <install_dir>.  You added this directory to your PATH in step 6
+above.
+
+If you start a new shell to re-compile the execution testbench code then
+you must re-add <install_dir> to the PATH each time, or update your shell
+configuration to do this automatically.
+

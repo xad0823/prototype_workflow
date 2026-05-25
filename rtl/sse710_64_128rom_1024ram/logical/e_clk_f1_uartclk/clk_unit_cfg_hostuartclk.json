@@ -1,0 +1,43 @@
+{
+    "clk_buf_delay_value": 0,
+    "clk_buf_only_cgu": 0,
+    "clk_name": "HOSTUARTCLK",
+    "clk_name_l": "hostuartclk",
+    "clk_source": [
+        "REFCLK",
+        "UARTCLK",
+        "S32KCLK"
+    ],
+    "clk_source_num": 3,
+    "dct_cg": 0,
+    "divider_type": "per_clk",
+    "dyn_cg": 0,
+    "dyn_cg_active_deny_en": 1,
+    "dyn_cg_clk_sync_en": 1,
+    "dyn_cg_entry_delay_value": "none",
+    "dyn_cg_free_clk": 0,
+    "dyn_cg_hc_q_channel_en": 0,
+    "dyn_cg_hc_sync_en": 1,
+    "dyn_cg_pwr_q_channel_en": 0,
+    "dyn_cg_pwr_sync_en": 1,
+    "dyn_cg_q_channel_num": 0,
+    "gen_clk": [
+        "HOSTUARTCLK"
+    ],
+    "hintclk_gen": 0,
+    "internal_clk": 0,
+    "per_clk_divider": {
+        "UARTCLK": {
+            "denominator_value": "8'h01",
+            "divider_value": "to_top",
+            "numerator_value": "8'h01",
+            "pipeline_depth": "0",
+            "stop_divider": "1'b0"
+        }
+    },
+    "post_div_clk": 1,
+    "pre_div_clk": 0,
+    "rst_source": "RESETN",
+    "shared_divider": {},
+    "suffix": "_uartclk"
+}

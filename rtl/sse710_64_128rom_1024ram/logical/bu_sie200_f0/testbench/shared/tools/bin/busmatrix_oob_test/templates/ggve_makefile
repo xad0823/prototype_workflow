@@ -1,0 +1,190 @@
+# *********************************************************************
+#  The confidential and proprietary information contained in this file may
+#  only be used by a person authorised under and to the extent permitted
+#  by a subsisting licensing agreement from ARM Limited or its affiliates.
+#
+#             (C) COPYRIGHT 2015-2016 ARM Limited or its affiliates.
+#                 ALL RIGHTS RESERVED
+#
+#  This entire notice must be reproduced on all copies of this file
+#  and copies of this file may only be made by a person if such person is
+#  permitted to do so under the terms of a subsisting license agreement
+#  from ARM Limited or its affiliates.
+#
+#   Revision            : 6e8b83e
+#   Checked In          : Sun Sep 25 00:16:27 2016 +0100
+#
+#   Release Information : CoreLink SIE-200 System IP for Embedded - Global Bundle r3p2-00rel0
+#
+# *********************************************************************
+# Purpose : Makefile to build the OOB test bench
+# ********************************************************************
+
+#--------------------------------------------------------------------------------------------------
+#-- Common
+#--------------------------------------------------------------------------------------------------
+# Simulator type (mti/vcs/nc)
+SIM = $(simulator)
+MACHINE_ARG=$(machine)
+RUN_MODE_ARG=$(run_mode)
+
+compile : compile_$(SIM)
+
+
+run     : compile \
+          run_$(SIM)
+
+
+clean:  clean_mti   \
+        clean_nc    \
+        clean_vcs
+
+.PHONY: compile         \
+        compile_mti     \
+        compile_nc      \
+        compile_vcs     \
+        clean       \
+        clean_mti   \
+        clean_nc    \
+        clean_vcs
+
+
+SIMDIR=$(SIE200_BUSMATRIX_OOB_TB_PATH)
+WORK=$(SIMDIR)/work.$(SIM)
+
+
+TEST_NAME=generic_busmatrix_oob_test
+TBENCH_VC=$(SIMDIR)/tbench.vc
+COM_LOG=$(SIE200_BUSMATRIX_OOB_LOG_FILES_PATH)/compile_$(SIM).log
+SIM_LOG=$(SIE200_BUSMATRIX_OOB_LOG_FILES_PATH)/sim_$(SIM).log
+UVM_TEST_SWITCH="+UVM_TESTNAME=$(TEST_NAME)"
+
+
+
+
+
+# ------- MTI -----------
+# Compilation/Simulation rules for Modelsim
+ifeq ($(SIM), mti)
+
+ifeq ($(RUN_MODE_ARG), gui)
+RUN_MODE=-gui
+else
+RUN_MODE=-c
+endif
+
+
+
+MTI_VLOG_OPTIONS= -sv -novopt -incr -lint +v2k -work $(WORK)   \
+ +libext+.v+.vlib -f $(TBENCH_VC) +define+UVM_NO_DPI +define+MTI_SIM -timescale 1ns/1ps
+
+MTI_VOPT_OPTIONS= -debugdb +acc  -work $(WORK) \
+  tb_sie200_ahb5_busmatrix -o $(MODULE_NAME)_opt
+
+MTI_OPTIONS=-uvmcontrol=all -classdebug $(UVM_TEST_SWITCH) -lib $(WORK) \
+-do $(VSIM_DO_FILE) $(MODULE_NAME)_opt -sv_seed random $(RUN_MODE) -nocvg
+
+VSIM_DO_FILE=$(SIMDIR)/vsim.do
+
+
+ifeq ($(MACHINE_ARG), 64)
+MACHINE = -64
+else
+MACHINE = -32
+endif
+
+$(WORK):
+	@vlib $(WORK)
+
+# Compile RTL
+compile_mti: $(WORK)
+	cd $(SIMDIR); vlog $(MTI_VLOG_OPTIONS) | tee $(COM_LOG)
+	cd $(SIMDIR); vopt $(MTI_VOPT_OPTIONS) | tee -a $(COM_LOG)
+
+run_mti : create_vsim_do
+	cd $(SIMDIR); eval "vmap uvm_lib $(QUESTASIM_HOME)/uvm-1.1d"
+	cd $(SIMDIR); vsim $(MTI_OPTIONS)  | tee $(SIM_LOG)
+
+clean_mti:
+	@rm -f  *.ini *.do *.log
+	@rm -rf $(WORK)
+
+create_vsim_do:
+	@echo "set TBENCH_PATH $(SIE200_BUSMATRIX_OOB_TB_PATH)" > $(VSIM_DO_FILE)
+	@echo "set TEST_NAME $(TEST_NAME)" >> $(VSIM_DO_FILE)
+	@echo "onerror {resume}" >> $(VSIM_DO_FILE)
+	@echo "vmap work   $(WORK)"   >> $(VSIM_DO_FILE)
+	@echo "log -r /*" >> $(VSIM_DO_FILE)
+	@echo "run -all" >> $(VSIM_DO_FILE)
+
+endif
+
+
+
+# ------- VCS -----------
+# Compilation/Simulation rules for VCS
+ifeq ($(SIM), vcs)
+#VCS_OPTIONS = +vcs+lic+wait -sverilog +v2k +vpi -cc gcc -cpp g++ -CFLAGS -O4 -Mupdate -ntb_opts uvm -timescale=1ns/1ps -assert svaext
+VCS_OPTIONS = +vcs+lic+wait -sverilog +v2k +vpi -cc gcc -cpp g++ -CFLAGS -O4 -ntb_opts uvm -timescale=1ns/1ps
+VCS_SIM_OPTION = +vcs+lic+wait +vcs+flush+log $(UVM_TEST_SWITCH) -assert nopostproc
+
+
+
+ifeq ($(RUN_MODE_ARG), gui)
+RUN_MODE=-gui
+endif
+
+
+
+ifeq ($(MACHINE_ARG), 64)
+MACHINE = -full64
+endif
+
+
+compile_vcs :$(WORK)
+	echo "cd $(WORK); vcs $(VCS_OPTIONS) $(MACHINE)  -f $(TBENCH_VC) -o simv" | tee $(COM_LOG)
+	cd $(WORK); vcs $(VCS_OPTIONS) $(MACHINE) $(RUN_MODE) -f $(TBENCH_VC) -o simv | tee -a $(COM_LOG)
+
+# Run simulation in batch mode
+run_vcs :
+	cd $(SIMDIR); echo quit > quit.do
+	cd $(SIMDIR); $(WORK)/simv $(VCS_SIM_OPTION) 	 < quit.do | tee $(SIM_LOG)
+$(WORK):
+	mkdir -p $@
+
+endif
+
+
+
+# ------- NC -----------
+# Compilation/Simulation rules for NC Sim
+ifeq ($(SIM), nc)
+
+NCFLAGS = -elaborate -sv -timescale 1ns/1ps -ACCESS rwc -uvm +define+UVM_NO_DPI -uvmhome $(UVM_HOME)
+
+
+
+ifeq ($(RUN_MODE_ARG), gui)
+RUN_MODE=-gui
+endif
+
+
+ifeq ($(MACHINE_ARG), 64)
+MACHINE = +nc64bit
+endif
+
+# Compile RTL
+compile_nc : $(WORK)
+	echo "cd $(WORK); irun $(MACHINE)  $(NCFLAGS)  -f $(TBENCH_VC)" | tee $(COM_LOG)
+	cd $(WORK); irun $(MACHINE)  $(NCFLAGS)  -f $(TBENCH_VC) | tee -a $(COM_LOG)
+
+# Run simulation in batch mode
+run_nc :
+	cd $(SIMDIR);  irun $(MACHINE) -USElicense IESXL -R $(RUN_MODE) -nclibdirname $(WORK)/INCA_libs $(UVM_TEST_SWITCH) -uvm -uvmhome $(UVM_HOME)  | tee $(SIM_LOG)
+
+$(WORK):
+	mkdir -p $@
+
+clean_nc:
+
+endif

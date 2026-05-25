@@ -1,0 +1,14 @@
++incdir+/datahdd/qinglongv100/lidongsheng/proj/socrates1_7_7/corstone100/logical/sse710_3/logical/bu_pck600_f0/temp_build_area/current_build/logical/pck600_lpd_p_sse710_extsys/verilog
+/datahdd/qinglongv100/lidongsheng/proj/socrates1_7_7/corstone100/logical/sse710_3/logical/bu_pck600_f0/temp_build_area/current_build/logical/models/cells/generic/pck600_clock_gate.v
+/datahdd/qinglongv100/lidongsheng/proj/socrates1_7_7/corstone100/logical/sse710_3/logical/bu_pck600_f0/temp_build_area/current_build/logical/models/cells/generic/pck600_cdc_capt_sync.v
+/datahdd/qinglongv100/lidongsheng/proj/socrates1_7_7/corstone100/logical/sse710_3/logical/bu_pck600_f0/temp_build_area/current_build/logical/models/cells/generic/pck600_cdc_capt_nosync.v
+/datahdd/qinglongv100/lidongsheng/proj/socrates1_7_7/corstone100/logical/sse710_3/logical/bu_pck600_f0/temp_build_area/current_build/logical/models/cells/generic/pck600_std_or2.v
+/datahdd/qinglongv100/lidongsheng/proj/socrates1_7_7/corstone100/logical/sse710_3/logical/bu_pck600_f0/temp_build_area/current_build/logical/models/cells/generic/pck600_std_xor2.v
+/datahdd/qinglongv100/lidongsheng/proj/socrates1_7_7/corstone100/logical/sse710_3/logical/bu_pck600_f0/temp_build_area/current_build/logical/shared/verilog/pck600_or_tree.v
+/datahdd/qinglongv100/lidongsheng/proj/socrates1_7_7/corstone100/logical/sse710_3/logical/bu_pck600_f0/temp_build_area/current_build/logical/pck600_lpd_p_sse710_extsys/verilog/pck600_lpd_p_diu_sse710_extsys.v
+/datahdd/qinglongv100/lidongsheng/proj/socrates1_7_7/corstone100/logical/sse710_3/logical/bu_pck600_f0/temp_build_area/current_build/logical/pck600_lpd_p_sse710_extsys/verilog/pck600_lpd_p_expander_sse710_extsys.v
+/datahdd/qinglongv100/lidongsheng/proj/socrates1_7_7/corstone100/logical/sse710_3/logical/bu_pck600_f0/temp_build_area/current_build/logical/pck600_lpd_p_sse710_extsys/verilog/pck600_lpd_p_active_async_sse710_extsys.v
+/datahdd/qinglongv100/lidongsheng/proj/socrates1_7_7/corstone100/logical/sse710_3/logical/bu_pck600_f0/temp_build_area/current_build/logical/pck600_lpd_p_sse710_extsys/verilog/pck600_lpd_p_pstatemap_sse710_extsys.v
+/datahdd/qinglongv100/lidongsheng/proj/socrates1_7_7/corstone100/logical/sse710_3/logical/bu_pck600_f0/temp_build_area/current_build/logical/pck600_lpd_p_sse710_extsys/verilog/pck600_lpd_p_pch_tinit_sync_sse710_extsys.v
+/datahdd/qinglongv100/lidongsheng/proj/socrates1_7_7/corstone100/logical/sse710_3/logical/bu_pck600_f0/temp_build_area/current_build/logical/pck600_lpd_p_sse710_extsys/verilog/pck600_lpd_p_sequencer_sse710_extsys.v
+/datahdd/qinglongv100/lidongsheng/proj/socrates1_7_7/corstone100/logical/sse710_3/logical/bu_pck600_f0/temp_build_area/current_build/logical/pck600_lpd_p_sse710_extsys/verilog/pck600_lpd_p_sse710_extsys.v

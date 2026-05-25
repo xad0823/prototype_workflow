@@ -1,0 +1,1076 @@
+#-----------------------------------------------------------------------------
+#    The confidential and proprietary information contained in this file may
+#    only be used by a person authorised under and to the extent permitted
+#    by a subsisting licensing agreement from Arm Limited or its affiliates.
+# 
+#           (C) COPYRIGHT 2018-2021 Arm Limited or its affiliates.
+#               ALL RIGHTS RESERVED
+# 
+#    This entire notice must be reproduced on all copies of this file
+#    and copies of this file may only be made by a person if such person is
+#    permitted to do so under the terms of a subsisting license agreement
+#    from Arm Limited or its affiliates.
+#-----------------------------------------------------------------------------
+#
+#
+#
+# Release Information : SSE710-r0p0-00eac0
+#
+# -----------------------------------------------------------------------------
+#
+# Description : UPF Power Intent template for top_sse710
+# Vendor      : arm.com
+# Library     : IOT Kits
+# Version     : 1
+#
+# -----------------------------------------------------------------------------
+# Unified Power Format (IEEE Std 1801-2013)
+# -----------------------------------------------------------------------------
+
+
+upf_version 2.1
+set_design_top top_sse710_r0_aontop_3
+if {![info exists env(FUNCTIONAL_PASIM) ]} { set env(FUNCTIONAL_PASIM)  0 }
+if {![info exists env(QUESTA_PA)        ]} { set env(QUESTA_PA)         0 }
+if {![info exists env(LOGICAL_PATH)     ]} { set env(LOGICAL_PATH)      ../../logical }
+if {![info exists env(FLAT_CPUS)        ]} { set env(FLAT_CPUS)         0 }
+
+set logicalPath $env(LOGICAL_PATH)
+
+set PD_AON_fwpcsm_path      "u_system_control_f0_aontop/u_ppu_aon/u_fwram_pcsm"
+
+set PD_SYSTOP_path          "u_pd_systop"
+set PD_SYSTOP_ppu_path      "u_system_control_f0_aontop/u_ppu_aon/u_systop_ppu"
+set PD_SYSTOP_pcsm_path     "u_system_control_f0_aontop/u_ppu_aon/u_systop_pcsm"
+
+set PD_CLUSTOP_path         "u_pd_systop/u_pd_clustop"
+set PD_CLUSTOP_ppu_path     "u_pd_systop/u_pc_cpu_systop/u_clustop_ppu"
+set PD_CLUSTOP_pcsm_path    "u_pck600_ppu_pcsm_sse710_clus"
+
+set PD_EXTSYS0TOP_path      "u_pd_extsys0top"
+set PD_EXTSYS0TOP_ppu_path  ""
+set PD_EXTSYS0TOP_pcsm_path ""
+
+set PD_EXTSYS1TOP_path      "u_pd_extsys1top"
+set PD_EXTSYS1TOP_ppu_path  ""
+set PD_EXTSYS1TOP_pcsm_path ""
+
+set PD_DBGTOP_path          "u_pd_dbgtop_f0"
+set PD_DBGTOP_ppu_path      "u_system_control_f0_aontop/u_ppu_aon/u_dbgtop_ppu"
+set PD_DBGTOP_pcsm_path     "u_system_control_f0_aontop/u_ppu_aon/u_dbgtop_pcsm"
+
+set PD_SECENCTOP_path       "u_pd_secenc_f1_top"
+set PD_SECENCTOP_ppu_path   "u_secenc_f1_aontop/u_secenc_f1_aon/u_sec_pwr_ctrl/u_pck600_ppu_sse710_secenc"
+set PD_SECENCTOP_pcsm_path  "u_secenc_f1_aontop/u_secenc_f1_aon/u_pck600_ppu_pcsm_sse710_secenc"
+
+   
+   
+  set PD_CPU0_path            [lindex [lsearch -all -inline -regexp [find_objects u_pd_systop/u_pd_clustop/u_cpu_gic_socket -object_type inst -pattern *ca53_cpu* -transitive TRUE] {g_ca53_cpu[^0-9]+0[^0-9]+u_ca53_cpu$}] 0]
+   
+   
+   
+  set PD_CPU1_path            [lindex [lsearch -all -inline -regexp [find_objects u_pd_systop/u_pd_clustop/u_cpu_gic_socket -object_type inst -pattern *ca53_cpu* -transitive TRUE] {g_ca53_cpu[^0-9]+1[^0-9]+u_ca53_cpu$}] 0]
+   
+   
+   
+  set PD_CPU2_path            [lindex [lsearch -all -inline -regexp [find_objects u_pd_systop/u_pd_clustop/u_cpu_gic_socket -object_type inst -pattern *ca53_cpu* -transitive TRUE] {g_ca53_cpu[^0-9]+2[^0-9]+u_ca53_cpu$}] 0]
+   
+   
+   
+  set PD_CPU3_path            [lindex [lsearch -all -inline -regexp [find_objects u_pd_systop/u_pd_clustop/u_cpu_gic_socket -object_type inst -pattern *ca53_cpu* -transitive TRUE] {g_ca53_cpu[^0-9]+3[^0-9]+u_ca53_cpu$}] 0]
+   
+ 
+
+set PD_CPU0_ppu_path        u_pd_systop/u_pc_cpu_systop/u_core0_ppu 
+set PD_CPU1_ppu_path        u_pd_systop/u_pc_cpu_systop/u_core1_ppu 
+set PD_CPU2_ppu_path        u_pd_systop/u_pc_cpu_systop/u_core2_ppu 
+set PD_CPU3_ppu_path        u_pd_systop/u_pc_cpu_systop/u_core3_ppu 
+
+set PD_CPU0_pcsm_path       u_pd_systop/u_pc_cpu_systop/u_pck600_ppu_pcsm_sse710_core0 
+set PD_CPU1_pcsm_path       u_pd_systop/u_pc_cpu_systop/u_pck600_ppu_pcsm_sse710_core1 
+set PD_CPU2_pcsm_path       u_pd_systop/u_pc_cpu_systop/u_pck600_ppu_pcsm_sse710_core2 
+set PD_CPU3_pcsm_path       u_pd_systop/u_pc_cpu_systop/u_pck600_ppu_pcsm_sse710_core3 
+
+puts "CPUS:"
+puts " 0: $PD_CPU0_path"
+puts " 1: $PD_CPU1_path"
+puts " 2: $PD_CPU2_path"
+puts " 3: $PD_CPU3_path"
+
+puts "PCSMs:"
+puts " 0: $PD_CPU0_pcsm_path"
+puts " 1: $PD_CPU1_pcsm_path"
+puts " 2: $PD_CPU2_pcsm_path"
+puts " 3: $PD_CPU3_pcsm_path"
+
+set PD_AON_mem              [lsearch -all -inline -regexp [find_objects u_system_control_f0_aontop/u_firewall_f0_ctlr -object_type inst -pattern *u_arm_element_sp_ram_pa* -transitive TRUE] {RAM_SRE1.*u_firewall_f0_sram/[^/]*u_arm_element_sp_ram_pa}]
+
+set PD_CLUSTOP_l2_mem       [lsearch -all -inline -regexp [find_objects $PD_CLUSTOP_path -object_type inst -pattern *u_arm_element_sp_ram_pa* -transitive TRUE] {u_l2_.*ram.*/u_arm_element_sp_ram_pa[^/]*}]
+ 
+ 
+set PD_CLUSTOP_scu_mem      [lsearch -all -inline -regexp [find_objects $PD_CLUSTOP_path -object_type inst -pattern *u_arm_element_sp_ram_pa* -transitive TRUE] {u_ca53scu_l1d_tagrams/.*/u_arm_element_sp_ram_pa}]
+ 
+set PD_CLUSTOP_mem          [concat $PD_CLUSTOP_l2_mem $PD_CLUSTOP_scu_mem]
+
+set PD_SECENCTOP_mem        [lsearch -all -inline -regexp [find_objects $PD_SECENCTOP_path -object_type inst -pattern *u_arm_element_sp_ram_pa* -transitive TRUE] {u_sec_mem_integration/.*u_arm_element_sp_ram_pa[^/]*}]
+set PD_SECENCTOP_rom        [lsearch -all -inline -regexp [find_objects $PD_SECENCTOP_path -object_type inst -pattern *u_arm_element_sp_rom_pa* -transitive TRUE] {u_sec_mem_integration/.*u_arm_element_sp_rom_pa[^/]*}]
+
+
+
+puts "###########################################################################"
+puts "## PD_CLUSTOP RAMS:"
+foreach ram [concat $PD_CLUSTOP_mem] {
+  puts "## $ram"
+}
+puts "###########################################################################"
+
+puts "###########################################################################"
+puts "## INFO: PD_SYSTOP_path        $PD_SYSTOP_path      "
+puts "## INFO: PD_SYSTOP_ppu_path    $PD_SYSTOP_ppu_path  "
+puts "###########################################################################"
+puts ""
+
+
+#-------------------------------------------------------------------------------
+# List of output ports to be clamped 1
+#-------------------------------------------------------------------------------
+
+# Clamp high for PD_SYSTOP signals
+set PD_SYSTOP_ClampHigh [list \
+    $PD_SYSTOP_path/aclk_on_syspll_divratio_cur\[4\] \
+    $PD_SYSTOP_path/aclk_on_syspll_divratio_cur\[3\] \
+    $PD_SYSTOP_path/aclk_on_syspll_divratio_cur\[2\] \
+    $PD_SYSTOP_path/aclk_on_syspll_divratio_cur\[1\] \
+    $PD_SYSTOP_path/aclk_on_syspll_divratio_cur\[0\] \
+    $PD_SYSTOP_path/hostcpuclk_div0_clkdiv_cur\[4\] \
+    $PD_SYSTOP_path/hostcpuclk_div0_clkdiv_cur\[3\] \
+    $PD_SYSTOP_path/hostcpuclk_div0_clkdiv_cur\[2\] \
+    $PD_SYSTOP_path/hostcpuclk_div0_clkdiv_cur\[1\] \
+    $PD_SYSTOP_path/hostcpuclk_div0_clkdiv_cur\[0\] \
+    $PD_SYSTOP_path/hostcpuclk_div1_clkdiv_cur\[4\] \
+    $PD_SYSTOP_path/hostcpuclk_div1_clkdiv_cur\[3\] \
+    $PD_SYSTOP_path/hostcpuclk_div1_clkdiv_cur\[2\] \
+    $PD_SYSTOP_path/hostcpuclk_div1_clkdiv_cur\[1\] \
+    $PD_SYSTOP_path/hostcpuclk_div1_clkdiv_cur\[0\] \
+    $PD_SYSTOP_path/ctrlclk_on_syspll_divratio_cur\[4\] \
+    $PD_SYSTOP_path/ctrlclk_on_syspll_divratio_cur\[3\] \
+    $PD_SYSTOP_path/ctrlclk_on_syspll_divratio_cur\[2\] \
+    $PD_SYSTOP_path/ctrlclk_on_syspll_divratio_cur\[1\] \
+    $PD_SYSTOP_path/ctrlclk_on_syspll_divratio_cur\[0\] \
+    $PD_SYSTOP_path/gicclk_div0_clkdiv_cur\[4\] \
+    $PD_SYSTOP_path/gicclk_div0_clkdiv_cur\[3\] \
+    $PD_SYSTOP_path/gicclk_div0_clkdiv_cur\[2\] \
+    $PD_SYSTOP_path/gicclk_div0_clkdiv_cur\[1\] \
+    $PD_SYSTOP_path/gicclk_div0_clkdiv_cur\[0\] \
+    $PD_SYSTOP_path/debug_hostcpu_flush_done \
+    $PD_SYSTOP_path/debug_hostcpu_sync_clear \
+    $PD_SYSTOP_path/clustop_ppuhwstat\[0\] \
+    $PD_SYSTOP_path/bready_xnvm_axim \
+    $PD_SYSTOP_path/rready_xnvm_axim \
+    $PD_SYSTOP_path/bready_cvm_axim \
+    $PD_SYSTOP_path/rready_cvm_axim \
+    $PD_SYSTOP_path/bready_expmstr0_axim \
+    $PD_SYSTOP_path/rready_expmstr0_axim \
+    $PD_SYSTOP_path/bready_expmstr1_axim \
+    $PD_SYSTOP_path/rready_expmstr1_axim \
+    $PD_SYSTOP_path/bready_ocvm_axim \
+    $PD_SYSTOP_path/rready_ocvm_axim \
+    $PD_SYSTOP_path/aclk_qreqn\[14\] \
+    $PD_SYSTOP_path/aclk_qreqn\[13\] \
+    $PD_SYSTOP_path/aclk_qreqn\[12\] \
+    $PD_SYSTOP_path/aclk_qreqn\[11\] \
+    $PD_SYSTOP_path/aclk_qreqn\[10\] \
+    $PD_SYSTOP_path/aclk_qreqn\[9\] \
+    $PD_SYSTOP_path/aclk_qreqn\[8\] \
+    $PD_SYSTOP_path/aclk_qreqn\[7\] \
+    $PD_SYSTOP_path/aclk_qreqn\[6\] \
+    $PD_SYSTOP_path/aclk_qreqn\[5\] \
+    $PD_SYSTOP_path/aclk_qreqn\[4\] \
+    $PD_SYSTOP_path/aclk_qreqn\[3\] \
+    $PD_SYSTOP_path/aclk_qreqn\[2\] \
+    $PD_SYSTOP_path/aclk_qreqn\[1\] \
+    $PD_SYSTOP_path/aclk_qreqn\[0\] \
+]
+
+# Clamp high for CPU PCSM signals to power switch controls
+lappend PD_SYSTOP_ClampHigh $PD_SYSTOP_path/LP_CPU0_lgcpwrn_o
+lappend PD_SYSTOP_ClampHigh $PD_SYSTOP_path/LP_CPU1_lgcpwrn_o
+lappend PD_SYSTOP_ClampHigh $PD_SYSTOP_path/LP_CPU2_lgcpwrn_o
+lappend PD_SYSTOP_ClampHigh $PD_SYSTOP_path/LP_CPU3_lgcpwrn_o
+
+# Clamp high for CPU PCSM signals via CLUSTOP ports
+set PD_SYSTOP_CPU_PCSMs_ClampHigh [list \
+    $PD_CLUSTOP_path/LP_CPU0_lgcpwrn_i \
+    $PD_CLUSTOP_path/LP_CPU0_lgcretn_i \
+    $PD_CLUSTOP_path/LP_CPU0_rampwrn_i \
+    $PD_CLUSTOP_path/LP_CPU0_ramretn_i \
+    $PD_CLUSTOP_path/LP_CPU1_lgcpwrn_i \
+    $PD_CLUSTOP_path/LP_CPU1_lgcretn_i \
+    $PD_CLUSTOP_path/LP_CPU1_rampwrn_i \
+    $PD_CLUSTOP_path/LP_CPU1_ramretn_i \
+    $PD_CLUSTOP_path/LP_CPU2_lgcpwrn_i \
+    $PD_CLUSTOP_path/LP_CPU2_lgcretn_i \
+    $PD_CLUSTOP_path/LP_CPU2_rampwrn_i \
+    $PD_CLUSTOP_path/LP_CPU2_ramretn_i \
+    $PD_CLUSTOP_path/LP_CPU3_lgcpwrn_i \
+    $PD_CLUSTOP_path/LP_CPU3_lgcretn_i \
+    $PD_CLUSTOP_path/LP_CPU3_rampwrn_i \
+    $PD_CLUSTOP_path/LP_CPU3_ramretn_i \
+]
+
+########################################################################################
+# The following list of signals must be excluded from isolation strategy
+# when the IP is integrated with the system context. It is important for these
+# signals to be excluded from isolation cell insertion for correct system functionality.
+# These have been commented out here as the IP was validated out-of-context.
+# Refer to constraints.upf for guidance on how to exclude these signals from
+# the isolation strategy.
+########################################################################################
+
+#set PD_SYSTOP_iso_exclude [list \
+#    $PD_SYSTOP_path/aclkout \
+#    $PD_SYSTOP_path/awakeup_xnvm_axim \
+#    $PD_SYSTOP_path/awid_xnvm_axim \
+#    $PD_SYSTOP_path/awaddr_xnvm_axim \
+#    $PD_SYSTOP_path/awlen_xnvm_axim \
+#    $PD_SYSTOP_path/awsize_xnvm_axim \
+#    $PD_SYSTOP_path/awburst_xnvm_axim \
+#    $PD_SYSTOP_path/awlock_xnvm_axim \
+#    $PD_SYSTOP_path/awcache_xnvm_axim \
+#    $PD_SYSTOP_path/awprot_xnvm_axim \
+#    $PD_SYSTOP_path/awvalid_xnvm_axim \
+#    $PD_SYSTOP_path/wdata_xnvm_axim \
+#    $PD_SYSTOP_path/wstrb_xnvm_axim \
+#    $PD_SYSTOP_path/wlast_xnvm_axim \
+#    $PD_SYSTOP_path/wvalid_xnvm_axim \
+#    $PD_SYSTOP_path/bready_xnvm_axim \
+#    $PD_SYSTOP_path/arid_xnvm_axim \
+#    $PD_SYSTOP_path/araddr_xnvm_axim \
+#    $PD_SYSTOP_path/arlen_xnvm_axim \
+#    $PD_SYSTOP_path/arsize_xnvm_axim \
+#    $PD_SYSTOP_path/arburst_xnvm_axim \
+#    $PD_SYSTOP_path/arlock_xnvm_axim \
+#    $PD_SYSTOP_path/arcache_xnvm_axim \
+#    $PD_SYSTOP_path/arprot_xnvm_axim \
+#    $PD_SYSTOP_path/arvalid_xnvm_axim \
+#    $PD_SYSTOP_path/rready_xnvm_axim \
+#    $PD_SYSTOP_path/awuser_xnvm_axim \
+#    $PD_SYSTOP_path/aruser_xnvm_axim \
+#    $PD_SYSTOP_path/awqos_xnvm_axim \
+#    $PD_SYSTOP_path/arqos_xnvm_axim \
+#    $PD_SYSTOP_path/awakeup_expmstr0_axim \
+#    $PD_SYSTOP_path/awid_expmstr0_axim \
+#    $PD_SYSTOP_path/awaddr_expmstr0_axim \
+#    $PD_SYSTOP_path/awlen_expmstr0_axim \
+#    $PD_SYSTOP_path/awsize_expmstr0_axim \
+#    $PD_SYSTOP_path/awburst_expmstr0_axim \
+#    $PD_SYSTOP_path/awlock_expmstr0_axim \
+#    $PD_SYSTOP_path/awcache_expmstr0_axim \
+#    $PD_SYSTOP_path/awprot_expmstr0_axim \
+#    $PD_SYSTOP_path/awvalid_expmstr0_axim \
+#    $PD_SYSTOP_path/wdata_expmstr0_axim \
+#    $PD_SYSTOP_path/wstrb_expmstr0_axim \
+#    $PD_SYSTOP_path/wlast_expmstr0_axim \
+#    $PD_SYSTOP_path/wvalid_expmstr0_axim \
+#    $PD_SYSTOP_path/bready_expmstr0_axim \
+#    $PD_SYSTOP_path/arid_expmstr0_axim \
+#    $PD_SYSTOP_path/araddr_expmstr0_axim \
+#    $PD_SYSTOP_path/arlen_expmstr0_axim \
+#    $PD_SYSTOP_path/arsize_expmstr0_axim \
+#    $PD_SYSTOP_path/arburst_expmstr0_axim \
+#    $PD_SYSTOP_path/arlock_expmstr0_axim \
+#    $PD_SYSTOP_path/arcache_expmstr0_axim \
+#    $PD_SYSTOP_path/arprot_expmstr0_axim \
+#    $PD_SYSTOP_path/arvalid_expmstr0_axim \
+#    $PD_SYSTOP_path/rready_expmstr0_axim \
+#    $PD_SYSTOP_path/awuser_expmstr0_axim \
+#    $PD_SYSTOP_path/aruser_expmstr0_axim \
+#    $PD_SYSTOP_path/awqos_expmstr0_axim \
+#    $PD_SYSTOP_path/arqos_expmstr0_axim \
+#    $PD_SYSTOP_path/awakeup_expmstr1_axim \
+#    $PD_SYSTOP_path/awid_expmstr1_axim \
+#    $PD_SYSTOP_path/awaddr_expmstr1_axim \
+#    $PD_SYSTOP_path/awlen_expmstr1_axim \
+#    $PD_SYSTOP_path/awsize_expmstr1_axim \
+#    $PD_SYSTOP_path/awburst_expmstr1_axim \
+#    $PD_SYSTOP_path/awlock_expmstr1_axim \
+#    $PD_SYSTOP_path/awcache_expmstr1_axim \
+#    $PD_SYSTOP_path/awprot_expmstr1_axim \
+#    $PD_SYSTOP_path/awvalid_expmstr1_axim \
+#    $PD_SYSTOP_path/wdata_expmstr1_axim \
+#    $PD_SYSTOP_path/wstrb_expmstr1_axim \
+#    $PD_SYSTOP_path/wlast_expmstr1_axim \
+#    $PD_SYSTOP_path/wvalid_expmstr1_axim \
+#    $PD_SYSTOP_path/bready_expmstr1_axim \
+#    $PD_SYSTOP_path/arid_expmstr1_axim \
+#    $PD_SYSTOP_path/araddr_expmstr1_axim \
+#    $PD_SYSTOP_path/arlen_expmstr1_axim \
+#    $PD_SYSTOP_path/arsize_expmstr1_axim \
+#    $PD_SYSTOP_path/arburst_expmstr1_axim \
+#    $PD_SYSTOP_path/arlock_expmstr1_axim \
+#    $PD_SYSTOP_path/arcache_expmstr1_axim \
+#    $PD_SYSTOP_path/arprot_expmstr1_axim \
+#    $PD_SYSTOP_path/arvalid_expmstr1_axim \
+#    $PD_SYSTOP_path/rready_expmstr1_axim \
+#    $PD_SYSTOP_path/awuser_expmstr1_axim \
+#    $PD_SYSTOP_path/aruser_expmstr1_axim \
+#    $PD_SYSTOP_path/awqos_expmstr1_axim \
+#    $PD_SYSTOP_path/arqos_expmstr1_axim \
+#    $PD_SYSTOP_path/awakeup_ocvm_axim \
+#    $PD_SYSTOP_path/awid_ocvm_axim \
+#    $PD_SYSTOP_path/awaddr_ocvm_axim \
+#    $PD_SYSTOP_path/awlen_ocvm_axim \
+#    $PD_SYSTOP_path/awsize_ocvm_axim \
+#    $PD_SYSTOP_path/awburst_ocvm_axim \
+#    $PD_SYSTOP_path/awlock_ocvm_axim \
+#    $PD_SYSTOP_path/awcache_ocvm_axim \
+#    $PD_SYSTOP_path/awprot_ocvm_axim \
+#    $PD_SYSTOP_path/awvalid_ocvm_axim \
+#    $PD_SYSTOP_path/wdata_ocvm_axim \
+#    $PD_SYSTOP_path/wstrb_ocvm_axim \
+#    $PD_SYSTOP_path/wlast_ocvm_axim \
+#    $PD_SYSTOP_path/wvalid_ocvm_axim \
+#    $PD_SYSTOP_path/bready_ocvm_axim \
+#    $PD_SYSTOP_path/arid_ocvm_axim \
+#    $PD_SYSTOP_path/araddr_ocvm_axim \
+#    $PD_SYSTOP_path/arlen_ocvm_axim \
+#    $PD_SYSTOP_path/arsize_ocvm_axim \
+#    $PD_SYSTOP_path/arburst_ocvm_axim \
+#    $PD_SYSTOP_path/arlock_ocvm_axim \
+#    $PD_SYSTOP_path/arcache_ocvm_axim \
+#    $PD_SYSTOP_path/arprot_ocvm_axim \
+#    $PD_SYSTOP_path/arvalid_ocvm_axim \
+#    $PD_SYSTOP_path/rready_ocvm_axim \
+#    $PD_SYSTOP_path/awuser_ocvm_axim \
+#    $PD_SYSTOP_path/aruser_ocvm_axim \
+#    $PD_SYSTOP_path/awqos_ocvm_axim \
+#    $PD_SYSTOP_path/arqos_ocvm_axim \
+#    $PD_SYSTOP_path/awready_expslv0_axis \
+#    $PD_SYSTOP_path/wready_expslv0_axis \
+#    $PD_SYSTOP_path/bid_expslv0_axis \
+#    $PD_SYSTOP_path/bresp_expslv0_axis \
+#    $PD_SYSTOP_path/bvalid_expslv0_axis \
+#    $PD_SYSTOP_path/arready_expslv0_axis \
+#    $PD_SYSTOP_path/rid_expslv0_axis \
+#    $PD_SYSTOP_path/rdata_expslv0_axis \
+#    $PD_SYSTOP_path/rresp_expslv0_axis \
+#    $PD_SYSTOP_path/rlast_expslv0_axis \
+#    $PD_SYSTOP_path/rvalid_expslv0_axis \
+#    $PD_SYSTOP_path/awready_expslv1_axis \
+#    $PD_SYSTOP_path/wready_expslv1_axis \
+#    $PD_SYSTOP_path/bid_expslv1_axis \
+#    $PD_SYSTOP_path/bresp_expslv1_axis \
+#    $PD_SYSTOP_path/bvalid_expslv1_axis \
+#    $PD_SYSTOP_path/arready_expslv1_axis \
+#    $PD_SYSTOP_path/rid_expslv1_axis \
+#    $PD_SYSTOP_path/rdata_expslv1_axis \
+#    $PD_SYSTOP_path/rresp_expslv1_axis \
+#    $PD_SYSTOP_path/rlast_expslv1_axis \
+#    $PD_SYSTOP_path/rvalid_expslv1_axis \
+#    $PD_SYSTOP_path/awakeup_cvm_axim \
+#    $PD_SYSTOP_path/awid_cvm_axim \
+#    $PD_SYSTOP_path/awaddr_cvm_axim \
+#    $PD_SYSTOP_path/awlen_cvm_axim \
+#    $PD_SYSTOP_path/awsize_cvm_axim \
+#    $PD_SYSTOP_path/awburst_cvm_axim \
+#    $PD_SYSTOP_path/awlock_cvm_axim \
+#    $PD_SYSTOP_path/awcache_cvm_axim \
+#    $PD_SYSTOP_path/awprot_cvm_axim \
+#    $PD_SYSTOP_path/awvalid_cvm_axim \
+#    $PD_SYSTOP_path/wdata_cvm_axim \
+#    $PD_SYSTOP_path/wstrb_cvm_axim \
+#    $PD_SYSTOP_path/wlast_cvm_axim \
+#    $PD_SYSTOP_path/wvalid_cvm_axim \
+#    $PD_SYSTOP_path/bready_cvm_axim \
+#    $PD_SYSTOP_path/arid_cvm_axim \
+#    $PD_SYSTOP_path/araddr_cvm_axim \
+#    $PD_SYSTOP_path/arlen_cvm_axim \
+#    $PD_SYSTOP_path/arsize_cvm_axim \
+#    $PD_SYSTOP_path/arburst_cvm_axim \
+#    $PD_SYSTOP_path/arlock_cvm_axim \
+#    $PD_SYSTOP_path/arcache_cvm_axim \
+#    $PD_SYSTOP_path/arprot_cvm_axim \
+#    $PD_SYSTOP_path/arvalid_cvm_axim \
+#    $PD_SYSTOP_path/rready_cvm_axim \
+#    $PD_SYSTOP_path/awuser_cvm_axim \
+#    $PD_SYSTOP_path/aruser_cvm_axim \
+#    $PD_SYSTOP_path/awqos_cvm_axim \
+#    $PD_SYSTOP_path/arqos_cvm_axim \
+#]
+
+set PD_SYSTOP_CPU_PCSMs_ClampLow [list \
+]
+
+# Clamp high for CLUSTOP signals
+set PD_CLUSTOP_ClampHigh [list \
+     $PD_CLUSTOP_path/hostcpuclk_div1_clkdiv_cur\[4\] \
+     $PD_CLUSTOP_path/hostcpuclk_div1_clkdiv_cur\[3\] \
+     $PD_CLUSTOP_path/hostcpuclk_div1_clkdiv_cur\[2\] \
+     $PD_CLUSTOP_path/hostcpuclk_div1_clkdiv_cur\[1\] \
+     $PD_CLUSTOP_path/hostcpuclk_div1_clkdiv_cur\[0\] \
+     $PD_CLUSTOP_path/hostcpuclk_div0_clkdiv_cur\[4\] \
+     $PD_CLUSTOP_path/hostcpuclk_div0_clkdiv_cur\[3\] \
+     $PD_CLUSTOP_path/hostcpuclk_div0_clkdiv_cur\[2\] \
+     $PD_CLUSTOP_path/hostcpuclk_div0_clkdiv_cur\[1\] \
+     $PD_CLUSTOP_path/hostcpuclk_div0_clkdiv_cur\[0\] \
+     $PD_CLUSTOP_path/gicclk_div0_clkdiv_cur\[4\] \
+     $PD_CLUSTOP_path/gicclk_div0_clkdiv_cur\[3\] \
+     $PD_CLUSTOP_path/gicclk_div0_clkdiv_cur\[2\] \
+     $PD_CLUSTOP_path/gicclk_div0_clkdiv_cur\[1\] \
+     $PD_CLUSTOP_path/gicclk_div0_clkdiv_cur\[0\] \
+     $PD_CLUSTOP_path/hostcpu_stanbywfi\[3\] \
+     $PD_CLUSTOP_path/hostcpu_stanbywfi\[2\] \
+     $PD_CLUSTOP_path/hostcpu_stanbywfi\[1\] \
+     $PD_CLUSTOP_path/hostcpu_stanbywfi\[0\] \
+     $PD_CLUSTOP_path/hostcpu_stanbywfil2 \
+     $PD_CLUSTOP_path/hostcpu_sync_clear \
+     $PD_CLUSTOP_path/hostcpu_flush_done \
+     $PD_CLUSTOP_path/hostcpu_cpuqactive\[3\] \
+     $PD_CLUSTOP_path/hostcpu_cpuqactive\[2\] \
+     $PD_CLUSTOP_path/hostcpu_cpuqactive\[1\] \
+     $PD_CLUSTOP_path/hostcpu_cpuqactive\[0\] \
+     $PD_CLUSTOP_path/hostcpu_l2qactive \
+]
+
+# Clamp high for PD_EXTSYS0TOP signals
+set PD_EXTSYS0TOP_ClampHigh [list \
+    $PD_EXTSYS0TOP_path/flush_done_ehx \
+    $PD_EXTSYS0TOP_path/sync_clear_ehx \
+]
+
+########################################################################################
+# The following list of signals must be excluded from isolation strategy
+# when the IP is integrated with the system context. It is important for these
+# signals to be excluded from isolation cell insertion for correct system functionality.
+# These have been commented out here as the IP was validated out-of-context.
+# Refer to constraints.upf for guidance on how to exclude these signals from
+# the isolation strategy.
+########################################################################################
+
+#set PD_EXTSYS0TOP_iso_exclude [list \
+#    $PD_EXTSYS0TOP_path/awready_extsysx_mem \
+#    $PD_EXTSYS0TOP_path/wready_extsysx_mem \
+#    $PD_EXTSYS0TOP_path/bid_extsysx_mem \
+#    $PD_EXTSYS0TOP_path/bresp_extsysx_mem \
+#    $PD_EXTSYS0TOP_path/bvalid_extsysx_mem \
+#    $PD_EXTSYS0TOP_path/arready_extsysx_mem \
+#    $PD_EXTSYS0TOP_path/rid_extsysx_mem \
+#    $PD_EXTSYS0TOP_path/rresp_extsysx_mem \
+#    $PD_EXTSYS0TOP_path/rlast_extsysx_mem \
+#    $PD_EXTSYS0TOP_path/rvalid_extsysx_mem \
+#    $PD_EXTSYS0TOP_path/rdata_extsysx_mem \
+#    $PD_EXTSYS0TOP_path/prdata_extsysx_mhu \
+#    $PD_EXTSYS0TOP_path/pready_extsysx_mhu \
+#    $PD_EXTSYS0TOP_path/pslverr_extsysx_mhu \
+#    $PD_EXTSYS0TOP_path/esh0_extsysx_mhuint \
+#    $PD_EXTSYS0TOP_path/hes0_extsysx_mhuint \
+#    $PD_EXTSYS0TOP_path/esse0_extsysx_mhuint \
+#    $PD_EXTSYS0TOP_path/sees0_extsysx_mhuint \
+#    $PD_EXTSYS0TOP_path/esh1_extsysx_mhuint \
+#    $PD_EXTSYS0TOP_path/hes1_extsysx_mhuint \
+#    $PD_EXTSYS0TOP_path/esse1_extsysx_mhuint \
+#    $PD_EXTSYS0TOP_path/sees1_extsysx_mhuint \
+#    $PD_EXTSYS0TOP_path/atready_extsysx_traceexp \
+#    $PD_EXTSYS0TOP_path/afvalid_extsysx_traceexp \
+#    $PD_EXTSYS0TOP_path/syncreq_extsysx_traceexp \
+#    $PD_EXTSYS0TOP_path/psel_extsysx_dbg \
+#    $PD_EXTSYS0TOP_path/pwakeup_extsysx_dbg \
+#    $PD_EXTSYS0TOP_path/penable_extsysx_dbg \
+#    $PD_EXTSYS0TOP_path/paddr_extsysx_dbg \
+#    $PD_EXTSYS0TOP_path/pwrite_extsysx_dbg \
+#    $PD_EXTSYS0TOP_path/pwdata_extsysx_dbg \
+#    $PD_EXTSYS0TOP_path/pstrb_extsysx_dbg \
+#    $PD_EXTSYS0TOP_path/pprot_extsysx_dbg \
+#    $PD_EXTSYS0TOP_path/dpabort_extsysx_dbg \
+#    $PD_EXTSYS0TOP_path/prdata_extsysx_extdbg \
+#    $PD_EXTSYS0TOP_path/pready_extsysx_extdbg \
+#    $PD_EXTSYS0TOP_path/pslverr_extsysx_extdbg \
+#    $PD_EXTSYS0TOP_path/extsysx_ctichout \
+#]
+
+# Clamp high for PD_EXTSYS1TOP signals
+set PD_EXTSYS1TOP_ClampHigh [list \
+    $PD_EXTSYS1TOP_path/flush_done_ehx \
+    $PD_EXTSYS1TOP_path/sync_clear_ehx \
+]
+
+########################################################################################
+# The following list of signals must be excluded from isolation strategy
+# when the IP is integrated with the system context. It is important for these
+# signals to be excluded from isolation cell insertion for correct system functionality.
+# These have been commented out here as the IP was validated out-of-context.
+# Refer to constraints.upf for guidance on how to exclude these signals from
+# the isolation strategy.
+########################################################################################
+
+#set PD_EXTSYS1TOP_iso_exclude [list \
+#    $PD_EXTSYS1TOP_path/awready_extsysx_mem \
+#    $PD_EXTSYS1TOP_path/wready_extsysx_mem \
+#    $PD_EXTSYS1TOP_path/bid_extsysx_mem \
+#    $PD_EXTSYS1TOP_path/bresp_extsysx_mem \
+#    $PD_EXTSYS1TOP_path/bvalid_extsysx_mem \
+#    $PD_EXTSYS1TOP_path/arready_extsysx_mem \
+#    $PD_EXTSYS1TOP_path/rid_extsysx_mem \
+#    $PD_EXTSYS1TOP_path/rresp_extsysx_mem \
+#    $PD_EXTSYS1TOP_path/rlast_extsysx_mem \
+#    $PD_EXTSYS1TOP_path/rvalid_extsysx_mem \
+#    $PD_EXTSYS1TOP_path/rdata_extsysx_mem \
+#    $PD_EXTSYS1TOP_path/prdata_extsysx_mhu \
+#    $PD_EXTSYS1TOP_path/pready_extsysx_mhu \
+#    $PD_EXTSYS1TOP_path/pslverr_extsysx_mhu \
+#    $PD_EXTSYS1TOP_path/esh0_extsysx_mhuint \
+#    $PD_EXTSYS1TOP_path/hes0_extsysx_mhuint \
+#    $PD_EXTSYS1TOP_path/esse0_extsysx_mhuint \
+#    $PD_EXTSYS1TOP_path/sees0_extsysx_mhuint \
+#    $PD_EXTSYS1TOP_path/esh1_extsysx_mhuint \
+#    $PD_EXTSYS1TOP_path/hes1_extsysx_mhuint \
+#    $PD_EXTSYS1TOP_path/esse1_extsysx_mhuint \
+#    $PD_EXTSYS1TOP_path/sees1_extsysx_mhuint \
+#    $PD_EXTSYS1TOP_path/atready_extsysx_traceexp \
+#    $PD_EXTSYS1TOP_path/afvalid_extsysx_traceexp \
+#    $PD_EXTSYS1TOP_path/syncreq_extsysx_traceexp \
+#    $PD_EXTSYS1TOP_path/psel_extsysx_dbg \
+#    $PD_EXTSYS1TOP_path/pwakeup_extsysx_dbg \
+#    $PD_EXTSYS1TOP_path/penable_extsysx_dbg \
+#    $PD_EXTSYS1TOP_path/paddr_extsysx_dbg \
+#    $PD_EXTSYS1TOP_path/pwrite_extsysx_dbg \
+#    $PD_EXTSYS1TOP_path/pwdata_extsysx_dbg \
+#    $PD_EXTSYS1TOP_path/pstrb_extsysx_dbg \
+#    $PD_EXTSYS1TOP_path/pprot_extsysx_dbg \
+#    $PD_EXTSYS1TOP_path/dpabort_extsysx_dbg \
+#    $PD_EXTSYS1TOP_path/prdata_extsysx_extdbg \
+#    $PD_EXTSYS1TOP_path/pready_extsysx_extdbg \
+#    $PD_EXTSYS1TOP_path/pslverr_extsysx_extdbg \
+#    $PD_EXTSYS1TOP_path/extsysx_ctichout \
+#]
+
+# Clamp high for PD_DBGTOP signals
+set PD_DBGTOP_ClampHigh [list \
+    $PD_DBGTOP_path/sync_done_eh0 \
+    $PD_DBGTOP_path/sync_done_eh1 \
+    $PD_DBGTOP_path/sync_done_hostcpu \
+    $PD_DBGTOP_path/tracectl \
+    $PD_DBGTOP_path/tracedata\[0\] \
+    $PD_DBGTOP_path/dbgclk_on_syspll_divratio_cur\[4\] \
+    $PD_DBGTOP_path/dbgclk_on_syspll_divratio_cur\[3\] \
+    $PD_DBGTOP_path/dbgclk_on_syspll_divratio_cur\[2\] \
+    $PD_DBGTOP_path/dbgclk_on_syspll_divratio_cur\[1\] \
+    $PD_DBGTOP_path/dbgclk_on_syspll_divratio_cur\[0\] \
+    $PD_DBGTOP_path/dbgexp_apb4_mst_paddr\[24\] \
+]
+
+########################################################################################
+# The following list of signals must be excluded from isolation strategy
+# when the IP is integrated with the system context. It is important for these
+# signals to be excluded from isolation cell insertion for correct system functionality.
+# These have been commented out here as the IP was validated out-of-context.
+# Refer to constraints.upf for guidance on how to exclude these signals from
+# the isolation strategy.
+########################################################################################
+
+#set PD_DBGTOP_iso_exclude [list \
+#    $PD_DBGTOP_path/dbgclkout \
+#    $PD_DBGTOP_path/stm_drvalid \
+#    $PD_DBGTOP_path/stm_drtype \
+#    $PD_DBGTOP_path/stm_drlast \
+#    $PD_DBGTOP_path/stm_daready \
+#    $PD_DBGTOP_path/traceexp_atready_mst \
+#    $PD_DBGTOP_path/traceexp_afvalid_mst \
+#    $PD_DBGTOP_path/traceexp_syncreq_mst \
+#    $PD_DBGTOP_path/dbgexp_apb4_mst_pwakeup \
+#    $PD_DBGTOP_path/dbgexp_apb4_mst_psel \
+#    $PD_DBGTOP_path/dbgexp_apb4_mst_penable \
+#    $PD_DBGTOP_path/dbgexp_apb4_mst_pwrite \
+#    $PD_DBGTOP_path/dbgexp_apb4_mst_pprot \
+#    $PD_DBGTOP_path/dbgexp_apb4_mst_pstrb \
+#    $PD_DBGTOP_path/dbgexp_apb4_mst_paddr \
+#    $PD_DBGTOP_path/dbgexp_apb4_mst_pwdata \
+#    $PD_DBGTOP_path/ctiexp_ctichout \
+#]
+
+# Clamp high for PD_SECENCTOP signals
+set PD_SECENCTOP_ClampHigh [list \
+]
+
+
+
+# Clamp high for PD_CPU0 signals
+set PD_CPU0_ClampHigh [list \
+   $PD_CPU0_path/dpu_exception_level_o\[1\] \
+   $PD_CPU0_path/dpu_exception_level_o\[0\] \
+   $PD_CPU0_path/stb_wfx_ready_o \
+   $PD_CPU0_path/biu_wfx_ready_o \
+   $PD_CPU0_path/ifu_wfx_ready_o \
+   $PD_CPU0_path/tlb_wfx_ready_o \
+   $PD_CPU0_path/etm_wfx_ready_o \
+   $PD_CPU0_path/dpu_preadydbg_o \
+   $PD_CPU0_path/dpu_pslverrdbg_o \
+   $PD_CPU0_path/dpu_commtx_o \
+   $PD_CPU0_path/dpu_ncommirq_o \
+   $PD_CPU0_path/etm_oslock_o \
+   $PD_CPU0_path/etm_afreadym_o \
+   $PD_CPU0_path/dpu_npmuirq_o \
+]
+
+# Clamp high for PD_CPU1 signals
+set PD_CPU1_ClampHigh [list \
+   $PD_CPU1_path/dpu_exception_level_o\[1\] \
+   $PD_CPU1_path/dpu_exception_level_o\[0\] \
+   $PD_CPU1_path/stb_wfx_ready_o \
+   $PD_CPU1_path/biu_wfx_ready_o \
+   $PD_CPU1_path/ifu_wfx_ready_o \
+   $PD_CPU1_path/tlb_wfx_ready_o \
+   $PD_CPU1_path/etm_wfx_ready_o \
+   $PD_CPU1_path/dpu_preadydbg_o \
+   $PD_CPU1_path/dpu_pslverrdbg_o \
+   $PD_CPU1_path/dpu_commtx_o \
+   $PD_CPU1_path/dpu_ncommirq_o \
+   $PD_CPU1_path/etm_oslock_o \
+   $PD_CPU1_path/etm_afreadym_o \
+   $PD_CPU1_path/dpu_npmuirq_o \
+]
+
+# Clamp high for PD_CPU2 signals
+set PD_CPU2_ClampHigh [list \
+   $PD_CPU2_path/dpu_exception_level_o\[1\] \
+   $PD_CPU2_path/dpu_exception_level_o\[0\] \
+   $PD_CPU2_path/stb_wfx_ready_o \
+   $PD_CPU2_path/biu_wfx_ready_o \
+   $PD_CPU2_path/ifu_wfx_ready_o \
+   $PD_CPU2_path/tlb_wfx_ready_o \
+   $PD_CPU2_path/etm_wfx_ready_o \
+   $PD_CPU2_path/dpu_preadydbg_o \
+   $PD_CPU2_path/dpu_pslverrdbg_o \
+   $PD_CPU2_path/dpu_commtx_o \
+   $PD_CPU2_path/dpu_ncommirq_o \
+   $PD_CPU2_path/etm_oslock_o \
+   $PD_CPU2_path/etm_afreadym_o \
+   $PD_CPU2_path/dpu_npmuirq_o \
+]
+
+# Clamp high for PD_CPU3 signals
+set PD_CPU3_ClampHigh [list \
+   $PD_CPU3_path/dpu_exception_level_o\[1\] \
+   $PD_CPU3_path/dpu_exception_level_o\[0\] \
+   $PD_CPU3_path/stb_wfx_ready_o \
+   $PD_CPU3_path/biu_wfx_ready_o \
+   $PD_CPU3_path/ifu_wfx_ready_o \
+   $PD_CPU3_path/tlb_wfx_ready_o \
+   $PD_CPU3_path/etm_wfx_ready_o \
+   $PD_CPU3_path/dpu_preadydbg_o \
+   $PD_CPU3_path/dpu_pslverrdbg_o \
+   $PD_CPU3_path/dpu_commtx_o \
+   $PD_CPU3_path/dpu_ncommirq_o \
+   $PD_CPU3_path/etm_oslock_o \
+   $PD_CPU3_path/etm_afreadym_o \
+   $PD_CPU3_path/dpu_npmuirq_o \
+]
+
+#-------------------------------------------------------------------------------
+# Ports on extsys connecting to top level ports of the same related supply
+#-------------------------------------------------------------------------------
+
+set extsys0_inputs {
+    EXTSYS0DBGCLKS
+    EXTSYS0DBGCLKM
+    EXTSYS0ATCLK
+    EXTSYS0CTICLK
+    EXTSYS0ACLK
+    EXTSYS0MHUCLK
+    EXTSYS0DBGPRESETSn
+    EXTSYS0DBGPRESETMn
+    EXTSYS0ATRESETn
+    EXTSYS0CTIRESETn
+    EXTSYS0ARESETn
+    EXTSYS0MHURESETn
+    AWAKEUPEXTSYS0MEM
+    AWIDEXTSYS0MEM
+    AWADDREXTSYS0MEM
+    AWLENEXTSYS0MEM
+    AWSIZEEXTSYS0MEM
+    AWBURSTEXTSYS0MEM
+    AWLOCKEXTSYS0MEM
+    AWCACHEEXTSYS0MEM
+    AWPROTEXTSYS0MEM
+    AWREGIONEXTSYS0MEM
+    AWVALIDEXTSYS0MEM
+    WSTRBEXTSYS0MEM
+    WLASTEXTSYS0MEM
+    WVALIDEXTSYS0MEM
+    WDATAEXTSYS0MEM
+    BREADYEXTSYS0MEM
+    ARIDEXTSYS0MEM
+    ARADDREXTSYS0MEM
+    ARLENEXTSYS0MEM
+    ARSIZEEXTSYS0MEM
+    ARBURSTEXTSYS0MEM
+    ARLOCKEXTSYS0MEM
+    ARCACHEEXTSYS0MEM
+    ARPROTEXTSYS0MEM
+    ARREGIONEXTSYS0MEM
+    ARVALIDEXTSYS0MEM
+    RREADYEXTSYS0MEM
+    PSELEXTSYS0MHU
+    PWAKEUPEXTSYS0MHU
+    PENABLEEXTSYS0MHU
+    PADDREXTSYS0MHU
+    PWRITEEXTSYS0MHU
+    PWDATAEXTSYS0MHU
+    PSTRBEXTSYS0MHU
+    PPROTEXTSYS0MHU
+    ATIDEXTSYS0TRACEEXP
+    ATVALIDEXTSYS0TRACEEXP
+    ATDATAEXTSYS0TRACEEXP
+    ATBYTESEXTSYS0TRACEEXP
+    AFREADYEXTSYS0TRACEEXP
+    ATWAKEUPEXTSYS0TRACEEXP
+    PRDATAEXTSYS0DBG
+    PREADYEXTSYS0DBG
+    PSLVERREXTSYS0DBG
+    PSELEXTSYS0EXTDBG
+    PWAKEUPEXTSYS0EXTDBG
+    PENABLEEXTSYS0EXTDBG
+    PADDREXTSYS0EXTDBG
+    PWRITEEXTSYS0EXTDBG
+    PWDATAEXTSYS0EXTDBG
+    PSTRBEXTSYS0EXTDBG
+    PPROTEXTSYS0EXTDBG
+    EXTSYS0CTICHIN
+    EXTSYS0ACLKQREQn
+    EXTSYS0MHUCLKQREQn
+    EXTSYS0ATCLKQREQn
+    EXTSYS0DBGCLKMQREQn
+    EXTSYS0DBGCLKSQREQn
+    EXTSYS0CTICLKQREQn
+    EXTSYS0MEMPWRQREQn
+    EXTSYS0MHUPWRQREQn
+    EXTSYS0TRACEEXPPWRQREQn
+    EXTSYS0EXTDBGPWRQREQn
+    EXTSYS0CTIINPWRQREQn 
+}
+
+set extsys0_outputs {
+    AWREADYEXTSYS0MEM
+    WREADYEXTSYS0MEM
+    BIDEXTSYS0MEM
+    BRESPEXTSYS0MEM
+    BVALIDEXTSYS0MEM
+    ARREADYEXTSYS0MEM
+    RIDEXTSYS0MEM
+    RRESPEXTSYS0MEM
+    RLASTEXTSYS0MEM
+    RVALIDEXTSYS0MEM
+    RDATAEXTSYS0MEM
+    PRDATAEXTSYS0MHU
+    PREADYEXTSYS0MHU
+    PSLVERREXTSYS0MHU
+    ESH0EXTSYS0MHUINT
+    HES0EXTSYS0MHUINT
+    ESSE0EXTSYS0MHUINT
+    SEES0EXTSYS0MHUINT
+    ESH1EXTSYS0MHUINT
+    HES1EXTSYS0MHUINT
+    ESSE1EXTSYS0MHUINT
+    SEES1EXTSYS0MHUINT
+    ATREADYEXTSYS0TRACEEXP
+    AFVALIDEXTSYS0TRACEEXP
+    SYNCREQEXTSYS0TRACEEXP
+    PSELEXTSYS0DBG
+    PWAKEUPEXTSYS0DBG
+    PENABLEEXTSYS0DBG
+    PADDREXTSYS0DBG
+    PWRITEEXTSYS0DBG
+    PWDATAEXTSYS0DBG
+    PSTRBEXTSYS0DBG
+    PPROTEXTSYS0DBG
+    DPABORTEXTSYS0DBG
+    PRDATAEXTSYS0EXTDBG
+    PREADYEXTSYS0EXTDBG
+    PSLVERREXTSYS0EXTDBG
+    EXTSYS0CTICHOUT
+    EXTSYS0ACLKQACCEPTn
+    EXTSYS0ACLKQDENY   
+    EXTSYS0ACLKQACTIVE 
+    EXTSYS0MHUCLKQACCEPTn
+    EXTSYS0MHUCLKQDENY   
+    EXTSYS0MHUCLKQACTIVE 
+    EXTSYS0ATCLKQACCEPTn
+    EXTSYS0ATCLKQDENY   
+    EXTSYS0ATCLKQACTIVE 
+    EXTSYS0DBGCLKMQACCEPTn
+    EXTSYS0DBGCLKMQDENY   
+    EXTSYS0DBGCLKMQACTIVE
+    EXTSYS0DBGCLKSQACCEPTn
+    EXTSYS0DBGCLKSQDENY   
+    EXTSYS0DBGCLKSQACTIVE
+    EXTSYS0CTICLKQACCEPTn
+    EXTSYS0CTICLKQDENY   
+    EXTSYS0CTICLKQACTIVE
+    EXTSYS0MEMPWRQACCEPTn   
+    EXTSYS0MEMPWRQDENY      
+    EXTSYS0MEMPWRQACTIVE 
+    EXTSYS0MHUPWRQACCEPTn
+    EXTSYS0MHUPWRQDENY   
+    EXTSYS0TRACEEXPPWRQACCEPTn
+    EXTSYS0TRACEEXPPWRQDENY   
+    EXTSYS0TRACEEXPPWRQACTIVE
+    EXTSYS0EXTDBGPWRQACCEPTn
+    EXTSYS0EXTDBGPWRQDENY    
+    EXTSYS0EXTDBGPWRQACTIVE
+    EXTSYS0CTIINPWRQACCEPTn
+    EXTSYS0CTIINPWRQDENY   
+    EXTSYS0CTIINPWRQACTIVE 
+}
+
+set extsys1_inputs {
+    EXTSYS1DBGCLKS
+    EXTSYS1DBGCLKM
+    EXTSYS1ATCLK
+    EXTSYS1CTICLK
+    EXTSYS1ACLK
+    EXTSYS1MHUCLK
+    EXTSYS1DBGPRESETSn
+    EXTSYS1DBGPRESETMn
+    EXTSYS1ATRESETn
+    EXTSYS1CTIRESETn
+    EXTSYS1ARESETn
+    EXTSYS1MHURESETn
+    AWAKEUPEXTSYS1MEM
+    AWIDEXTSYS1MEM
+    AWADDREXTSYS1MEM
+    AWLENEXTSYS1MEM
+    AWSIZEEXTSYS1MEM
+    AWBURSTEXTSYS1MEM
+    AWLOCKEXTSYS1MEM
+    AWCACHEEXTSYS1MEM
+    AWPROTEXTSYS1MEM
+    AWREGIONEXTSYS1MEM
+    AWVALIDEXTSYS1MEM
+    WSTRBEXTSYS1MEM
+    WLASTEXTSYS1MEM
+    WVALIDEXTSYS1MEM
+    WDATAEXTSYS1MEM
+    BREADYEXTSYS1MEM
+    ARIDEXTSYS1MEM
+    ARADDREXTSYS1MEM
+    ARLENEXTSYS1MEM
+    ARSIZEEXTSYS1MEM
+    ARBURSTEXTSYS1MEM
+    ARLOCKEXTSYS1MEM
+    ARCACHEEXTSYS1MEM
+    ARPROTEXTSYS1MEM
+    ARREGIONEXTSYS1MEM
+    ARVALIDEXTSYS1MEM
+    RREADYEXTSYS1MEM
+    PSELEXTSYS1MHU
+    PWAKEUPEXTSYS1MHU
+    PENABLEEXTSYS1MHU
+    PADDREXTSYS1MHU
+    PWRITEEXTSYS1MHU
+    PWDATAEXTSYS1MHU
+    PSTRBEXTSYS1MHU
+    PPROTEXTSYS1MHU
+    ATIDEXTSYS1TRACEEXP
+    ATVALIDEXTSYS1TRACEEXP
+    ATDATAEXTSYS1TRACEEXP
+    ATBYTESEXTSYS1TRACEEXP
+    AFREADYEXTSYS1TRACEEXP
+    ATWAKEUPEXTSYS1TRACEEXP
+    PRDATAEXTSYS1DBG
+    PREADYEXTSYS1DBG
+    PSLVERREXTSYS1DBG
+    PSELEXTSYS1EXTDBG
+    PWAKEUPEXTSYS1EXTDBG
+    PENABLEEXTSYS1EXTDBG
+    PADDREXTSYS1EXTDBG
+    PWRITEEXTSYS1EXTDBG
+    PWDATAEXTSYS1EXTDBG
+    PSTRBEXTSYS1EXTDBG
+    PPROTEXTSYS1EXTDBG
+    EXTSYS1CTICHIN
+    EXTSYS1ACLKQREQn
+    EXTSYS1MHUCLKQREQn
+    EXTSYS1ATCLKQREQn
+    EXTSYS1DBGCLKMQREQn
+    EXTSYS1DBGCLKSQREQn
+    EXTSYS1CTICLKQREQn
+    EXTSYS1MEMPWRQREQn
+    EXTSYS1MHUPWRQREQn
+    EXTSYS1TRACEEXPPWRQREQn
+    EXTSYS1EXTDBGPWRQREQn
+    EXTSYS1CTIINPWRQREQn 
+}
+
+set extsys1_outputs {
+    AWREADYEXTSYS1MEM
+    WREADYEXTSYS1MEM
+    BIDEXTSYS1MEM
+    BRESPEXTSYS1MEM
+    BVALIDEXTSYS1MEM
+    ARREADYEXTSYS1MEM
+    RIDEXTSYS1MEM
+    RRESPEXTSYS1MEM
+    RLASTEXTSYS1MEM
+    RVALIDEXTSYS1MEM
+    RDATAEXTSYS1MEM
+    PRDATAEXTSYS1MHU
+    PREADYEXTSYS1MHU
+    PSLVERREXTSYS1MHU
+    ESH0EXTSYS1MHUINT
+    HES0EXTSYS1MHUINT
+    ESSE0EXTSYS1MHUINT
+    SEES0EXTSYS1MHUINT
+    ESH1EXTSYS1MHUINT
+    HES1EXTSYS1MHUINT
+    ESSE1EXTSYS1MHUINT
+    SEES1EXTSYS1MHUINT
+    ATREADYEXTSYS1TRACEEXP
+    AFVALIDEXTSYS1TRACEEXP
+    SYNCREQEXTSYS1TRACEEXP
+    PSELEXTSYS1DBG
+    PWAKEUPEXTSYS1DBG
+    PENABLEEXTSYS1DBG
+    PADDREXTSYS1DBG
+    PWRITEEXTSYS1DBG
+    PWDATAEXTSYS1DBG
+    PSTRBEXTSYS1DBG
+    PPROTEXTSYS1DBG
+    DPABORTEXTSYS1DBG
+    PRDATAEXTSYS1EXTDBG
+    PREADYEXTSYS1EXTDBG
+    PSLVERREXTSYS1EXTDBG
+    EXTSYS1CTICHOUT
+    EXTSYS1ACLKQACCEPTn
+    EXTSYS1ACLKQDENY   
+    EXTSYS1ACLKQACTIVE 
+    EXTSYS1MHUCLKQACCEPTn
+    EXTSYS1MHUCLKQDENY   
+    EXTSYS1MHUCLKQACTIVE 
+    EXTSYS1ATCLKQACCEPTn
+    EXTSYS1ATCLKQDENY   
+    EXTSYS1ATCLKQACTIVE 
+    EXTSYS1DBGCLKMQACCEPTn
+    EXTSYS1DBGCLKMQDENY   
+    EXTSYS1DBGCLKMQACTIVE
+    EXTSYS1DBGCLKSQACCEPTn
+    EXTSYS1DBGCLKSQDENY   
+    EXTSYS1DBGCLKSQACTIVE
+    EXTSYS1CTICLKQACCEPTn
+    EXTSYS1CTICLKQDENY   
+    EXTSYS1CTICLKQACTIVE
+    EXTSYS1MEMPWRQACCEPTn   
+    EXTSYS1MEMPWRQDENY      
+    EXTSYS1MEMPWRQACTIVE 
+    EXTSYS1MHUPWRQACCEPTn
+    EXTSYS1MHUPWRQDENY   
+    EXTSYS1TRACEEXPPWRQACCEPTn
+    EXTSYS1TRACEEXPPWRQDENY   
+    EXTSYS1TRACEEXPPWRQACTIVE
+    EXTSYS1EXTDBGPWRQACCEPTn
+    EXTSYS1EXTDBGPWRQDENY    
+    EXTSYS1EXTDBGPWRQACTIVE
+    EXTSYS1CTIINPWRQACCEPTn
+    EXTSYS1CTIINPWRQDENY   
+    EXTSYS1CTIINPWRQACTIVE 
+}
+
+#-------------------------------------------------------------------------------
+# Report clamp high settings
+#-------------------------------------------------------------------------------
+set power_domains {
+    PD_CLUSTOP
+    PD_SYSTOP
+    PD_EXTSYS0TOP
+    PD_EXTSYS1TOP
+    PD_DBGTOP
+    PD_SECENCTOP
+    PD_CPU0 
+    PD_CPU1 
+    PD_CPU2 
+    PD_CPU3 
+}
+
+puts "Isolate high ports:"
+foreach domain $power_domains {
+    puts "  $domain"
+    foreach target_port [set ${domain}_ClampHigh] {
+        puts "    $target_port"
+    }
+    if {$domain eq "PD_SYSTOP"} {
+      foreach clamp_rule {PD_SYSTOP_CPU_PCSMs_ClampHigh} {
+        puts "  $clamp_rule"
+        foreach target_port [set $clamp_rule] {
+          puts "    $target_port"
+        }
+      }
+   }
+}
+puts ""
+
+#-------------------------------------------------------------------------------
+# Library cells to use for isolation
+#-------------------------------------------------------------------------------
+set isolate_low_cells {
+    A2ISO_X1M_A7PP140ZTH_C35
+    A2ISO_X2M_A7PP140ZTH_C35
+    A2ISO_X4M_A7PP140ZTH_C35
+    A2ISO_X8M_A7PP140ZTH_C35
+    A2ISO_X1M_A7PP140ZTH_C40 
+    A2ISO_X2M_A7PP140ZTH_C40 
+    A2ISO_X4M_A7PP140ZTH_C40 
+    A2ISO_X8M_A7PP140ZTH_C40
+}
+
+set isolate_high_cells {
+    O2ISO_X1M_A7PP140ZTH_C35
+    O2ISO_X2M_A7PP140ZTH_C35
+    O2ISO_X4M_A7PP140ZTH_C35
+    O2ISO_X8M_A7PP140ZTH_C35
+    O2ISO_X1M_A7PP140ZTH_C40 
+    O2ISO_X2M_A7PP140ZTH_C40 
+    O2ISO_X4M_A7PP140ZTH_C40 
+    O2ISO_X8M_A7PP140ZTH_C40
+}
+
+set isolate_source_low_cells {
+    A2ISOO_X1M_A7PP140ZTH_C35
+    A2ISOO_X2M_A7PP140ZTH_C35
+    A2ISOO_X4M_A7PP140ZTH_C35
+    A2ISOO_X8M_A7PP140ZTH_C35
+    A2ISOO_X1M_A7PP140ZTH_C40 
+    A2ISOO_X2M_A7PP140ZTH_C40 
+    A2ISOO_X4M_A7PP140ZTH_C40 
+    A2ISOO_X8M_A7PP140ZTH_C40
+}
+
+set isolate_source_high_cells {
+    O2ISOO_X1M_A7PP140ZTH_C35
+    O2ISOO_X2M_A7PP140ZTH_C35
+    O2ISOO_X4M_A7PP140ZTH_C35
+    O2ISOO_X8M_A7PP140ZTH_C35
+    O2ISOO_X1M_A7PP140ZTH_C40 
+    O2ISOO_X2M_A7PP140ZTH_C40 
+    O2ISOO_X4M_A7PP140ZTH_C40 
+    O2ISOO_X8M_A7PP140ZTH_C40
+}
+
+#-------------------------------------------------------------------------------
+# Power Domains
+#-------------------------------------------------------------------------------
+
+puts "Power Domains"
+puts "PD_SYSTOP    : $PD_SYSTOP_path"
+puts "PD_CLUSTOP   : $PD_CLUSTOP_path"
+puts "PD_EXTSYS0TOP: $PD_EXTSYS0TOP_path"
+puts "PD_EXTSYS1TOP: $PD_EXTSYS1TOP_path"
+puts "PD_DBGTOP    : $PD_DBGTOP_path"
+puts "PD_SECENCTOP : $PD_SECENCTOP_path"
+puts "PD_CPU0      : $PD_CPU0_path"
+puts "PD_CPU1      : $PD_CPU1_path"
+puts "PD_CPU2      : $PD_CPU2_path"
+puts "PD_CPU3      : $PD_CPU3_path"
+puts ""
+
+load_upf $env(LOGICAL_PATH)/top_sse710_r0_3/top_sse710_r0_aontop_3/power_intent/upf/top_sse710_r0_constraints-hier.upf -version 2.1 
+load_upf $env(LOGICAL_PATH)/top_sse710_r0_3/top_sse710_r0_aontop_3/power_intent/upf/top_sse710_r0_configuration-hier.upf -version 2.1 
+load_upf $env(LOGICAL_PATH)/top_sse710_r0_3/top_sse710_r0_aontop_3/power_intent/upf/top_sse710_r0_implementation-hier.upf -version 2.1 

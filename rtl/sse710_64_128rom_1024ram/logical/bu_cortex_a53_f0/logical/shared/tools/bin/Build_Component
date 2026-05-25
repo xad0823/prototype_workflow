@@ -1,0 +1,950 @@
+#! /usr/bin/env perl
+BEGIN { $^W = 1 }
+#******************************************************************************
+#   The confidential and proprietary information contained in this file may
+#   only be used by a person authorised under and to the extent permitted
+#   by a subsisting licensing agreement from ARM Limited.
+#
+#          (C) COPYRIGHT 2010-2014 ARM Limited.
+#              ALL RIGHTS RESERVED
+#
+#   This entire notice must be reproduced on all copies of this file
+#   and copies of this file may only be made by a person if such person is
+#   permitted to do so under the terms of a subsisting license agreement
+#   from ARM Limited.
+#******************************************************************************
+#
+#               Build Component
+#               ===============
+#
+#******************************************************************************
+#
+#       RCS Information
+#
+#       RCS Filename        : Build_Component
+#       Checked In          : $Date: 2010-04-27 17:34:52 +0100 (Tue, 27 Apr 2010) $
+#       Revision            : $Revision: 7386 $
+#       Release             : CORTEXA53-r0p4-00rel0
+#
+#******************************************************************************
+# This is a configurator script for ARM IP-XACT files. It uses a helper library
+# called IP-XACT_lib.pm
+#
+# Control of configuration space for a component is managed within a component's
+# IP-XACT file only. Once all the appropriate user parameters are entered (either
+# on the command line, a file or as prompted during execution), generators
+# specified within the IP-XACT file are called. Following execution of the
+# generators, a configured IP-XACT file (the original plus all the user values
+# "fixed" with dependency equations solved) is saved back to the same location
+# as the original IP-XACT file but with an appropriate unique name.
+#
+#******************************************************************************
+
+######## KNOWN LIMITATIONS ########
+# - when using configuration files, it does not save or load a unique string name
+
+use warnings;
+use FindBin;
+
+use XML::LibXML;
+if (not(XML::LibXML::LIBXML_VERSION =~ /^\d+$/)) {
+  die 'The Perl XML::LibXML module could not be found';
+}
+if (not(XML::LibXML::LIBXML_RUNTIME_VERSION =~ /^\d+$/)) {
+  die 'The Perl XML::LibXML module could not find the libxml2 runtime library';
+}
+
+# On a system with improperly installed libxml, the identifiers count as
+# barewords so can generate Perl syntax errors with 'use strict'. Therefore
+# we only turn on strict checks after we know libxml is properly installed
+
+use strict;
+
+# point to where IPXACT_lib is located (use the source_me in /misc_scripts) !
+use lib "$FindBin::Bin";
+
+use CGI qw(:standard);
+use IPXACT_lib;
+
+use File::Basename;
+
+my $version = '$Revision: 7386 $';
+$IPXACT_lib::debug = 0;
+
+# Get name of program
+my $prog;
+chop($prog = `basename $0`);
+
+#
+# Usage statement
+#
+my $usage = "
+This program uses the information stored within an IP-XACT component description to configure it through user-resolved parameters.
+It creates a temporary new name (either through the command line or as a hash of supplied parameters) should any generator require a unique name when running generator processes. Should the IP-XACT require modification (as a consequence of parameter options) then this is assumed to be done as part of the component's generator flow.
+
+Usage #1:   $prog <filename.xml> [<uniquifier>] <parameter_name>=<parameter_value> [...further name=value pairs] [-no_gen] [-keepdepends]
+Usage #2:   $prog <filename.xml> [<uniquifier>] -config <config_file> [-no_gen] [-keepdepends]
+Usage #3:   $prog <filename.xml> [<uniquifier>] [-no_gen] [-keepdepends]
+
+Where: <filename.xml>
+          IP-XACT file to base configuration on
+
+       <uniquifier>
+          Unique string to potentially add onto spirit:name (of VLNV) to ensure generators run with unique names to make unique files. If it is not required then specifying has no effect. If it is required and not specified then the tool will attempt to insert a hash based upon user parameters (just in case a unique name is required).
+
+       <parameter_name>=<parameter_value>
+          Set of name/value pairs (multiple sets can be specified). Names must match the user resolved parameters in the IP-XACT. See note below.
+
+       <config_file>
+          Name of a file that contains a list of all <parameter_name>=<parameter_value> required to build a specific configuration. Each name/value pair must be on a different line. See note below
+
+       -no_gen
+          Do not run any generator routines
+
+       -keepdepends
+          When creating the configured IP-XACT, maintain dependency original expressions (default is to resolve everything to immediates)
+
+NOTE
+If parameters are given then they must all be specified (and be valid) otherwise it will exit with an error and no generators will be run.
+
+If no configuration options are given (either on the command line or in a config file), as shown in usage #3 above, then the tool with prompt the user for required values (option to save to a suitable configuration file).
+";
+
+exit Main();
+
+##############
+# SUBROUTINE #
+##############
+sub Main {
+
+  my $okay = 1; # if zero, an error has occured
+  my $IPXACT_doc; # ultimately contains the XML parser opened IP-XACT document
+  my %cmd_line_params= (); # used to store name/value pairs from the command line
+  my $run_gen = 1; # default to run generators unless "-no_gen" is specified
+  my $config_file = "not_defined_file"; # set to one if a configuration file is being supplied
+  my $keep_depends = 0; # by default, change all resolve=depends to resolve=immediate
+
+  # parse command line
+  my $IPXACT_file;
+  my $uniq_ext;
+
+  foreach my $argnum (0 .. $#ARGV) {
+    debugMsg("MAIN Found ARG ".$argnum." = ".$ARGV[$argnum]);
+    if ($argnum == 0) {
+      debugMsg("MAIN ...Found file");
+      # first argument *must be the file*
+      $IPXACT_file = $ARGV[$argnum];
+    } elsif ($config_file eq "1") {
+      $config_file = $ARGV[$argnum]; # we shouldn't hit this again
+    } elsif ($ARGV[$argnum] =~ /(.*)=(.*)/) {
+      # matches a name/value pair where $1 is the name and $2 is the value
+      debugMsg("MAIN ...name/value pair: $1=$2");
+      $cmd_line_params{$1} = $2;
+    } elsif ($ARGV[$argnum] =~ /^-(.*)/) {
+      # parameter
+      debugMsg("MAIN ...parameter found $1");
+    SWITCH: {
+        if ($1 eq "keepdepends") {$keep_depends = 1; last SWITCH}
+        if ($1 eq "no_gen") { $run_gen = 0; last SWITCH}
+        if ($1 eq "config") { $config_file = "1"; last SWITCH}
+        if ($1 eq "debug") { $IPXACT_lib::debug = 1; last SWITCH}
+        $okay = 0; # unknown option
+        print "Unknown option: $1 \n";
+      }
+    } elsif ($argnum == 1) {
+      # not a name/value pair in the second argument, must be uniquifier
+      $uniq_ext = $ARGV[$argnum];
+      debugMsg("MAIN ...uniquifier value: $uniq_ext");
+    } else {
+      # No idea what the argument is
+      $okay = 0; # unknown option
+      print "Unknown option: $ARGV[$argnum]\n";
+    }
+  }
+
+  # check XML file is IP-XACT (and open)
+  if (defined $IPXACT_file) {
+    $IPXACT_doc = check_XML($IPXACT_file);
+    if ($IPXACT_doc) {
+      debugMsg("MAIN opened file successfully: $IPXACT_doc");
+      # check it's a spirit:component
+      if ($IPXACT_doc->find('/spirit:component')) {
+        print "Opening $IPXACT_file for reading.\n";
+      } else {
+        $okay = 0;
+        print_error("$IPXACT_file does not contain a spirit:component.");
+      }
+    } else {
+      $okay = 0;
+    }
+  } else {
+    $okay = 0;
+  }
+
+  ## Parse_parameters()
+  # Go through IP-XACT file answering parameters with spirit:resolve=user using the command line ones were applicable otherwise prompt the user.
+  # - send pointer to IP-XACT document
+  # - hash of command line name=value pairs
+  if ($okay == 1) {
+    $okay = parse_parameters($IPXACT_doc, \%cmd_line_params, $config_file);
+  }
+
+  # if new spirit:name specified then update that field
+  # may have been passed as spirit:name in the param=value or as <uniquifier>
+  # (otherwise make a hash of parameters as the uniqifier)
+  if ($okay == 1) {
+    if (defined $cmd_line_params{"spirit:name"}) {
+      # param=value specified, replaces the entire name
+      debugMsg("MAIN got a new name: ".$cmd_line_params{"spirit:name"});
+      $IPXACT_doc->find("spirit:component/spirit:name")->get_node(0)->firstChild->setData($cmd_line_params{"spirit:name"});
+      debugMsg("MAIN new name = ".$IPXACT_doc->findvalue("spirit:component/spirit:name"));
+    } elsif (defined $uniq_ext) {
+      # extension string specified, only add to the name
+      my $name = $IPXACT_doc->findvalue("spirit:component/spirit:name");
+      debugMsg("MAIN found the name: $name");
+      # add on extension using "_" and the store back
+      $name = $name."_".$uniq_ext;
+      $IPXACT_doc->find("spirit:component/spirit:name")->get_node(0)->firstChild->setData($name);
+      debugMsg("MAIN new name = ".$IPXACT_doc->findvalue("spirit:component/spirit:name"));
+    } else {
+      # nothing specified, try creating a hash of the params
+      print "No unique string found, creating a temporary name based upon the chosen parameters\n";
+      $uniq_ext = "";
+      foreach my $param (sort keys %cmd_line_params) {
+        $uniq_ext = $uniq_ext."_".$cmd_line_params{$param};
+        debugMsg("MAIN unique is now: ".$uniq_ext);
+      }
+      my $name = $IPXACT_doc->findvalue("spirit:component/spirit:name");
+      $name = $name.$uniq_ext;
+      $IPXACT_doc->find("spirit:component/spirit:name")->get_node(0)->firstChild->setData($name);
+      print "Unique name = ".$IPXACT_doc->findvalue("spirit:component/spirit:name")."\n";
+    }
+  }
+
+  ## call generators
+  # go through IP-XACT running any generators specified
+  if ($okay == 1) {
+    $okay = call_generators($IPXACT_doc, $run_gen, $IPXACT_file);
+  }
+
+  ## resolve dependencies in the entire document
+  # go through IP-XACT solving all the XPath expressions
+  if ($okay == 1) {
+    $okay = resolve_doc($IPXACT_doc, $IPXACT_file);
+  }
+
+  ## Remove of resolve=user to stop any possible changes
+  if ($okay == 1) {
+    $okay = solidify_doc($IPXACT_doc, $IPXACT_file, $keep_depends);
+  }
+
+  ## attempt to save the new IP-XACT file
+  if ($okay == 1) {
+    print " Saving to ".$IPXACT_doc->findvalue("spirit:component/spirit:name").".xml\n";
+    $okay = save_doc($IPXACT_doc, $IPXACT_file);
+  }
+
+  if ($okay == 0) {
+    print $usage;
+    print "An error occurred\n";
+  } else {
+    print "$0: completed.\n";
+  }
+
+  # if everything has worked we want to return 0 to quit cleanly
+  return !$okay
+
+};
+
+#################################################################################
+# Routine : parse_parameters
+#    resolves parameters that are in the IP-XACT file
+#
+# Arguments :
+#    XMLDOC pre-opened XML document (the IP-XACT file)
+#    pointer to hash of name=value pairs
+#    file containing parameters
+#
+# Returns : status (1 = okay)
+#################################################################################
+sub parse_parameters($$$) {
+  #my $XML_doc = shift;
+  #my $p_hash_name_value = shift;
+  #my %hash_name_value = %$p_hash_name_value;
+  #my $config_file = shift;
+  my $XML_doc = $_[0];
+  #my $p_hash_name_value = $_[0];
+  my %hash_name_value = %{$_[1]};
+  my $config_file = $_[2];
+  my $check = 1;
+  # have a hash of parameters from the command line, need to also get parameters from the IP-XACT file and cross-update
+  # checks if a parameter is needed due following arm:presence evaluation
+  # if any parameters passed, assume all required (DIE if not)
+  # if no parameters passed, prompt the user for them
+
+  debugMsg("parse_parameters running");
+
+  # find all parameters in IP-XACT Doc (XMLDOC)
+  my $userParams = $XML_doc->find('spirit:component/spirit:parameters/spirit:parameter[spirit:value/@spirit:resolve="user"]');
+  my %XML_Params; # hash of params in IP-XACT
+
+  # make sure there are some params
+  if ($userParams) {
+  } else {
+    $check = 0;
+    print_error("No user configurable parameters present in the component.");
+  }
+
+  # check what has been done:
+  # - no file, no command line => query user (allow save!)
+  # -    file, no command line => use file (error on missing)
+  # - no file,    command line => use command line (error on missing)
+  # -    file,    command line => error
+  my $ask = 0;
+  my $parse = 0;
+  if (($config_file eq "not_defined_file") && ((keys %hash_name_value) == 0)) {
+    # user
+    # nothing to interpret as we'll ask
+    $ask = 1;
+    $parse = 1;
+  } elsif (($config_file eq "not_defined_file") && (keys %hash_name_value) >= 1) {
+    # command line
+    # nothing to interpret
+    $parse = 1;
+  } elsif (not %hash_name_value) {
+    # file
+    # convert file into name=value hash
+    if (check_file($config_file)) {
+      open (FILE, $config_file);
+      while (<FILE>) {
+        chomp;
+        my $line = $_;
+        # use NAME identifier for the first bit and then eat up everything until the first space (or end of line)
+        if ($line =~ /\s*#.*/ ) {
+          # commented out line
+          debugMsg("parse_parameters: found commented out line: $line");
+        } elsif ($line =~ /([a-zA-Z_]{1}[a-zA-Z0-9_\-.]*) *= *([^ ]*)/ ) {
+          # valid line
+          debugMsg("parse_parameters: found $1=$2 in file $config_file");
+          $hash_name_value{$1} = $2;
+        }
+      }
+      close (FILE);
+      # catch empty files
+      if (keys %hash_name_value) {
+        $parse = 1;
+      } else {
+        print "ERROR: Unable to locate any valid name=value pairs within the file $config_file";
+      }
+    } else {
+      print "ERROR: Unable to locate the file $config_file";
+    }
+  } else {
+    # error (file and command line)
+    print "ERROR: Unable to process IP-XACT file. Please only supply configuration file OR command line parameters (not both).\n";
+  }
+
+  if ($parse == 1) {
+
+    # sort through the nodes and stick them into an ordered list (use spirit:order)
+    my %ordered_params;
+
+    my $sub_order = 0;
+    foreach my $Param_node ($userParams->get_nodelist) {
+      my $param_name = $Param_node->findvalue("spirit:name");
+      my $param_value= $Param_node->findvalue("spirit:value");
+      debugMsg("parse_parameters: found in IPXACT (name=value): $param_name=$param_value");
+
+      my $param_value_node = $Param_node->find("spirit:value")->get_node(0);
+      if (check_configuration( $param_value_node )) {
+        # if the node is okay add it to the stack
+
+        # get the spirit:order, if there isn't one, assume zero (first)
+        my $this_order = 0;
+        if ($Param_node->find("spirit:value")->get_node(0)->hasAttribute('spirit:order')) {
+          $this_order = $Param_node->find("spirit:value")->get_node(0)->getAttribute('spirit:order');
+        }
+
+        # construct a potential key
+        my $this_key = $this_order + $sub_order;
+        # check if it exists
+        if (defined $ordered_params{$this_key}) {
+          # one already exists, increment the fraction of the (sub) order
+          $sub_order += 0.001; # good for 1000 options!
+          $this_key = $this_order + $sub_order;
+        }
+
+        # store away the node
+        debugMsg("parse_parameters: storing parameter #$this_key");
+        $ordered_params{$this_key} = $Param_node;
+      } else {
+        print "An error occured within the spirit:parameter $param_name\n";
+        $check = 0;
+      }
+    }
+
+    # now have all the parameter nodes in an hash that can be ordered
+
+    foreach my $key (sort sort_numerical keys %ordered_params) {
+      debugMsg("parse_parameters: examining parameter #$key");
+
+      my $name = $ordered_params{$key}->findvalue("spirit:name");
+      my $arm_presence = $XML_doc->find('/spirit:component/spirit:parameters/spirit:parameter[spirit:name="'.$name.'"]/spirit:vendorExtensions/arm:presence');
+
+      ## evaluate if they have arm:presence
+      if ($arm_presence->size() == 1) {
+        debugMsg("parse_parameters: arm:presence detected for parameter = $name");
+        # get the value
+        my $presence_result = solve_dependency($arm_presence->get_node(0));
+
+        # store value down
+        $arm_presence->get_node(0)->firstChild->setData($presence_result);
+
+      } elsif ($arm_presence->size() > 1) {
+        print_error("parse_parameters: multiple arm:presence tags detected on parameter $name");
+      } else {
+        debugMsg("parse_parameters: no arm:presence detected");
+      }
+      # copy over arm_presence variable with evaluated tag (either 'true', 'false' or not defined).
+      $arm_presence = $XML_doc->findvalue('/spirit:component/spirit:parameters/spirit:parameter[spirit:name="'.$name.'"]/spirit:vendorExtensions/arm:presence');
+
+      ## decide where to get a value for it from
+      if (($ask == 1)&&($arm_presence !~ /false/ )) {
+        # prompt the user for a value
+        my $param = $ordered_params{$key};
+
+        # - show displayName (name)
+        # - show description
+        # - if not choice
+        #   - define type (integer, string, bitString, float)
+        #   - define bounds (min/max, if a bitString then length)
+        # - if choice (find choice)
+        #   - foreach enumeration (spirit:enumeration)
+        #     - display value (@spirit:text) with meanings (@spirit:help) and required entry value (.)
+        # - while not valid (or enter for default/original)
+        #   - prompt for value
+        #   - check_parameter
+
+        if ($param->find('./spirit:displayName')) {
+          print "Please enter value for the configuration parameter '".$param->findvalue('./spirit:displayName')."' [".$name."]\n";
+        } else {
+          print_error("parse_parameters: No spirit:displayName present for parameter: ".$name);
+          $check = 0;
+        }
+
+        if ($param->find('./spirit:description')) {
+          # remove any techpub markup and convert "&lt;"/"&gt;"
+          my $description = remove_TPmarkup($param->findvalue('./spirit:description'));
+          print "Description for this parameter:\n ".$description."\n";
+        } else {
+          print_error("parse_parameters: No spirit:description present for parameter: ".$name);
+          $check = 0;
+        }
+
+        if ($param->find('./spirit:value/@spirit:choiceRef')) {
+          # it's part of a choiceRef - go find and display that
+          my $config_path = '/spirit:component/spirit:choices/spirit:choice[spirit:name="'.$param->findvalue('./spirit:value/@spirit:choiceRef').'"]';
+          debugMsg("parse_parameters: Finding config: $config_path");
+          my $config_node = $XML_doc->find($config_path)->get_node(0);
+
+          print "\nSelect from one of the following options:\n";
+
+          foreach my $enum ($config_node->find('./spirit:enumeration')->get_nodelist()) {
+            my $enum_text;
+            my $enum_description;
+            my $enum_value = $enum->textContent();
+            if ($enum->hasAttribute('spirit:text')) {
+              $enum_text = $enum->getAttribute('spirit:text');
+            } else {
+              debugMsg("parse_parameters: No spirit:text defined");
+            }
+            if ($enum->hasAttribute('spirit:help')) {
+              $enum_description = remove_TPmarkup($enum->getAttribute('spirit:help'));
+            } else {
+              debugMsg("parse_parameters: No spirit:description defined");
+            }
+
+            if ($enum_text) {
+              print "For a value of '".$enum_text."', enter: ".$enum_value."\n";
+            } else {
+              print "Enter: ".$enum_value."\n";
+            }
+            if ($enum_description) {
+              print " ".$enum_description."\n";
+            }
+
+          }
+
+        } else {
+          # not a choice, just display what we can find out...
+
+          # type of value
+          print "Require a value of type: ".$param->findvalue('./spirit:value/@spirit:format')."\n";
+
+          # min/max of value
+          if ($param->find('./spirit:value/@spirit:minimum')) {
+            print "The value must be greater than or equal to: ".$param->findvalue('./spirit:value/@spirit:minimum')."\n";
+          }
+          if ($param->find('./spirit:value/@spirit:maximum')) {
+            print "The value must be less than or equal to: ".$param->findvalue('./spirit:value/@spirit:maximum')."\n";
+          }
+
+          # bitString
+          if ($param->find('./spirit:value/@spirit:bitStringLength')) {
+            print "The bitString is required to be a string ".$param->findvalue('./spirit:value/@spirit:bitStringLength')." characters long\n";
+          }
+        }
+
+        # prompt the user until they get it right (!)
+        my $valid = 0;
+        my $default_val = $param->findvalue('./spirit:value');
+        while ($valid == 0) {
+          my $user_val;
+          print "Enter value [enter for default=".$default_val."] : ";
+          chomp ($user_val = <STDIN>);
+
+          if ($user_val ne '') {
+          } else {
+            # no defined, copy the default
+            $user_val = $default_val;
+          }
+
+          # store value down
+          my $node_path = 'spirit:component/spirit:parameters/spirit:parameter[spirit:name="'.$name.'"]/spirit:value';
+          $XML_doc->find($node_path)->get_node(0)->firstChild->setData($user_val);
+
+          $valid = check_configuration($ordered_params{$key}->find("spirit:value")->get_node(1));
+          if ($valid == 0) {
+            print "Invalid option entered. Please try again.\n";
+          }
+        }
+
+      } elsif ($arm_presence !~ /false/ ) { # if ($ask != 1)
+        # copy from the stored hash
+        if (defined $hash_name_value{$name}) {
+          # parameter in IP-XACT matches one passed in the command line
+          # copy value across (to IP-XACT)
+          my $node_path = 'spirit:component/spirit:parameters/spirit:parameter[spirit:name="'.$name.'"]/spirit:value';
+          $XML_doc->find($node_path)->get_node(0)->firstChild->setData($hash_name_value{$name});
+          my $param_value = $XML_doc->findvalue($node_path);
+          debugMsg("parse_parameters: updated XML: $name=$param_value");
+
+          # make sure the value supplied is okay to be used
+          if (check_configuration($ordered_params{$key}->find("spirit:value")->get_node(1)) == 0) {
+            $check = 0;
+          }
+
+        } else {
+          # error, value not supplied but was expected!
+          print "ERROR: missing value for the spirit:parameter $name\n";
+          $check = 0;
+        }
+
+        # do a final grab of the value
+        my $value = $ordered_params{$key}->findvalue("spirit:value");
+        print "Have value of '".$value."' for attribute: ".$name."\n";
+
+      } else {
+        # parameter not required as arm:presence evaluated to false
+        if ($ordered_params{$key}->find('./spirit:displayName')) {
+          print "Value for the configuration parameter '".$ordered_params{$key}->findvalue('./spirit:displayName')."' [".$name."] is not required.\n";
+        } else {
+          print_error("parse_parameters: No spirit:displayName present for parameter: ".$name);
+          $check = 0;
+        }
+        # delete from the parameter hash if it's there
+        if (exists $hash_name_value{$key}) {
+          delete (${$_[1]}{$key});
+        }
+        # don't forget to delete the parameter from the search list
+        delete ($ordered_params{$key});
+      }
+
+    }
+
+    # all values updated
+    if (($ask == 1) && $userParams) {
+      # ask if they want to save it ***uses same format as config input***
+      # - prompt y/n
+      # - until possible to create
+      #   - ask for filename (default= "spirit:name"_config)
+      # - store contents of hash_name_value to file.
+      print "Do you wish to save this configuration?\n Enter 'yes' to save (anything else to skip): ";
+      my $save;
+      chomp ($save = <STDIN>);
+      if ($save eq "yes") {
+
+        my $valid_file = 0;
+        while ($valid_file == 0) {
+          print "Please enter a filename (including path) to continue: ";
+          chomp ($save = <STDIN>);
+
+          if (-e $save) {
+            print "Cannot save to $save. File already exists.\n";
+          } elsif (open CONFIG, "> $save") {
+            debugMsg("parse_parameters: successfully opened file $save");
+            $valid_file = 1;
+
+            print CONFIG "# Configuration file for ".$XML_doc->findvalue('spirit:component/spirit:name')."\n";
+
+            foreach my $pkey (keys %ordered_params) {
+              my $line = $ordered_params{$pkey}->findvalue("spirit:name")." = ".$ordered_params{$pkey}->findvalue("spirit:value")."\n";
+              print CONFIG $line;
+            }
+
+            print CONFIG "# End of configuration file.\n";
+
+          } else {
+            print "An error occured opening the file $save ".$!."\n";
+          }
+
+
+        }
+
+      }
+
+    }
+
+    # params updated, copy them back to the hash
+    if (($ask == 1) && $userParams) {
+      foreach my $pkey (keys %ordered_params) {
+        my $param_name = $ordered_params{$pkey}->findvalue("spirit:name");
+        my $param_val = $ordered_params{$pkey}->findvalue("spirit:value");
+        ${$_[1]}{$param_name} = $param_val;
+        debugMsg("parse_parameters: adding ".$param_name." as ".${$_[1]}{$param_name});
+      }
+    }
+
+    # now delete any element in the passed hash that doesn't exist
+    foreach my $nameval (keys %hash_name_value) {
+      if (exists $ordered_params{$nameval}) {
+        # is present in original hash - leave it!
+      } else {
+        # extra value - delete it! (unless it was spirit:name)
+        delete ($hash_name_value{$nameval});
+      }
+    }
+
+
+  } else {     # if ($parse != 1)
+    $check = 0;
+  }
+
+  return $check;
+
+}
+
+
+#################################################################################
+# Routine : call_generators
+#    calls all the generators specified in IP-XACT doc (assumes parameters have been updated)
+#
+# Arguments :
+#    XMLDOC pre-opened XML document (the IP-XACT file)
+#
+# Returns : status (1 = okay)
+#################################################################################
+sub call_generators() {
+  my $XML_doc = shift;
+  my $do_run = shift;
+  my $filename = shift;
+  my $status = 1;
+
+  debugMsg("call_generators running");
+
+  # find all parameters in IP-XACT Doc (XMLDOC)
+  my $GeneratorList = $XML_doc->find('spirit:component/spirit:componentGenerators/spirit:componentGenerator');
+  my %Gen_phases;
+  foreach my $Gen_node ($GeneratorList->get_nodelist) {
+    # get generator name
+    my $Gen_name = $Gen_node->findvalue("spirit:name");
+    # get phase_number
+    my $Gen_phase_element = $Gen_node->find("spirit:phase")->get_node(0);
+    my $Gen_phase = "999999999";
+    if (defined $Gen_phase_element) {
+      $Gen_phase = $Gen_phase_element->getFirstChild->getValue();
+    }
+
+    debugMsg("call_generators: found Generator: $Gen_name ($Gen_phase)");
+
+    # check apiType, transportMethods before adding
+    my $check_node = $Gen_node->find("spirit:apiType")->get_node(0);
+    if ((defined $check_node) && ($check_node->getFirstChild->getValue() eq "none")) {
+      # right api type
+      # check transport
+      $check_node = $Gen_node->find("spirit:transportMethods/spirit:transportMethod")->get_node(0);
+      if (defined $check_node) {
+        # success!
+        $Gen_phases{$Gen_name} = $Gen_phase;
+      } else {
+        # erp! wrong transport (or missing)
+        print_error("spirit:transportMethods for generator name=$Gen_name is not supported\n");
+        $status = 0;
+      }
+    } else {
+      # erp! wrong api (or missing)
+      print_error("spirit:apiType for generator name=$Gen_name is not supported\n");
+      $status = 0;
+    }
+  }
+
+  # run through them in sequence
+  foreach my $key (sort { $Gen_phases{$a} <=> $Gen_phases{$b} } keys %Gen_phases) {
+
+    my $Gen_name = $key;
+    my $Gen_phase = $Gen_phases{$key};
+    debugMsg("call_generators: running $Gen_name in sequence: $Gen_phase");
+
+    my $Gen_node_path = 'spirit:component/spirit:componentGenerators/spirit:componentGenerator[spirit:name="'.$Gen_name.'"]';
+
+    my $Gen_exe = $XML_doc->findvalue($Gen_node_path."/spirit:generatorExe");
+
+    # fetch list of parameters to call alongside the generator
+    my $param_list = $XML_doc->find($Gen_node_path."/spirit:parameters/spirit:parameter");
+    my $param_string = ""; # string to store the options in
+    foreach my $Gen_param ($param_list->get_nodelist) {
+      my $Gen_param_name = $Gen_param->findvalue("spirit:name");
+      my $Gen_param_value_element = $Gen_param->find("spirit:value")->get_node(0);
+      my $Gen_param_value;
+
+      debugMsg("call_generators: topnode=".$Gen_param_value_element->toString);
+
+      # need to check the param value as it may be a XPath defined
+      check_configuration($Gen_param_value_element);
+      $Gen_param_value = solve_dependency($Gen_param_value_element);
+
+      # store the value to the string
+      $param_string = "$param_string ".$Gen_param_name."=".$Gen_param_value;
+
+    } # foreach param
+
+    # now have all the parameters on the string, call the generator
+    # Need to get the correct path (Gen_exe is relative to the IP-XACT file)
+    # get the location of IP-XACT file to cd to before calling generator
+
+    my $run_location = dirname($filename);
+
+    # check the Gen_exe exists...
+    if (-e $run_location."/".$Gen_exe) {
+      debugMsg("call_generators: Generator found...");
+    } else {
+      print_error("Could not find the generator: $Gen_exe \n");
+      $do_run = 0;
+      $status = 0;
+    }
+
+    print "> $Gen_exe $param_string\n";
+
+    if ($do_run == 1) {
+      my $result;
+      eval { $result = `cd $run_location; $Gen_exe $param_string`};
+      if ( $@ ) {
+        print "\nAn error occurred within the generator\n";
+        $status = 0;
+      }
+      print "Generator output: \n$result\n";
+    } else {
+      print "WARNING: calling of generator disabled\n";
+    }
+
+
+  }
+
+  return $status;
+
+}
+
+#################################################################################
+# Routine : resolve_doc
+#    find all the XPath expressions and solve them
+#
+# Arguments :
+#    XMLDOC pre-opened XML document (the IP-XACT file)
+#    filename of this file
+#
+# Returns : status (1 = okay)
+#################################################################################
+sub resolve_doc($$) {
+  my $XML_doc = shift;
+  my $filename = shift;
+  my $status = 1;
+
+  debugMsg("resolve_doc running");
+
+  # find all nodes that have a @spirit:resolve="dependent"
+  my $nodes_to_solve = $XML_doc->find('//*[@spirit:resolve="dependent"]');
+
+  my $found_number = $nodes_to_solve->size();
+  debugMsg("resolve_doc: found ".$found_number." nodes that have dependency to solve.");
+
+  foreach my $curr_node ($nodes_to_solve->get_nodelist) {
+    debugMsg("resolve_doc: found node @ ".$curr_node->nodePath());
+
+    # solve the expression
+    my $new_value = solve_dependency($curr_node);
+
+    # save the value
+    $XML_doc->find($curr_node->nodePath())->get_node(0)->firstChild->setData($new_value);
+
+    # load it back to check
+    my $param_value = $XML_doc->findvalue($curr_node->nodePath());
+    debugMsg("resolve_doc: updated XML: $param_value");
+
+  }
+
+  # delete anything that had arm:presence evaluate to false
+  # or just delete the arm:presence tag if it was true (after)
+  my $arm_nodes = $XML_doc->find('//*[spirit:vendorExtensions/arm:presence="false"]');
+  $found_number = $arm_nodes->size();
+  debugMsg("resolve_doc: found ".$found_number." nodes that have an arm:presence tag set to false.");
+  foreach my $arm_node ($arm_nodes->get_nodelist) {
+    debugMsg("resolve_doc: found arm node @ ".$arm_node->nodePath());
+    # delete the node!
+    my $this_node = $arm_node->nodeName();
+    my $parent_node = $arm_node->parentNode;
+    $parent_node->removeChild($arm_node);
+  }
+
+  # ...delete the arm:presence tag if it was true
+  $arm_nodes = $XML_doc->find('//arm:presence[.="true"]');
+  $found_number = $arm_nodes->size();
+  debugMsg("resolve_doc: found ".$found_number." nodes that have an arm:presence tag set to true.");
+  foreach my $arm_node ($arm_nodes->get_nodelist) {
+    debugMsg("resolve_doc: found arm node @ ".$arm_node->nodePath());
+    # delete the node!
+    my $this_node = $arm_node->nodeName();
+    my $parent_node = $arm_node->parentNode;
+    $parent_node->removeChild($arm_node);
+
+    # check if there are any children present on the node (see if any other
+    # vendorExtensions present)
+    my $children = $parent_node->hasChildNodes();
+    debugMsg("resolve_doc: children on this node? $children");
+    my $elements_present = 0;
+    if ($children) {
+      my $childs = $parent_node->childNodes();
+      foreach my $this_child ($childs->get_nodelist) {
+        if ($this_child->nodeType == XML::LibXML::XML_ELEMENT_NODE) {
+          # An element is present
+          $elements_present++;
+        }
+      }
+    }
+    # if no more elements are nested within the vendorExtension then delete the
+    # vendorExtension element as well
+    if ($elements_present == 0) {
+      $this_node = $parent_node;
+      debugMsg("resolve_doc: deleting".$this_node->nodePath());
+      $parent_node = $this_node->parentNode;
+      $parent_node->removeChild($this_node);
+    }
+
+  }
+
+  return $status;
+
+}
+
+#################################################################################
+# Routine : solidify_doc
+#    Removes of any ability to change the document (changes resolve=user to immediate)
+#
+# Arguments :
+#    XMLDOC pre-opened XML document (the IP-XACT file)
+#    filename of this file
+#    flag for skipping changing resolve=depends
+#
+# Returns : status (1 = okay)
+#################################################################################
+sub solidify_doc($$) {
+  my $XML_doc = shift;
+  my $filename = shift;
+  my $skip_depends = shift;
+  my $status = 1;
+
+  debugMsg("solidify_doc running");
+
+  # find all nodes that have a @spirit:resolve="user"
+  my $nodes_to_solve = $XML_doc->find('//*[@spirit:resolve="user"]');
+
+  my $found_number = $nodes_to_solve->size();
+  debugMsg("solidify_doc: found ".$found_number." user resolve nodes.");
+
+  foreach my $curr_node ($nodes_to_solve->get_nodelist) {
+    debugMsg("solidify_doc: fixing node @ ".$curr_node->nodePath());
+
+    # change it to immediate
+    $XML_doc->find($curr_node->nodePath())->get_node(0)->setAttribute("spirit:resolve", "immediate");
+  }
+
+  if ($skip_depends == 0) {
+    # repeat process for spirit:resolve=dependent nodes *and* delete dependency (illegal otherwise)
+
+    # find all nodes that have a @spirit:resolve="dependent"
+    $nodes_to_solve = $XML_doc->find('//*[@spirit:resolve="dependent"]');
+
+    $found_number = $nodes_to_solve->size();
+    debugMsg("solidify_doc: found ".$found_number." nodes with resolve=dependent.");
+
+    foreach my $curr_node ($nodes_to_solve->get_nodelist) {
+      debugMsg("solidify_doc: fixing node @ ".$curr_node->nodePath());
+
+      # change it to immediate
+      $XML_doc->find($curr_node->nodePath())->get_node(0)->setAttribute("spirit:resolve", "immediate");
+
+      # delete the dependency (XPath) expression
+      $XML_doc->find($curr_node->nodePath())->get_node(0)->removeAttribute("spirit:dependency");
+    }
+  }
+
+  return $status;
+
+}
+
+#################################################################################
+# Routine : save_doc
+#    find all the XPath expressions and solve them
+#
+# Arguments :
+#    XMLDOC pre-opened XML document (the IP-XACT file)
+#    filename of original IP-XACT doc (need path to the file as base)
+#
+# Returns : status (1 = okay)
+#################################################################################
+sub save_doc($$) {
+  my $XML_doc = shift;
+  my $filename = shift;
+  my $status = 1;
+
+  debugMsg("save_doc running");
+
+  my $name = $XML_doc->findvalue("spirit:component/spirit:name");
+  my $file_location = dirname($filename);
+  my $save_to = $file_location."/".$name.".xml";
+
+  if (-e $save_to) {
+    print "Error: File already exists with the same name: ".$file_location."/".$name.".xml\n";
+    $status = 0;
+  } else {
+    if (open NEWIPXACT, "> $save_to") {
+      debugMsg("parse_parameters: successfully opened file $save_to");
+
+      print NEWIPXACT $XML_doc->toString();
+
+    } else {
+      print "An error occured opening the file $save_to ".$!."\n";
+      $status = 0;
+    }
+
+  }
+
+  return $status;
+
+}
+
+#################################################################################
+# Routine : sort_numerical 
+#    Numerical sorting routine (for use with sorting hash keys)
+#################################################################################
+sub sort_numerical { $a <=> $b }
+

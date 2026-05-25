@@ -1,0 +1,847 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+  <periph>
+    <amib>
+      <apb_config def="true">false</apb_config>
+      <apb_slave_no>9</apb_slave_no>
+      <clock_boundary>none</clock_boundary>
+      <clock_domain_name_master_if>main</clock_domain_name_master_if>
+      <clock_domain_name_slave_if>main</clock_domain_name_slave_if>
+      <compress_id>true</compress_id>
+      <dest_type def="true">peripheral</dest_type>
+      <expanded>false</expanded>
+      <master_if_addr_width>32</master_if_addr_width>
+      <master_if_data_width>64</master_if_data_width>
+      <master_if_port_name>dbg_axim_m</master_if_port_name>
+      <multi_ported>false</multi_ported>
+      <multi_region def="true">false</multi_region>
+      <name>dbg_axim</name>
+      <protocol def="true">axi4</protocol>
+      <qv_out def="true">false</qv_out>
+      <reg>
+        <impl>present</impl>
+        <location>master_port</location>
+        <name>r</name>
+        <type>full</type>
+      </reg>
+      <reg>
+        <impl>present</impl>
+        <location>master_port</location>
+        <name>w</name>
+        <type>full</type>
+      </reg>
+      <reg>
+        <impl>present</impl>
+        <location>master_port</location>
+        <name>b</name>
+        <type>full</type>
+      </reg>
+      <reg>
+        <impl>present</impl>
+        <location>slave_port</location>
+        <name>aw</name>
+        <type>rev</type>
+      </reg>
+      <reg>
+        <depth>8</depth>
+        <impl>present</impl>
+        <location>boundary</location>
+        <name>aw</name>
+        <type>fifo</type>
+      </reg>
+      <reg>
+        <impl>present</impl>
+        <location>master_port</location>
+        <name>aw</name>
+        <type>full</type>
+      </reg>
+      <reg>
+        <impl>present</impl>
+        <location>slave_port</location>
+        <name>ar</name>
+        <type>rev</type>
+      </reg>
+      <reg>
+        <depth>2</depth>
+        <impl>absent</impl>
+        <location>boundary</location>
+        <name>ar</name>
+        <type>fifo</type>
+      </reg>
+      <reg>
+        <impl>present</impl>
+        <location>master_port</location>
+        <name>ar</name>
+        <type>full</type>
+      </reg>
+      <reg>
+        <impl>absent</impl>
+        <location>slave_port</location>
+        <name>r</name>
+        <type>full</type>
+      </reg>
+      <reg>
+        <depth>2</depth>
+        <impl>absent</impl>
+        <location>boundary</location>
+        <name>r</name>
+        <type>fifo</type>
+      </reg>
+      <reg>
+        <impl>absent</impl>
+        <location>slave_port</location>
+        <name>w</name>
+        <type>full</type>
+      </reg>
+      <reg>
+        <depth>8</depth>
+        <impl>present</impl>
+        <location>boundary</location>
+        <name>w</name>
+        <type>fifo</type>
+      </reg>
+      <reg>
+        <impl>absent</impl>
+        <location>slave_port</location>
+        <name>b</name>
+        <type>full</type>
+      </reg>
+      <reg>
+        <depth>12</depth>
+        <impl>present</impl>
+        <location>boundary</location>
+        <name>b</name>
+        <type>fifo</type>
+      </reg>
+      <slave_if_data_width>32</slave_if_data_width>
+      <slave_if_port_name>expmstr1_axim_s</slave_if_port_name>
+      <tide>0</tide>
+      <token_prerequest def="true">false</token_prerequest>
+      <token_prerequest_bridge def="true">false</token_prerequest_bridge>
+      <trustzone def="true">nsec</trustzone>
+      <vn_external def="true">none</vn_external>
+      <vn_external_bridge def="true">none</vn_external_bridge>
+      <x>890</x>
+      <y>180</y>
+    </amib>
+    <architecture>
+      <link>
+        <slave_if>
+          <master_if>dbg_axim</master_if>
+          <name>p2_axis</name>
+        </slave_if>
+      </link>
+      <link>
+        <slave_if>
+          <master_if>dbg_axim</master_if>
+          <name>p1_axis</name>
+        </slave_if>
+      </link>
+      <link>
+        <slave_if>
+          <master_if>dbg_axim</master_if>
+          <name>p0_axis</name>
+        </slave_if>
+      </link>
+    </architecture>
+    <asib>
+      <address_ranges>
+        <name>default_map</name>
+        <range>
+          <addr_max>0xFFFFFFFF</addr_max>
+          <addr_min>0x0</addr_min>
+          <remap>
+            <bit>default</bit>
+            <present>true</present>
+            <region>0</region>
+            <target>dbg_axim</target>
+          </remap>
+        </range>
+      </address_ranges>
+      <apb_config>false</apb_config>
+      <apb_slave_no>68</apb_slave_no>
+      <cds>slaveperid</cds>
+      <clock_boundary>none</clock_boundary>
+      <clock_domain_name_master_if>main</clock_domain_name_master_if>
+      <clock_domain_name_slave_if>main</clock_domain_name_slave_if>
+      <master_if_data_width>32</master_if_data_width>
+      <master_if_port_name>secenc_axis_m</master_if_port_name>
+      <multi_ported>false</multi_ported>
+      <multi_region def="true">false</multi_region>
+      <name>p0_axis</name>
+      <protocol>axi4</protocol>
+      <qos_config>
+        <hard def="true">disable</hard>
+        <lqv def="true">disable</lqv>
+        <pot def="true">disable</pot>
+      </qos_config>
+      <qv>
+        <type>fixed</type>
+        <value>15</value>
+      </qv>
+      <reg>
+        <impl>present</impl>
+        <location>slave_port</location>
+        <name>aw</name>
+        <type>rev</type>
+      </reg>
+      <reg>
+        <impl>present</impl>
+        <location>slave_port</location>
+        <name>ar</name>
+        <type>rev</type>
+      </reg>
+      <reg>
+        <impl>present</impl>
+        <location>slave_port</location>
+        <name>w</name>
+        <type>rev</type>
+      </reg>
+      <reg>
+        <depth>8</depth>
+        <impl>present</impl>
+        <location>boundary</location>
+        <name>aw</name>
+        <type>fifo</type>
+      </reg>
+      <reg>
+        <depth>2</depth>
+        <impl>absent</impl>
+        <location>boundary</location>
+        <name>ar</name>
+        <type>fifo</type>
+      </reg>
+      <reg>
+        <depth>2</depth>
+        <impl>absent</impl>
+        <location>boundary</location>
+        <name>r</name>
+        <type>fifo</type>
+      </reg>
+      <reg>
+        <depth>8</depth>
+        <impl>present</impl>
+        <location>boundary</location>
+        <name>w</name>
+        <type>fifo</type>
+      </reg>
+      <reg>
+        <depth>4</depth>
+        <impl>present</impl>
+        <location>boundary</location>
+        <name>b</name>
+        <type>fifo</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>master_port</location>
+        <name>aw</name>
+        <type def="true">full</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>master_port</location>
+        <name>ar</name>
+        <type def="true">full</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>master_port</location>
+        <name>r</name>
+        <type def="true">full</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>master_port</location>
+        <name>w</name>
+        <type def="true">full</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>master_port</location>
+        <name>b</name>
+        <type def="true">full</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>slave_port</location>
+        <name>r</name>
+        <type def="true">full</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>slave_port</location>
+        <name>b</name>
+        <type def="true">full</type>
+      </reg>
+      <slave_if_addr_width>32</slave_if_addr_width>
+      <slave_if_data_width def="true">32</slave_if_data_width>
+      <slave_if_port_name>p0_axis_s</slave_if_port_name>
+      <tide>0</tide>
+      <token_prerequest def="true">false</token_prerequest>
+      <token_prerequest_bridge def="true">false</token_prerequest_bridge>
+      <trustzone>input</trustzone>
+      <vid_width>2</vid_width>
+      <vn_external def="true">none</vn_external>
+      <vn_external_bridge def="true">none</vn_external_bridge>
+      <x>110</x>
+      <y>123</y>
+    </asib>
+    <asib>
+      <address_ranges>
+        <name>default_map</name>
+        <range>
+          <addr_max>0xFFFFFFFF</addr_max>
+          <addr_min>0x0</addr_min>
+          <remap>
+            <bit>default</bit>
+            <present>true</present>
+            <region>0</region>
+            <target>dbg_axim</target>
+          </remap>
+        </range>
+      </address_ranges>
+      <apb_config>false</apb_config>
+      <apb_slave_no def="true">2</apb_slave_no>
+      <cds>slaveperid</cds>
+      <clock_boundary>none</clock_boundary>
+      <clock_domain_name_master_if>main</clock_domain_name_master_if>
+      <clock_domain_name_slave_if>main</clock_domain_name_slave_if>
+      <master_if_data_width>32</master_if_data_width>
+      <master_if_port_name>p1_axis_m</master_if_port_name>
+      <multi_ported>false</multi_ported>
+      <multi_region def="true">false</multi_region>
+      <name>p1_axis</name>
+      <protocol def="true">axi4</protocol>
+      <qos_config>
+        <hard def="true">disable</hard>
+        <lqv def="true">disable</lqv>
+        <pot def="true">disable</pot>
+      </qos_config>
+      <qv>
+        <type>fixed</type>
+        <value>15</value>
+      </qv>
+      <reg>
+        <impl>present</impl>
+        <location>slave_port</location>
+        <name>aw</name>
+        <type>rev</type>
+      </reg>
+      <reg>
+        <impl>present</impl>
+        <location>slave_port</location>
+        <name>ar</name>
+        <type>rev</type>
+      </reg>
+      <reg>
+        <impl>present</impl>
+        <location>slave_port</location>
+        <name>w</name>
+        <type>rev</type>
+      </reg>
+      <reg>
+        <depth>8</depth>
+        <impl>present</impl>
+        <location>boundary</location>
+        <name>aw</name>
+        <type>fifo</type>
+      </reg>
+      <reg>
+        <depth>2</depth>
+        <impl>absent</impl>
+        <location>boundary</location>
+        <name>ar</name>
+        <type>fifo</type>
+      </reg>
+      <reg>
+        <depth>2</depth>
+        <impl>absent</impl>
+        <location>boundary</location>
+        <name>r</name>
+        <type>fifo</type>
+      </reg>
+      <reg>
+        <depth>8</depth>
+        <impl>present</impl>
+        <location>boundary</location>
+        <name>w</name>
+        <type>fifo</type>
+      </reg>
+      <reg>
+        <depth>4</depth>
+        <impl>present</impl>
+        <location>boundary</location>
+        <name>b</name>
+        <type>fifo</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>master_port</location>
+        <name>aw</name>
+        <type def="true">full</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>master_port</location>
+        <name>ar</name>
+        <type def="true">full</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>master_port</location>
+        <name>r</name>
+        <type def="true">full</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>master_port</location>
+        <name>w</name>
+        <type def="true">full</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>master_port</location>
+        <name>b</name>
+        <type def="true">full</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>slave_port</location>
+        <name>r</name>
+        <type def="true">full</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>slave_port</location>
+        <name>b</name>
+        <type def="true">full</type>
+      </reg>
+      <slave_if_addr_width>32</slave_if_addr_width>
+      <slave_if_data_width def="true">32</slave_if_data_width>
+      <slave_if_port_name>p1_axis_s</slave_if_port_name>
+      <tide>0</tide>
+      <token_prerequest def="true">false</token_prerequest>
+      <token_prerequest_bridge def="true">false</token_prerequest_bridge>
+      <trustzone>input</trustzone>
+      <vid_width>2</vid_width>
+      <vn_external def="true">none</vn_external>
+      <vn_external_bridge def="true">none</vn_external_bridge>
+      <x>110</x>
+      <y>180</y>
+    </asib>
+    <asib>
+      <address_ranges>
+        <name>default_map</name>
+        <range>
+          <addr_max>0xFFFFFFFF</addr_max>
+          <addr_min>0x0</addr_min>
+          <remap>
+            <bit>default</bit>
+            <present>true</present>
+            <region>0</region>
+            <target>dbg_axim</target>
+          </remap>
+        </range>
+      </address_ranges>
+      <apb_config>false</apb_config>
+      <apb_slave_no def="true">2</apb_slave_no>
+      <cds>slaveperid</cds>
+      <clock_boundary>none</clock_boundary>
+      <clock_domain_name_master_if>main</clock_domain_name_master_if>
+      <clock_domain_name_slave_if>main</clock_domain_name_slave_if>
+      <master_if_data_width>32</master_if_data_width>
+      <master_if_port_name>p2_axis_m</master_if_port_name>
+      <multi_ported>false</multi_ported>
+      <multi_region def="true">false</multi_region>
+      <name>p2_axis</name>
+      <protocol def="true">axi4</protocol>
+      <qos_config>
+        <hard def="true">disable</hard>
+        <lqv def="true">disable</lqv>
+        <pot def="true">disable</pot>
+      </qos_config>
+      <qv>
+        <type>fixed</type>
+        <value>15</value>
+      </qv>
+      <reg>
+        <impl>present</impl>
+        <location>slave_port</location>
+        <name>aw</name>
+        <type>rev</type>
+      </reg>
+      <reg>
+        <impl>present</impl>
+        <location>slave_port</location>
+        <name>ar</name>
+        <type>rev</type>
+      </reg>
+      <reg>
+        <impl>present</impl>
+        <location>slave_port</location>
+        <name>w</name>
+        <type>rev</type>
+      </reg>
+      <reg>
+        <depth def="true">2</depth>
+        <impl def="true">absent</impl>
+        <location>boundary</location>
+        <name>aw</name>
+        <type>fifo</type>
+      </reg>
+      <reg>
+        <depth def="true">2</depth>
+        <impl def="true">absent</impl>
+        <location>boundary</location>
+        <name>ar</name>
+        <type>fifo</type>
+      </reg>
+      <reg>
+        <depth def="true">2</depth>
+        <impl def="true">absent</impl>
+        <location>boundary</location>
+        <name>r</name>
+        <type>fifo</type>
+      </reg>
+      <reg>
+        <depth def="true">2</depth>
+        <impl def="true">absent</impl>
+        <location>boundary</location>
+        <name>w</name>
+        <type>fifo</type>
+      </reg>
+      <reg>
+        <depth def="true">2</depth>
+        <impl def="true">absent</impl>
+        <location>boundary</location>
+        <name>b</name>
+        <type>fifo</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>master_port</location>
+        <name>aw</name>
+        <type def="true">full</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>master_port</location>
+        <name>ar</name>
+        <type def="true">full</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>master_port</location>
+        <name>r</name>
+        <type def="true">full</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>master_port</location>
+        <name>w</name>
+        <type def="true">full</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>master_port</location>
+        <name>b</name>
+        <type def="true">full</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>slave_port</location>
+        <name>r</name>
+        <type def="true">full</type>
+      </reg>
+      <reg>
+        <impl def="true">absent</impl>
+        <location>slave_port</location>
+        <name>b</name>
+        <type def="true">full</type>
+      </reg>
+      <slave_if_addr_width>32</slave_if_addr_width>
+      <slave_if_data_width def="true">32</slave_if_data_width>
+      <slave_if_port_name>p2_axis_s</slave_if_port_name>
+      <token_prerequest def="true">false</token_prerequest>
+      <token_prerequest_bridge def="true">false</token_prerequest_bridge>
+      <trustzone>input</trustzone>
+      <vid_width>2</vid_width>
+      <vn_external def="true">none</vn_external>
+      <vn_external_bridge def="true">none</vn_external_bridge>
+      <x>110</x>
+      <y>240</y>
+    </asib>
+    <clocks>
+      <domain freq="100">main</domain>
+    </clocks>
+    <connect>
+      <aruser>true</aruser>
+      <awuser>true</awuser>
+      <buser>false</buser>
+      <dest>p0_axis</dest>
+      <dest_port>p0_axis_s</dest_port>
+      <lock>false</lock>
+      <out_reads>1</out_reads>
+      <out_trans>33</out_trans>
+      <out_writes>32</out_writes>
+      <protocol>axi4</protocol>
+      <ruser>false</ruser>
+      <src>external</src>
+      <src_port>p0_axis</src_port>
+      <wuser>false</wuser>
+    </connect>
+    <connect>
+      <aruser>true</aruser>
+      <awuser>true</awuser>
+      <buser>false</buser>
+      <dest>external</dest>
+      <dest_port>dbg_axim</dest_port>
+      <lock>false</lock>
+      <out_reads>1</out_reads>
+      <out_trans>33</out_trans>
+      <out_writes>32</out_writes>
+      <protocol def="true">axi4</protocol>
+      <ruser>false</ruser>
+      <src>dbg_axim</src>
+      <src_port>dbg_axim_m</src_port>
+      <wuser>false</wuser>
+    </connect>
+    <connect>
+      <dest>dbg_axim</dest>
+      <dest_port>expmstr1_axim_s</dest_port>
+      <lock>false</lock>
+      <out_reads def="true">1</out_reads>
+      <out_trans def="true">33</out_trans>
+      <out_writes def="true">32</out_writes>
+      <protocol def="true">axi4</protocol>
+      <src>switch0</src>
+      <src_port>axi_m_1</src_port>
+    </connect>
+    <connect>
+      <dest>switch0</dest>
+      <dest_port>axi_s_0</dest_port>
+      <lock>false</lock>
+      <out_reads def="true">1</out_reads>
+      <out_trans>33</out_trans>
+      <out_writes def="true">32</out_writes>
+      <protocol def="true">axi4</protocol>
+      <src>p0_axis</src>
+      <src_port>secenc_axis_m</src_port>
+    </connect>
+    <connect>
+      <aruser>true</aruser>
+      <awuser>true</awuser>
+      <buser>false</buser>
+      <dest>p1_axis</dest>
+      <dest_port>p1_axis_s</dest_port>
+      <lock>false</lock>
+      <out_reads def="true">1</out_reads>
+      <out_trans>33</out_trans>
+      <out_writes>32</out_writes>
+      <protocol def="true">axi4</protocol>
+      <ruser>false</ruser>
+      <src>external</src>
+      <src_port>p1_axis</src_port>
+      <wuser>false</wuser>
+    </connect>
+    <connect>
+      <aruser>true</aruser>
+      <awuser>true</awuser>
+      <buser>false</buser>
+      <dest>p2_axis</dest>
+      <dest_port>p2_axis_s</dest_port>
+      <lock>false</lock>
+      <out_reads def="true">1</out_reads>
+      <out_trans>5</out_trans>
+      <out_writes>4</out_writes>
+      <protocol def="true">axi4</protocol>
+      <ruser>false</ruser>
+      <src>external</src>
+      <src_port>p2_axis</src_port>
+      <wuser>false</wuser>
+    </connect>
+    <connect>
+      <dest>switch0</dest>
+      <dest_port>axi_s_1</dest_port>
+      <lock>false</lock>
+      <out_reads def="true">1</out_reads>
+      <out_trans>33</out_trans>
+      <out_writes def="true">32</out_writes>
+      <protocol def="true">axi4</protocol>
+      <src>p1_axis</src>
+      <src_port>p1_axis_m</src_port>
+    </connect>
+    <connect>
+      <dest>switch0</dest>
+      <dest_port>axi_s_2</dest_port>
+      <lock>false</lock>
+      <out_reads def="true">1</out_reads>
+      <out_trans>5</out_trans>
+      <out_writes def="true">4</out_writes>
+      <protocol def="true">axi4</protocol>
+      <src>p2_axis</src>
+      <src_port>p2_axis_m</src_port>
+    </connect>
+    <global>
+      <address0x0>top</address0x0>
+      <aruser_width>3</aruser_width>
+      <awuser_width>3</awuser_width>
+      <buser_width>0</buser_width>
+      <cc_type>async</cc_type>
+      <default_protocol>axi4</default_protocol>
+      <dpe_glb_enable def="true">false</dpe_glb_enable>
+      <dpe_status def="true">false</dpe_status>
+      <dpe_width def="true">5</dpe_width>
+      <gen_caps def="true">true</gen_caps>
+      <hcg_en>true</hcg_en>
+      <periph_id3 def="true">0</periph_id3>
+      <pl_id_width>4</pl_id_width>
+      <qos_status>false</qos_status>
+      <rsb_arch_central_ring>true</rsb_arch_central_ring>
+      <ruser_width>0</ruser_width>
+      <sas_visible>false</sas_visible>
+      <taxonomy def="true">masterslave</taxonomy>
+      <thin_links_status>false</thin_links_status>
+      <uppercase_ext_sig def="true">false</uppercase_ext_sig>
+      <virtual_networks></virtual_networks>
+      <virtual_networks_status>false</virtual_networks_status>
+      <wuser_width>0</wuser_width>
+    </global>
+    <inter>
+      <clock_domain>main</clock_domain>
+      <data_width>32</data_width>
+      <expanded>true</expanded>
+      <height>567</height>
+      <impl def="true">singlelayer</impl>
+      <master_if>
+        <name>axi_m_1</name>
+        <post_arb_reg def="true">absent</post_arb_reg>
+        <x>507</x>
+        <y>180</y>
+      </master_if>
+      <master_if_port_name>axi_m_1</master_if_port_name>
+      <name>switch0</name>
+      <protocol def="true">axi4</protocol>
+      <slave_if>
+        <name>axi_s_0</name>
+        <x>293</x>
+        <y>123</y>
+      </slave_if>
+      <slave_if>
+        <name>axi_s_1</name>
+        <x>293</x>
+        <y>180</y>
+      </slave_if>
+      <slave_if>
+        <name>axi_s_2</name>
+        <x>293</x>
+        <y>240</y>
+      </slave_if>
+      <slave_if_port_name>axi_s_0,axi_s_1,axi_s_2</slave_if_port_name>
+      <sparse>
+        <cds>slaveperid</cds>
+        <master_if_port>
+          <name>axi_m_1</name>
+          <reg>
+            <impl def="true">absent</impl>
+            <name>aw</name>
+            <type def="true">full</type>
+          </reg>
+          <reg>
+            <impl def="true">absent</impl>
+            <name>ar</name>
+            <type def="true">full</type>
+          </reg>
+          <reg>
+            <impl def="true">absent</impl>
+            <name>r</name>
+            <type def="true">full</type>
+          </reg>
+          <reg>
+            <impl def="true">absent</impl>
+            <name>w</name>
+            <type def="true">full</type>
+          </reg>
+          <reg>
+            <impl def="true">absent</impl>
+            <name>b</name>
+            <type def="true">full</type>
+          </reg>
+        </master_if_port>
+        <sas def="true">false</sas>
+        <slave_if_port>axi_s_0</slave_if_port>
+      </sparse>
+      <sparse>
+        <cds>slaveperid</cds>
+        <master_if_port>
+          <name>axi_m_1</name>
+          <reg>
+            <impl def="true">absent</impl>
+            <name>aw</name>
+            <type def="true">full</type>
+          </reg>
+          <reg>
+            <impl def="true">absent</impl>
+            <name>ar</name>
+            <type def="true">full</type>
+          </reg>
+          <reg>
+            <impl def="true">absent</impl>
+            <name>r</name>
+            <type def="true">full</type>
+          </reg>
+          <reg>
+            <impl def="true">absent</impl>
+            <name>w</name>
+            <type def="true">full</type>
+          </reg>
+          <reg>
+            <impl def="true">absent</impl>
+            <name>b</name>
+            <type def="true">full</type>
+          </reg>
+        </master_if_port>
+        <sas def="true">false</sas>
+        <slave_if_port>axi_s_1</slave_if_port>
+      </sparse>
+      <sparse>
+        <cds>slaveperid</cds>
+        <master_if_port>
+          <name>axi_m_1</name>
+          <reg>
+            <impl def="true">absent</impl>
+            <name>aw</name>
+            <type def="true">full</type>
+          </reg>
+          <reg>
+            <impl def="true">absent</impl>
+            <name>ar</name>
+            <type def="true">full</type>
+          </reg>
+          <reg>
+            <impl def="true">absent</impl>
+            <name>r</name>
+            <type def="true">full</type>
+          </reg>
+          <reg>
+            <impl def="true">absent</impl>
+            <name>w</name>
+            <type def="true">full</type>
+          </reg>
+          <reg>
+            <impl def="true">absent</impl>
+            <name>b</name>
+            <type def="true">full</type>
+          </reg>
+        </master_if_port>
+        <sas def="true">false</sas>
+        <slave_if_port>axi_s_2</slave_if_port>
+      </sparse>
+      <type>busmatrix</type>
+      <width>215</width>
+      <x>400</x>
+      <y>300</y>
+    </inter>
+    <product_version_info major_group="bu" major_revision="1" major_version="00" minor_code="50000" minor_revision="2" minor_version="0" part_quality="rel" product_code="nic400" />
+    <validator_version_info major_revision="1" minor_revision="2" />
+  </periph>

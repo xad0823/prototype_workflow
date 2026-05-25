@@ -1,0 +1,115 @@
+
+#-----------------------------------------------------------------------------
+#    The confidential and proprietary information contained in this file may
+#    only be used by a person authorised under and to the extent permitted
+#    by a subsisting licensing agreement from Arm Limited or its affiliates.
+# 
+#           (C) COPYRIGHT 2018-2021 Arm Limited or its affiliates.
+#               ALL RIGHTS RESERVED
+# 
+#    This entire notice must be reproduced on all copies of this file
+#    and copies of this file may only be made by a person if such person is
+#    permitted to do so under the terms of a subsisting license agreement
+#    from Arm Limited or its affiliates.
+#-----------------------------------------------------------------------------
+#
+#
+#
+# Release Information : SSE710-r0p0-00eac0
+#
+# -----------------------------------------------------------------------------
+#
+# Description : CPU Power Control template
+# Vendor      : arm.com
+# Library     : Subsystem
+# Version     : 1
+#
+# -----------------------------------------------------------------------------
+# Unified Power Format ()
+# -----------------------------------------------------------------------------
+
+set current_scope $PD_SYSTOP_path
+
+#  CPU control.
+#
+# ------------------------------------------------------------------------------
+# CPU0 
+# ------------------------------------------------------------------------------
+create_logic_net  LP_CPU0_lgcpwrn 
+connect_logic_net LP_CPU0_lgcpwrn -ports [relative_path $PD_CPU0_pcsm_path/lgcpwrn_o] -reconnect
+connect_logic_net LP_CPU0_lgcpwrn -ports [relative_path $PD_CLUSTOP_path/LP_CPU0_lgcpwrn_i] -reconnect
+connect_logic_net LP_CPU0_lgcpwrn -ports LP_CPU0_lgcpwrn_o -reconnect
+
+create_logic_net  LP_CPU0_lgcretn 
+connect_logic_net LP_CPU0_lgcretn -ports [relative_path $PD_CPU0_pcsm_path/lgcretn_o] -reconnect
+connect_logic_net LP_CPU0_lgcretn -ports [relative_path $PD_CLUSTOP_path/LP_CPU0_lgcretn_i] -reconnect
+
+create_logic_net  LP_CPU0_rampwrn 
+connect_logic_net LP_CPU0_rampwrn -ports [relative_path $PD_CPU0_pcsm_path/rampwrn_o] -reconnect
+connect_logic_net LP_CPU0_rampwrn -ports [relative_path $PD_CLUSTOP_path/LP_CPU0_rampwrn_i] -reconnect
+
+create_logic_net  LP_CPU0_ramretn 
+connect_logic_net LP_CPU0_ramretn -ports [relative_path $PD_CPU0_pcsm_path/ramretn_o] -reconnect
+connect_logic_net LP_CPU0_ramretn -ports [relative_path $PD_CLUSTOP_path/LP_CPU0_ramretn_i] -reconnect
+
+# ------------------------------------------------------------------------------
+# CPU1 
+# ------------------------------------------------------------------------------
+create_logic_net  LP_CPU1_lgcpwrn 
+connect_logic_net LP_CPU1_lgcpwrn -ports [relative_path $PD_CPU1_pcsm_path/lgcpwrn_o] -reconnect
+connect_logic_net LP_CPU1_lgcpwrn -ports [relative_path $PD_CLUSTOP_path/LP_CPU1_lgcpwrn_i] -reconnect
+connect_logic_net LP_CPU1_lgcpwrn -ports LP_CPU1_lgcpwrn_o -reconnect
+
+create_logic_net  LP_CPU1_lgcretn 
+connect_logic_net LP_CPU1_lgcretn -ports [relative_path $PD_CPU1_pcsm_path/lgcretn_o] -reconnect
+connect_logic_net LP_CPU1_lgcretn -ports [relative_path $PD_CLUSTOP_path/LP_CPU1_lgcretn_i] -reconnect
+
+create_logic_net  LP_CPU1_rampwrn 
+connect_logic_net LP_CPU1_rampwrn -ports [relative_path $PD_CPU1_pcsm_path/rampwrn_o] -reconnect
+connect_logic_net LP_CPU1_rampwrn -ports [relative_path $PD_CLUSTOP_path/LP_CPU1_rampwrn_i] -reconnect
+
+create_logic_net  LP_CPU1_ramretn 
+connect_logic_net LP_CPU1_ramretn -ports [relative_path $PD_CPU1_pcsm_path/ramretn_o] -reconnect
+connect_logic_net LP_CPU1_ramretn -ports [relative_path $PD_CLUSTOP_path/LP_CPU1_ramretn_i] -reconnect
+
+# ------------------------------------------------------------------------------
+# CPU2 
+# ------------------------------------------------------------------------------
+create_logic_net  LP_CPU2_lgcpwrn 
+connect_logic_net LP_CPU2_lgcpwrn -ports [relative_path $PD_CPU2_pcsm_path/lgcpwrn_o] -reconnect
+connect_logic_net LP_CPU2_lgcpwrn -ports [relative_path $PD_CLUSTOP_path/LP_CPU2_lgcpwrn_i] -reconnect
+connect_logic_net LP_CPU2_lgcpwrn -ports LP_CPU2_lgcpwrn_o -reconnect
+
+create_logic_net  LP_CPU2_lgcretn 
+connect_logic_net LP_CPU2_lgcretn -ports [relative_path $PD_CPU2_pcsm_path/lgcretn_o] -reconnect
+connect_logic_net LP_CPU2_lgcretn -ports [relative_path $PD_CLUSTOP_path/LP_CPU2_lgcretn_i] -reconnect
+
+create_logic_net  LP_CPU2_rampwrn 
+connect_logic_net LP_CPU2_rampwrn -ports [relative_path $PD_CPU2_pcsm_path/rampwrn_o] -reconnect
+connect_logic_net LP_CPU2_rampwrn -ports [relative_path $PD_CLUSTOP_path/LP_CPU2_rampwrn_i] -reconnect
+
+create_logic_net  LP_CPU2_ramretn 
+connect_logic_net LP_CPU2_ramretn -ports [relative_path $PD_CPU2_pcsm_path/ramretn_o] -reconnect
+connect_logic_net LP_CPU2_ramretn -ports [relative_path $PD_CLUSTOP_path/LP_CPU2_ramretn_i] -reconnect
+
+# ------------------------------------------------------------------------------
+# CPU3 
+# ------------------------------------------------------------------------------
+create_logic_net  LP_CPU3_lgcpwrn 
+connect_logic_net LP_CPU3_lgcpwrn -ports [relative_path $PD_CPU3_pcsm_path/lgcpwrn_o] -reconnect
+connect_logic_net LP_CPU3_lgcpwrn -ports [relative_path $PD_CLUSTOP_path/LP_CPU3_lgcpwrn_i] -reconnect
+connect_logic_net LP_CPU3_lgcpwrn -ports LP_CPU3_lgcpwrn_o -reconnect
+
+create_logic_net  LP_CPU3_lgcretn 
+connect_logic_net LP_CPU3_lgcretn -ports [relative_path $PD_CPU3_pcsm_path/lgcretn_o] -reconnect
+connect_logic_net LP_CPU3_lgcretn -ports [relative_path $PD_CLUSTOP_path/LP_CPU3_lgcretn_i] -reconnect
+
+create_logic_net  LP_CPU3_rampwrn 
+connect_logic_net LP_CPU3_rampwrn -ports [relative_path $PD_CPU3_pcsm_path/rampwrn_o] -reconnect
+connect_logic_net LP_CPU3_rampwrn -ports [relative_path $PD_CLUSTOP_path/LP_CPU3_rampwrn_i] -reconnect
+
+create_logic_net  LP_CPU3_ramretn 
+connect_logic_net LP_CPU3_ramretn -ports [relative_path $PD_CPU3_pcsm_path/ramretn_o] -reconnect
+connect_logic_net LP_CPU3_ramretn -ports [relative_path $PD_CLUSTOP_path/LP_CPU3_ramretn_i] -reconnect
+
+

@@ -1,0 +1,136 @@
+#!/usr/bin/env sh
+set -e # Exit script upon error
+
+# -----------------------------------------------------------------------------
+# The confidential and proprietary information contained in this file may
+# only be used by a person authorised under and to the extent permitted
+# by a subsisting licensing agreement from Arm Limited or its affiliates.
+#
+#               (C) COPYRIGHT 2021 Arm Limited or its affiliates.
+#                   ALL RIGHTS RESERVED
+#
+# This entire notice must be reproduced on all copies of this file
+# and copies of this file may only be made by a person if such person is
+# permitted to do so under the terms of a subsisting license agreement
+# from Arm Limited or its affiliates.
+#
+#
+#
+# Release Information : SSE710-r0p0-00eac0
+#
+# -----------------------------------------------------------------------------
+# Purpose : Configure script
+#
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+# Initialisation
+# -----------------------------------------------------------------------------
+
+# Setup useful path
+TEMPLATE_PATH=`dirname $0`
+TEMPLATE_PKG_PATH=`echo $TEMPLATE_PATH | sed -re 's@/(.*/)(trunk|branches/.+|tags/.+)/?$@\1@'`
+TEMPLATE_PKG_ID=`basename $TEMPLATE_PKG_PATH`
+
+# Process command line argument
+if [ -z "$1" ] || [ -z "$2"  ]; then
+        echo "usage: $0 configuration.yaml element_instance" 
+        exit 1
+else
+        CONFIGURATION_YAML_PATH=$1
+        ELEMENT_INSTANCE_NAME=$2
+fi
+
+SUFFIX=`echo $ELEMENT_INSTANCE_NAME | sed -e "s/$TEMPLATE_PKG_ID//"`
+
+echo "SUFFIX $SUFFIX"
+echo "ELEMENT_INSTANCE_NAME $ELEMENT_INSTANCE_NAME "
+echo "TEMPLATE_PKG_ID $TEMPLATE_PKG_ID "
+echo "TEMPLATE_PATH $TEMPLATE_PATH "
+echo "TEMPLATE_PKG_PATH $TEMPLATE_PKG_PATH "
+
+# -----------------------------------------------------------------------------
+# Package vs YAML bundle version check
+# -----------------------------------------------------------------------------
+
+BUNDLE_YAML_VER=`perl  -MYAML\
+                       -MFile::Slurp\
+                       -e "my \\$i = Load scalar read_file('$CONFIGURATION_YAML_PATH');
+                           if ( @{ \\$i->{$ELEMENT_INSTANCE_NAME}->{bundle_dependency} }) {
+                             for ( @{ \\$i->{$ELEMENT_INSTANCE_NAME}->{bundle_dependency} }) {print \"\\$_\n\";}
+                           };"`
+
+
+if [ -n "$BUNDLE_YAML_VER" ]; then
+   echo "Execute Bundle version check..."
+   BUNDLE_FILE_VER=`cat $TEMPLATE_PATH/arm_ip_bundle | sed -e 's|$ARM_IP_REPOSITORY/||'`
+   
+   if [ "$BUNDLE_YAML_VER" = "$BUNDLE_FILE_VER" ]; then
+      echo "YAML and package bundle versions match!"
+   else
+      echo "YAML and package bundle versions not matche:"
+      echo "YAML bundle versions: " 
+      echo "$BUNDLE_YAML_VER"
+      echo "PKG bundle versions: " 
+      echo "$BUNDLE_FILE_VER"
+      exit 1
+   fi
+fi
+
+
+# -----------------------------------------------------------------------------
+# Copy the Crypto Accelerator components that we need
+# -----------------------------------------------------------------------------
+
+rsync -rv --exclude=".*" $TEMPLATE_PATH/* .
+
+# -----------------------------------------------------------------------------
+# Create VC file
+# -----------------------------------------------------------------------------
+
+grep -d skip '`include' */*/* |\
+        awk -F 'include'  '{print $2}' |\
+        sort -u  |\
+        sed -e "s/[ \"']//g"> include.file
+
+if [ -s include.file ]; then
+        find . -type f -name '*.v' -o -name '*.inc' |\
+                grep -f include.file |\
+                cut -c 3- |\
+                xargs -r -L1 dirname |\
+                sort -u |\
+                xargs -L1 -I {} echo +incdir+\$LOGICAL_PATH/$2/{} > package.vc
+
+else
+        rm -f package.vc
+        
+fi
+
+find  -type f -name '*.v' |\
+        grep -vf include.file |\
+        cut -c 3- |\
+        xargs -L1 -I {} echo \$LOGICAL_PATH/$2/{} >> package.vc
+
+rm include.file
+
+# -----------------------------------------------------------------------------
+# Create vc_list
+# -----------------------------------------------------------------------------
+echo "Creating vc_list..."
+$TEMPLATE_PATH/generate_vc_list.pl $CONFIGURATION_YAML_PATH $ELEMENT_INSTANCE_NAME > vc_list
+echo "\$LOGICAL_PATH/$ELEMENT_INSTANCE_NAME/package.vc" >> vc_list
+
+if [ -e vc_list ]; then
+  echo "Creating vc_list_flat..."
+  rm -fr vc_list_flat
+  for x in $(cat vc_list ); do
+    echo $x | sed "s|\$LOGICAL_PATH|$LOGICAL_PATH|" | \
+    xargs cat >> vc_list_flat
+  done
+fi
+
+# -----------------------------------------------------------------------------
+# End of configuration
+# -----------------------------------------------------------------------------
+
+echo "Done."

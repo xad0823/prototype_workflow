@@ -1,0 +1,351 @@
+
+#-----------------------------------------------------------------------------
+#    The confidential and proprietary information contained in this file may
+#    only be used by a person authorised under and to the extent permitted
+#    by a subsisting licensing agreement from Arm Limited or its affiliates.
+# 
+#           (C) COPYRIGHT 2018-2021 Arm Limited or its affiliates.
+#               ALL RIGHTS RESERVED
+# 
+#    This entire notice must be reproduced on all copies of this file
+#    and copies of this file may only be made by a person if such person is
+#    permitted to do so under the terms of a subsisting license agreement
+#    from Arm Limited or its affiliates.
+#-----------------------------------------------------------------------------
+#
+#
+#
+# Release Information : SSE710-r0p0-00eac0
+#
+# -----------------------------------------------------------------------------
+#
+# Description : Example Constraint UPF for top_sse710
+# Vendor      : arm.com
+# Library     : Subsystem
+# Version     : 1
+#
+# -----------------------------------------------------------------------------
+# Unified Power Format (IEEE Std 1801-2013)
+# -----------------------------------------------------------------------------
+
+puts ""
+puts "###########################################################################"
+puts "# Reading sse710_top constraints UPF ..."
+puts "###########################################################################"
+puts ""
+
+#-------------------------------------------------------------------------------
+# Power Domains
+#-------------------------------------------------------------------------------
+
+create_power_domain PD_AON \
+    -elements {.} \
+    -supply {ram_p} 
+create_power_domain PD_AON -update \
+    -supply {ram_c} 
+create_power_domain PD_AON -update \
+    -supply {primary} 
+
+create_power_domain PD_SYSTOP \
+    -supply {primary} \
+    -elements "$PD_SYSTOP_path"
+
+create_power_domain PD_CLUSTOP \
+    -elements "$PD_CLUSTOP_path" \
+    -supply {primary} 
+create_power_domain PD_CLUSTOP -update \
+    -supply {ram_p} 
+create_power_domain PD_CLUSTOP -update \
+    -supply {ram_c} 
+
+create_power_domain PD_EXTSYS0TOP \
+    -supply {primary} \
+    -elements "$PD_EXTSYS0TOP_path"
+
+create_power_domain PD_EXTSYS1TOP \
+    -supply {primary} \
+    -elements "$PD_EXTSYS1TOP_path"
+
+create_power_domain PD_DBGTOP \
+    -supply {primary} \
+    -elements "$PD_DBGTOP_path"
+
+create_power_domain PD_SECENCTOP \
+    -elements "$PD_SECENCTOP_path" \
+    -supply {primary} 
+create_power_domain PD_SECENCTOP -update \
+    -supply {ram_p} 
+create_power_domain PD_SECENCTOP -update \
+    -supply {ram_c} 
+
+create_power_domain PD_CPU0 \
+    -supply {primary} \
+    -elements $PD_CPU0_path
+create_power_domain PD_CPU0 -update \
+    -supply {ram_p} 
+create_power_domain PD_CPU0 -update \
+    -supply {ram_c} 
+create_power_domain PD_CPU0 -update \
+    -supply {ret} 
+
+create_power_domain PD_CPU1 \
+    -supply {primary} \
+    -elements $PD_CPU1_path
+create_power_domain PD_CPU1 -update \
+    -supply {ram_p} 
+create_power_domain PD_CPU1 -update \
+    -supply {ram_c} 
+create_power_domain PD_CPU1 -update \
+    -supply {ret} 
+
+create_power_domain PD_CPU2 \
+    -supply {primary} \
+    -elements $PD_CPU2_path
+create_power_domain PD_CPU2 -update \
+    -supply {ram_p} 
+create_power_domain PD_CPU2 -update \
+    -supply {ram_c} 
+create_power_domain PD_CPU2 -update \
+    -supply {ret} 
+
+create_power_domain PD_CPU3 \
+    -supply {primary} \
+    -elements $PD_CPU3_path
+create_power_domain PD_CPU3 -update \
+    -supply {ram_p} 
+create_power_domain PD_CPU3 -update \
+    -supply {ram_c} 
+create_power_domain PD_CPU3 -update \
+    -supply {ret} 
+
+#-------------------------------------------------------------------------------
+# Power States
+#-------------------------------------------------------------------------------
+add_power_state PD_CPU0.primary \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_CPU0.ram_p \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_CPU0.ram_c \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_CPU0.ret \
+    -state {ON   -simstate NORMAL}
+
+add_power_state PD_CPU1.primary \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_CPU1.ram_p \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_CPU1.ram_c \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_CPU1.ret \
+    -state {ON   -simstate NORMAL}
+
+add_power_state PD_CPU2.primary \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_CPU2.ram_p \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_CPU2.ram_c \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_CPU2.ret \
+    -state {ON   -simstate NORMAL}
+
+add_power_state PD_CPU3.primary \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_CPU3.ram_p \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_CPU3.ram_c \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_CPU3.ret \
+    -state {ON   -simstate NORMAL}
+
+add_power_state PD_CLUSTOP.primary \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_CLUSTOP.ram_p \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_CLUSTOP.ram_c \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_SYSTOP.primary \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_EXTSYS0TOP.primary \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_EXTSYS1TOP.primary \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_DBGTOP.primary \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_SECENCTOP.primary \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_SECENCTOP.ram_p \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_SECENCTOP.ram_c \
+    -state {ON   -simstate NORMAL} \
+    -state {OFF  -simstate CORRUPT}
+
+add_power_state PD_AON.primary \
+    -state {ON  -simstate NORMAL}
+
+add_power_state PD_AON.ram_p \
+    -state {ON  -simstate NORMAL} \
+    -state {OFF -simstate CORRUPT}
+
+add_power_state PD_AON.ram_c \
+    -state {ON  -simstate NORMAL} \
+    -state {OFF -simstate CORRUPT}
+
+add_power_state PD_CPU0 \
+    -state {ON        -logic_expr {primary==ON  && ret==ON && ram_p==ON  && ram_c==ON }} \
+    -state {FULL_RET  -logic_expr {primary==OFF && ret==ON && ram_p==OFF && ram_c==ON }} \
+    -state {TR_OFF_ON -logic_expr {primary==ON  && ret==ON && ram_p==OFF && ram_c==OFF}} \
+    -state {TR_RET_ON -logic_expr {primary==ON  && ret==ON && ram_p==OFF && ram_c==ON}} \
+    -state {OFF       -logic_expr {primary==OFF && ret==ON && ram_p==OFF && ram_c==OFF}}
+
+add_power_state PD_CPU1 \
+    -state {ON        -logic_expr {primary==ON  && ret==ON && ram_p==ON  && ram_c==ON }} \
+    -state {FULL_RET  -logic_expr {primary==OFF && ret==ON && ram_p==OFF && ram_c==ON }} \
+    -state {TR_OFF_ON -logic_expr {primary==ON  && ret==ON && ram_p==OFF && ram_c==OFF}} \
+    -state {TR_RET_ON -logic_expr {primary==ON  && ret==ON && ram_p==OFF && ram_c==ON}} \
+    -state {OFF       -logic_expr {primary==OFF && ret==ON && ram_p==OFF && ram_c==OFF}}
+
+add_power_state PD_CPU2 \
+    -state {ON        -logic_expr {primary==ON  && ret==ON && ram_p==ON  && ram_c==ON }} \
+    -state {FULL_RET  -logic_expr {primary==OFF && ret==ON && ram_p==OFF && ram_c==ON }} \
+    -state {TR_OFF_ON -logic_expr {primary==ON  && ret==ON && ram_p==OFF && ram_c==OFF}} \
+    -state {TR_RET_ON -logic_expr {primary==ON  && ret==ON && ram_p==OFF && ram_c==ON}} \
+    -state {OFF       -logic_expr {primary==OFF && ret==ON && ram_p==OFF && ram_c==OFF}}
+
+add_power_state PD_CPU3 \
+    -state {ON        -logic_expr {primary==ON  && ret==ON && ram_p==ON  && ram_c==ON }} \
+    -state {FULL_RET  -logic_expr {primary==OFF && ret==ON && ram_p==OFF && ram_c==ON }} \
+    -state {TR_OFF_ON -logic_expr {primary==ON  && ret==ON && ram_p==OFF && ram_c==OFF}} \
+    -state {TR_RET_ON -logic_expr {primary==ON  && ret==ON && ram_p==OFF && ram_c==ON}} \
+    -state {OFF       -logic_expr {primary==OFF && ret==ON && ram_p==OFF && ram_c==OFF}}
+
+add_power_state PD_CLUSTOP \
+    -state {ON        -logic_expr {primary==ON  && ram_p==ON  && ram_c==ON}} \
+    -state {FUNC_RET  -logic_expr {primary==ON  && ram_p==OFF && ram_c==ON}} \
+    -state {MEM_RET   -logic_expr {primary==OFF && ram_p==OFF && ram_c==ON  && PD_CPU0==OFF && PD_CPU1==OFF && PD_CPU2==OFF && PD_CPU3==OFF }} \
+    -state {TR_OFF_ON -logic_expr {primary==ON  && ram_p==OFF && ram_c==OFF && PD_CPU0==OFF && PD_CPU1==OFF && PD_CPU2==OFF && PD_CPU3==OFF }} \
+    -state {OFF       -logic_expr {primary==OFF && ram_p==OFF && ram_c==OFF && PD_CPU0==OFF && PD_CPU1==OFF && PD_CPU2==OFF && PD_CPU3==OFF }}
+add_power_state PD_SYSTOP \
+    -state {ON       -logic_expr {primary==ON }} \
+    -state {OFF1     -logic_expr {primary==OFF && PD_CLUSTOP==MEM_RET}} \
+    -state {OFF2     -logic_expr {primary==OFF && PD_CLUSTOP==OFF}}
+
+add_power_state PD_EXTSYS0TOP \
+    -state {ON   -logic_expr {primary==ON }} \
+    -state {OFF  -logic_expr {primary==OFF}}
+
+add_power_state PD_EXTSYS1TOP \
+    -state {ON   -logic_expr {primary==ON }} \
+    -state {OFF  -logic_expr {primary==OFF}}
+
+add_power_state PD_DBGTOP \
+    -state {ON   -logic_expr {primary==ON }} \
+    -state {OFF  -logic_expr {primary==OFF}}
+
+add_power_state PD_SECENCTOP \
+    -state {ON        -logic_expr {primary==ON  && ram_p==ON  && ram_c==ON}} \
+    -state {MEM_RET   -logic_expr {primary==OFF && ram_p==OFF && ram_c==ON }} \
+    -state {TR_MRT_ON -logic_expr {primary==ON  && ram_p==OFF && ram_c==ON}} \
+    -state {TR_OFF_ON -logic_expr {primary==ON  && ram_p==OFF && ram_c==OFF}} \
+    -state {OFF       -logic_expr {primary==OFF && ram_p==OFF && ram_c==OFF}}
+
+add_power_state PD_AON \
+    -state {ON       -logic_expr {primary==ON  && ram_p == ON  && ram_c == ON}} \
+    -state {FUNC_RET -logic_expr {primary==ON  && ram_p == OFF && ram_c == ON}} \
+    -state {RESET    -logic_expr {primary==ON  && ram_p == OFF && ram_c == OFF}}
+
+#-------------------------------------------------------------------------------
+# Retention Elements
+#-------------------------------------------------------------------------------
+set_retention_elements PD_CPU0_retention_elements \
+    -elements "$PD_CPU0_path" \
+    
+set_retention_elements PD_CPU1_retention_elements \
+    -elements "$PD_CPU1_path" \
+    
+set_retention_elements PD_CPU2_retention_elements \
+    -elements "$PD_CPU2_path" \
+    
+set_retention_elements PD_CPU3_retention_elements \
+    -elements "$PD_CPU3_path" \
+    
+#-------------------------------------------------------------------------------
+# Port attributes
+#-------------------------------------------------------------------------------
+set input_aon_ports  [find_objects . -pattern * -object_type port -direction in]
+set output_aon_ports [find_objects . -pattern * -object_type port -direction out]
+
+# Remove EXTSYS ports from AON port lists
+
+foreach port [concat $extsys0_inputs] {
+    while {[set element [lsearch -regexp $input_aon_ports [subst {^${port}(\\\[.*\\\])?$}]]] > -1} {
+        set input_aon_ports [lreplace $input_aon_ports $element $element]
+    }
+}
+
+foreach port [concat $extsys1_inputs] {
+    while {[set element [lsearch -regexp $input_aon_ports [subst {^${port}(\\\[.*\\\])?$}]]] > -1} {
+        set input_aon_ports [lreplace $input_aon_ports $element $element]
+    }
+}
+
+foreach port [concat $extsys0_outputs] {
+    while {[set element [lsearch -regexp $output_aon_ports [subst {^${port}(\\\[.*\\\])?$}]]] > -1} {
+        set output_aon_ports [lreplace $output_aon_ports $element $element]
+    }
+}
+
+foreach port [concat $extsys1_outputs] {
+    while {[set element [lsearch -regexp $output_aon_ports [subst {^${port}(\\\[.*\\\])?$}]]] > -1} {
+        set output_aon_ports [lreplace $output_aon_ports $element $element]
+    }
+}
+
+
+puts ""
+puts "###########################################################################"
+puts "# Finished sse710_top constraints UPF"
+puts "###########################################################################"
+puts ""
+

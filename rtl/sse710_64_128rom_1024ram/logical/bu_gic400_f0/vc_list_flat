@@ -1,0 +1,16 @@
++incdir+$LOGICAL_PATH/bu_gic400_f0/gic400/verilog
+$LOGICAL_PATH/bu_gic400_f0/models/cells/generic/gic400_inter_clkgate.v
+$LOGICAL_PATH/bu_gic400_f0/models/cells/generic/gic400_sync.v
+$LOGICAL_PATH/bu_gic400_f0/gic400/verilog/gic400_vcpu_interface_list_reg.v
+$LOGICAL_PATH/bu_gic400_f0/gic400/verilog/gic400_interfaces.v
+$LOGICAL_PATH/bu_gic400_f0/gic400/verilog/gic400_distributor.v
+$LOGICAL_PATH/bu_gic400_f0/gic400/verilog/gic400_axi_intf.v
+$LOGICAL_PATH/bu_gic400_f0/gic400/verilog/gic400_axi_intf_addr_unpack.v
+$LOGICAL_PATH/bu_gic400_f0/gic400/verilog/gic400_clk.v
+$LOGICAL_PATH/bu_gic400_f0/gic400/verilog/gic400_spi_block.v
+$LOGICAL_PATH/bu_gic400_f0/gic400/verilog/gic400_cpu_lowids.v
+$LOGICAL_PATH/bu_gic400_f0/gic400/verilog/GIC400.v
+$LOGICAL_PATH/bu_gic400_f0/gic400/verilog/gic400_axi_intf_p1_tx_gen.v
+$LOGICAL_PATH/bu_gic400_f0/gic400/verilog/gic400_cpu_interface.v
+$LOGICAL_PATH/bu_gic400_f0/gic400/verilog/gic400_vcpu_interface.v
+$LOGICAL_PATH/bu_gic400_f0/gic400/verilog/gic400_priority.v

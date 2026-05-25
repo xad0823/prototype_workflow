@@ -1,0 +1,2 @@
+$LOGICAL_PATH/pd_clustop/models/sockets/verilog/sse710_cpu_gic_socket.v
+$LOGICAL_PATH/pd_clustop/pd_clustop_f0_top/verilog/pd_clustop_f0.v

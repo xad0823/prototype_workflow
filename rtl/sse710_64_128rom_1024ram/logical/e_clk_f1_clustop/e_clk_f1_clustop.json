@@ -1,0 +1,52 @@
+{
+   "package_dependency" : [
+      "arm_element_tech_models",
+      "clkrst_f1",
+      "clkselNway_f0_3",
+      "clkselNway_f0_2"
+   ],
+   "SUFFIX" : "_clustop",
+   "TEMPLATE_PKG_ID" : "e_clk_f1",
+   "clocks" : {
+      "HOSTCPUCLK" : {
+         "rst_source" : "CLUSTOP_RESETN",
+         "clk_source" : [
+            "REFCLK",
+            "SYSPLL",
+            "CPUPLL"
+         ],
+         "dct_cg" : "false",
+         "divider" : {
+            "per_clk_divider" : {
+               "CPUPLL" : {
+                  "divider_type" : "divider",
+                  "pipeline_depth" : "0"
+               },
+               "SYSPLL" : {
+                  "pipeline_depth" : "0",
+                  "divider_type" : "divider"
+               }
+            }
+         },
+         "internal_clk" : "false"
+      },
+      "GICCLK" : {
+         "divider" : {
+            "per_clk_divider" : {
+               "SYSPLL" : {
+                  "divider_type" : "divider",
+                  "pipeline_depth" : "0"
+               }
+            }
+         },
+         "dct_cg" : "false",
+         "clk_source" : [
+            "REFCLK",
+            "SYSPLL"
+         ],
+         "internal_clk" : "false",
+         "rst_source" : "CLUSTOP_RESETN"
+      }
+   },
+   "package_template" : "$ARM_IP_LIBRARY/e_clk_f1"
+}

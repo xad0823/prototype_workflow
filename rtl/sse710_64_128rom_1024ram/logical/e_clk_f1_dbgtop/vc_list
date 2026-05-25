@@ -1,0 +1,5 @@
+$LOGICAL_PATH/arm_cells/package.vc
+$LOGICAL_PATH/arm_element_tech_models/package.vc
+$LOGICAL_PATH/clkrst_f1/package.vc
+$LOGICAL_PATH/clkselNway_f0_2/package.vc
+$LOGICAL_PATH/e_clk_f1_dbgtop/package.vc

@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConfiguredComponent>
+  <Name>nic400_sse710_boot_reg</Name>
+  <ConfigurableComponentRef>
+    <Vendor>arm.com</Vendor>
+    <Library>CoreLink</Library>
+    <Name>nic400</Name>
+    <Version>r1p2</Version>
+  </ConfigurableComponentRef>
+  <Specification>
+    <Parameters>
+      <AWUSERWidth>0</AWUSERWidth>
+      <ARUSERWidth>0</ARUSERWidth>
+      <WUSERWidth>0</WUSERWidth>
+      <BUSERWidth>0</BUSERWidth>
+      <RUSERWidth>0</RUSERWidth>
+      <GlobalIDWidth>0</GlobalIDWidth>
+      <HierarchicalClockGating>true</HierarchicalClockGating>
+      <ClockControllerImplementation>asynchronous</ClockControllerImplementation>
+      <RSBCentralRing>true</RSBCentralRing>
+      <DefaultProtocol>axi4</DefaultProtocol>
+      <UppercaseRTLSignals>false</UppercaseRTLSignals>
+      <Taxonomy>master_slave</Taxonomy>
+      <QoSEnabled>false</QoSEnabled>
+      <QVNEnabled>false</QVNEnabled>
+      <GenerateTopology>true</GenerateTopology>
+    </Parameters>
+    <Domains>
+      <VoltageDomains>
+        <VoltageDomain>
+          <Name>vd0</Name>
+        </VoltageDomain>
+      </VoltageDomains>
+      <PowerDomains>
+        <PowerDomain>
+          <Name>pd0</Name>
+          <PowerDomainType>AlwaysOn</PowerDomainType>
+          <VoltageDomainRef>vd0</VoltageDomainRef>
+        </PowerDomain>
+      </PowerDomains>
+      <ClockDomains>
+        <ClockDomain>
+          <Name>clk0</Name>
+          <ClockDomainType>physical</ClockDomainType>
+          <PowerDomainRef>pd0</PowerDomainRef>
+        </ClockDomain>
+        <ClockDomain>
+          <Name>clk1</Name>
+          <ClockDomainType>physical</ClockDomainType>
+          <PowerDomainRef>pd0</PowerDomainRef>
+        </ClockDomain>
+      </ClockDomains>
+      <ClockRelations>
+        <ClockRelation>
+          <ClockRef1>clk0</ClockRef1>
+          <ClockRef2>clk1</ClockRef2>
+          <Relationship>identical</Relationship>
+          <SynchronousType>1:1</SynchronousType>
+          <Programmable>false</Programmable>
+        </ClockRelation>
+      </ClockRelations>
+    </Domains>
+    <Groups>
+      <ExternalGroups/>
+      <APBGroups>
+        <APBGroup>
+          <Name>slave_if0_0_m</Name>
+          <ClockRef>clk1</ClockRef>
+          <ReadIssuingAPB>1</ReadIssuingAPB>
+          <WriteIssuingAPB>1</WriteIssuingAPB>
+          <TotalIssuingAPB>1</TotalIssuingAPB>
+          <LockSupport>false</LockSupport>
+        </APBGroup>
+      </APBGroups>
+    </Groups>
+    <Interfaces>
+      <SlaveInterface>
+        <Name>slave_if0_0_s</Name>
+        <AXI4SlaveProtocol>
+          <AddressWidth>32</AddressWidth>
+          <DataWidth>32</DataWidth>
+          <VIDWidth>10</VIDWidth>
+          <MultiRegion>false</MultiRegion>
+          <TrustZoneSlave>per_access_secure</TrustZoneSlave>
+          <ReadAcceptance>1</ReadAcceptance>
+          <WriteAcceptance>1</WriteAcceptance>
+          <QoSTypeAXI>none</QoSTypeAXI>
+          <QoSValue>0</QoSValue>
+          <TransactionRateRegulation>false</TransactionRateRegulation>
+          <OutstandingTransactionRegulation>false</OutstandingTransactionRegulation>
+          <LatencyPeriodRegulation>false</LatencyPeriodRegulation>
+          <VNExternal>false</VNExternal>
+        </AXI4SlaveProtocol>
+        <GeographicDomainRef>gd0</GeographicDomainRef>
+        <ClockRef>clk0</ClockRef>
+        <MultiPorted>false</MultiPorted>
+        <CyclicDependencyAvoidanceScheme>single_slave</CyclicDependencyAvoidanceScheme>
+        <LowLatency>false</LowLatency>
+        <Programmable>false</Programmable>
+        <Bridge>true</Bridge>
+      </SlaveInterface>
+      <MasterInterface>
+        <Name>master_if0</Name>
+        <APB4MasterProtocol>
+          <AddressWidth>32</AddressWidth>
+          <DataWidth>32</DataWidth>
+          <TrustZoneMasterAPB>secure</TrustZoneMasterAPB>
+          <APBGroupRef>slave_if0_0_m</APBGroupRef>
+        </APB4MasterProtocol>
+        <ClockRef>clk1</ClockRef>
+        <Programmable>false</Programmable>
+      </MasterInterface>
+    </Interfaces>
+    <MemoryMaps>
+    </MemoryMaps>
+    <Paths>
+      <Path>
+        <Source>
+          <InterfaceRef>slave_if0_0_s</InterfaceRef>
+        </Source>
+        <Targets>
+          <Target>
+            <InterfaceRef>master_if0</InterfaceRef>
+          </Target>
+        </Targets>
+      </Path>
+    </Paths>
+    <VirtualNetworks/>
+  </Specification>
+  <Architecture>
+    <NICConfigFile>&lt;periph&gt;
+    &lt;product_version_info major_group=&quot;bu&quot; major_revision=&quot;1&quot; major_version=&quot;00&quot; minor_code=&quot;50000&quot; minor_revision=&quot;2&quot; minor_version=&quot;0&quot; part_quality=&quot;rel&quot; product_code=&quot;nic400&quot; /&gt;
+    &lt;validator_version_info major_revision=&quot;18&quot; minor_revision=&quot;2&quot; /&gt;
+    &lt;global&gt;
+        &lt;address0x0 def=&quot;true&quot;&gt;bottom&lt;/address0x0&gt;
+        &lt;aruser_width&gt;0&lt;/aruser_width&gt;
+        &lt;awuser_width&gt;0&lt;/awuser_width&gt;
+        &lt;buser_width&gt;0&lt;/buser_width&gt;
+        &lt;cc_type&gt;async&lt;/cc_type&gt;
+        &lt;default_protocol&gt;axi4&lt;/default_protocol&gt;
+        &lt;dpe_glb_enable def=&quot;true&quot;&gt;false&lt;/dpe_glb_enable&gt;
+        &lt;dpe_status&gt;false&lt;/dpe_status&gt;
+        &lt;dpe_width def=&quot;true&quot;&gt;5&lt;/dpe_width&gt;
+        &lt;gen_caps&gt;true&lt;/gen_caps&gt;
+        &lt;hcg_en&gt;true&lt;/hcg_en&gt;
+        &lt;license_status&gt;licensed&lt;/license_status&gt;
+        &lt;periph_id3 def=&quot;true&quot;&gt;0&lt;/periph_id3&gt;
+        &lt;pl_id_width&gt;0&lt;/pl_id_width&gt;
+        &lt;qos_status&gt;false&lt;/qos_status&gt;
+        &lt;rsb_arch_central_ring&gt;true&lt;/rsb_arch_central_ring&gt;
+        &lt;ruser_width&gt;0&lt;/ruser_width&gt;
+        &lt;sas_visible def=&quot;true&quot;&gt;false&lt;/sas_visible&gt;
+        &lt;start_iid&gt;0&lt;/start_iid&gt;
+        &lt;taxonomy&gt;masterslave&lt;/taxonomy&gt;
+        &lt;thin_links_status def=&quot;true&quot;&gt;false&lt;/thin_links_status&gt;
+        &lt;uppercase_ext_sig&gt;false&lt;/uppercase_ext_sig&gt;
+        &lt;virtual_networks /&gt;
+        &lt;virtual_networks_status&gt;false&lt;/virtual_networks_status&gt;
+        &lt;wuser_width&gt;0&lt;/wuser_width&gt;
+    &lt;/global&gt;
+    &lt;clocks&gt;
+        &lt;domain freq=&quot;100&quot;&gt;clk0&lt;/domain&gt;
+        &lt;domain freq=&quot;100&quot;&gt;clk1&lt;/domain&gt;
+        &lt;relationship&gt;
+            &lt;clock0&gt;clk0&lt;/clock0&gt;
+            &lt;clock1&gt;clk1&lt;/clock1&gt;
+            &lt;clock_boundary&gt;sync&lt;/clock_boundary&gt;
+        &lt;/relationship&gt;
+    &lt;/clocks&gt;
+    &lt;amib&gt;
+        &lt;apb_config&gt;false&lt;/apb_config&gt;
+        &lt;apb_port&gt;
+            &lt;clock_domain&gt;clk1&lt;/clock_domain&gt;
+            &lt;name&gt;master_if0&lt;/name&gt;
+            &lt;trustzone&gt;sec&lt;/trustzone&gt;
+            &lt;x&gt;0&lt;/x&gt;
+            &lt;y&gt;0&lt;/y&gt;
+        &lt;/apb_port&gt;
+        &lt;apb_slave_no&gt;0&lt;/apb_slave_no&gt;
+        &lt;clock_boundary&gt;async&lt;/clock_boundary&gt;
+        &lt;clock_domain_name_master_if&gt;clk1&lt;/clock_domain_name_master_if&gt;
+        &lt;clock_domain_name_slave_if&gt;clk0&lt;/clock_domain_name_slave_if&gt;
+        &lt;compress_id def=&quot;true&quot;&gt;false&lt;/compress_id&gt;
+        &lt;dest_type&gt;peripheral&lt;/dest_type&gt;
+        &lt;master_if_addr_width&gt;32&lt;/master_if_addr_width&gt;
+        &lt;master_if_data_width&gt;32&lt;/master_if_data_width&gt;
+        &lt;multi_ported&gt;false&lt;/multi_ported&gt;
+        &lt;multi_region&gt;false&lt;/multi_region&gt;
+        &lt;name&gt;slave_if0_0_m&lt;/name&gt;
+        &lt;protocol&gt;apb&lt;/protocol&gt;
+        &lt;qv_out&gt;false&lt;/qv_out&gt;
+        &lt;reg&gt;
+            &lt;depth&gt;2&lt;/depth&gt;
+            &lt;impl&gt;present&lt;/impl&gt;
+            &lt;location&gt;boundary&lt;/location&gt;
+            &lt;name&gt;a&lt;/name&gt;
+            &lt;type&gt;fifo&lt;/type&gt;
+        &lt;/reg&gt;
+        &lt;reg&gt;
+            &lt;depth&gt;2&lt;/depth&gt;
+            &lt;impl&gt;present&lt;/impl&gt;
+            &lt;location&gt;boundary&lt;/location&gt;
+            &lt;name&gt;w&lt;/name&gt;
+            &lt;type&gt;fifo&lt;/type&gt;
+        &lt;/reg&gt;
+        &lt;reg&gt;
+            &lt;depth&gt;2&lt;/depth&gt;
+            &lt;impl&gt;present&lt;/impl&gt;
+            &lt;location&gt;boundary&lt;/location&gt;
+            &lt;name&gt;d&lt;/name&gt;
+            &lt;type&gt;fifo&lt;/type&gt;
+        &lt;/reg&gt;
+        &lt;reg&gt;
+            &lt;impl def=&quot;true&quot;&gt;absent&lt;/impl&gt;
+            &lt;location&gt;slave_port&lt;/location&gt;
+            &lt;name&gt;aw&lt;/name&gt;
+            &lt;type def=&quot;true&quot;&gt;full&lt;/type&gt;
+        &lt;/reg&gt;
+        &lt;reg&gt;
+            &lt;impl def=&quot;true&quot;&gt;absent&lt;/impl&gt;
+            &lt;location&gt;slave_port&lt;/location&gt;
+            &lt;name&gt;ar&lt;/name&gt;
+            &lt;type def=&quot;true&quot;&gt;full&lt;/type&gt;
+        &lt;/reg&gt;
+        &lt;reg&gt;
+            &lt;impl def=&quot;true&quot;&gt;absent&lt;/impl&gt;
+            &lt;location&gt;slave_port&lt;/location&gt;
+            &lt;name&gt;r&lt;/name&gt;
+            &lt;type def=&quot;true&quot;&gt;full&lt;/type&gt;
+        &lt;/reg&gt;
+        &lt;reg&gt;
+            &lt;impl def=&quot;true&quot;&gt;absent&lt;/impl&gt;
+            &lt;location&gt;slave_port&lt;/location&gt;
+            &lt;name&gt;w&lt;/name&gt;
+            &lt;type def=&quot;true&quot;&gt;full&lt;/type&gt;
+        &lt;/reg&gt;
+        &lt;reg&gt;
+            &lt;impl def=&quot;true&quot;&gt;absent&lt;/impl&gt;
+            &lt;location&gt;slave_port&lt;/location&gt;
+            &lt;name&gt;b&lt;/name&gt;
+            &lt;type def=&quot;true&quot;&gt;full&lt;/type&gt;
+        &lt;/reg&gt;
+        &lt;reg&gt;
+            &lt;impl def=&quot;true&quot;&gt;absent&lt;/impl&gt;
+            &lt;location&gt;master_port&lt;/location&gt;
+            &lt;name&gt;a&lt;/name&gt;
+            &lt;type def=&quot;true&quot;&gt;full&lt;/type&gt;
+        &lt;/reg&gt;
+        &lt;reg&gt;
+            &lt;impl def=&quot;true&quot;&gt;absent&lt;/impl&gt;
+            &lt;location&gt;master_port&lt;/location&gt;
+            &lt;name&gt;d&lt;/name&gt;
+            &lt;type def=&quot;true&quot;&gt;full&lt;/type&gt;
+        &lt;/reg&gt;
+        &lt;reg&gt;
+            &lt;impl def=&quot;true&quot;&gt;absent&lt;/impl&gt;
+            &lt;location&gt;master_port&lt;/location&gt;
+            &lt;name&gt;w&lt;/name&gt;
+            &lt;type def=&quot;true&quot;&gt;full&lt;/type&gt;
+        &lt;/reg&gt;
+        &lt;slave_if_data_width&gt;32&lt;/slave_if_data_width&gt;
+        &lt;tide&gt;0&lt;/tide&gt;
+        &lt;token_prerequest def=&quot;true&quot;&gt;false&lt;/token_prerequest&gt;
+        &lt;token_prerequest_bridge def=&quot;true&quot;&gt;false&lt;/token_prerequest_bridge&gt;
+        &lt;trustzone&gt;nsec&lt;/trustzone&gt;
+        &lt;vid_width&gt;10&lt;/vid_width&gt;
+        &lt;vn_external def=&quot;true&quot;&gt;none&lt;/vn_external&gt;
+        &lt;vn_external_bridge def=&quot;true&quot;&gt;none&lt;/vn_external_bridge&gt;
+        &lt;x&gt;0&lt;/x&gt;
+        &lt;y&gt;20&lt;/y&gt;
+        &lt;master_if_port_name&gt;master_if0&lt;/master_if_port_name&gt;
+        &lt;slave_if_port_name&gt;slave_if0_0_m_s&lt;/slave_if_port_name&gt;
+    &lt;/amib&gt;
+    &lt;connect&gt;
+        &lt;aruser&gt;false&lt;/aruser&gt;
+        &lt;awuser&gt;false&lt;/awuser&gt;
+        &lt;buser&gt;false&lt;/buser&gt;
+        &lt;dest&gt;external&lt;/dest&gt;
+        &lt;dest_port&gt;master_if0&lt;/dest_port&gt;
+        &lt;lock&gt;false&lt;/lock&gt;
+        &lt;out_reads&gt;1&lt;/out_reads&gt;
+        &lt;out_trans&gt;1&lt;/out_trans&gt;
+        &lt;out_writes&gt;1&lt;/out_writes&gt;
+        &lt;protocol&gt;apb4&lt;/protocol&gt;
+        &lt;ruser&gt;false&lt;/ruser&gt;
+        &lt;src&gt;slave_if0_0_m&lt;/src&gt;
+        &lt;src_port&gt;master_if0&lt;/src_port&gt;
+        &lt;wuser&gt;false&lt;/wuser&gt;
+    &lt;/connect&gt;
+    &lt;connect&gt;
+        &lt;aruser&gt;false&lt;/aruser&gt;
+        &lt;awuser&gt;false&lt;/awuser&gt;
+        &lt;buser&gt;false&lt;/buser&gt;
+        &lt;dest&gt;slave_if0_0_m&lt;/dest&gt;
+        &lt;dest_port&gt;slave_if0_0_m_s&lt;/dest_port&gt;
+        &lt;lock&gt;false&lt;/lock&gt;
+        &lt;out_reads&gt;4&lt;/out_reads&gt;
+        &lt;out_trans&gt;8&lt;/out_trans&gt;
+        &lt;out_writes&gt;4&lt;/out_writes&gt;
+        &lt;protocol&gt;axi4&lt;/protocol&gt;
+        &lt;ruser&gt;false&lt;/ruser&gt;
+        &lt;src&gt;external&lt;/src&gt;
+        &lt;src_port&gt;slave_if0_0_m_s&lt;/src_port&gt;
+        &lt;wuser&gt;false&lt;/wuser&gt;
+    &lt;/connect&gt;
+    &lt;architecture /&gt;
+&lt;/periph&gt;
+</NICConfigFile>
+  </Architecture>
+  <Deliverables>
+    <IPXACT/>
+    <RTL/>
+    <TestBench/>
+    <Reports/>
+  </Deliverables>
+</ConfiguredComponent>

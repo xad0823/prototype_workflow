@@ -1,0 +1,159 @@
+// ----------------------------------------------------------------------------
+//  The confidential and proprietary information contained in this file may
+//  only be used by a person authorised under and to the extent permitted
+//  by a subsisting licensing agreement from Arm Limited or its affiliates.
+//
+//  (C) COPYRIGHT 2019-2021 Arm Limited or its affiliates.
+//  ALL RIGHTS RESERVED
+//
+//  This entire notice must be reproduced on all copies of this file
+//  and copies of this file may only be made by a person if such person is
+//  permitted to do so under the terms of a subsisting license agreement
+//  from Arm Limited or its affiliates.
+// ----------------------------------------------------------------------------
+//
+//
+//
+//
+//      Release Information : SSE710-r0p0-00eac0
+//
+// ----------------------------------------------------------------------------
+// Purpose: README file for SSE-710 R0 IP-XACT 1685-2009 description
+// ----------------------------------------------------------------------------
+
+This release includes the following level of description as defined by the
+IP-XACT specification:
+
+  * Bus interfaces
+  * Component model including:
+    - I/O signal interface
+    - RTL configuration parameters
+    - File set
+
+//---------------------------------------------------------------------------------------
+
+The distribution contains the following components relative to the directory
+'top_sse710_r0_3/top_sse710_r0_aontop_3/ipxact/arm.com/Corstone' 
+in the distribution:
+
+  ./README                                                                                                          : This document
+  ./top_sse710_r0_aontop_3.xml                                                                   : IP-XACT description of unconfigured SSE-710
+
+  ../../../../../shared/ipxact/busdefs/amba.com/AMBA3/APB/r2p0_0/APB.xml                                            : AMBA Advanced Peripheral Bus (APB 3.0) interface description
+  ../../../../../shared/ipxact/busdefs/amba.com/AMBA3/APB/r2p0_0/APB_rtl.xml                                        : RTL view of the AMBA Advanced Peripheral Bus (APB 3.0) interface description
+  ../../../../../shared/ipxact/busdefs/amba.com/AMBA4/APB4/r0p0_0/APB4.xml                                          : AMBA Advanced Peripheral Bus (APB 4.0) interface description
+  ../../../../../shared/ipxact/busdefs/amba.com/AMBA4/APB4/r0p0_0/APB4_rtl.xml                                      : RTL view of the AMBA Advanced Peripheral Bus (APB 4.0) interface description
+  ../../../../../shared/ipxact/busdefs/amba.com/AMBA4/ATB/r0p0_0/ATB.xml                                            : AMBA Advanced Trace Bus (ATB) interface description
+  ../../../../../shared/ipxact/busdefs/amba.com/AMBA4/ATB/r0p0_0/ATB_rtl.xml                                        : RTL view of the AMBA Advanced Trace Bus (ATB) interface description
+  ../../../../../shared/ipxact/busdefs/amba.com/AMBA5/AXI5/r0p0_0/AXI5.xml                                          : AMBA Advanced eXtensible Interface (AXI 5.0) interface description
+  ../../../../../shared/ipxact/busdefs/amba.com/AMBA5/AXI5/r0p0_0/AXI5_rtl.xml                                      : RTL view of the AMBA Advanced eXtensible Interface (AXI 5.0) interface description
+  ../../../../../shared/ipxact/busdefs/amba.com/AMBA5/ACE5/r0p0_0/ACE5.xml                                          : AMBA AXI Coherency Extension 5 (ACE5) interface description
+  ../../../../../shared/ipxact/busdefs/amba.com/AMBA5/ACE5/r0p0_0/ACE5_rtl.xml                                      : RTL view of the AMBA AXI Coherency Extension 5 (ACE5) interface description
+  ../../../../../shared/ipxact/busdefs/amba.com/AMBA5/ACE5-LiteDVM/r0p0_0/ACE5-LiteDVM.xml                          : AMBA AXI Coherency Extension 5 Lite (ACE5-Lite) interface description 
+  ../../../../../shared/ipxact/busdefs/amba.com/AMBA5/ACE5-LiteDVM/r0p0_0/ACE5-LiteDVM_rtl.xml                      : RTL view of the AMBA AXI Coherency Extension 5 Lite (ACE5-Lite) interface description 
+  ../../../../../shared/ipxact/busdefs/amba.com/AMBA5/ACE5-Lite/r0p0_0/ACE5-Lite.xml                                : AMBA AXI Coherency Extension 5 Lite (ACE5-Lite) interface description
+  ../../../../../shared/ipxact/busdefs/amba.com/AMBA5/ACE5-Lite/r0p0_0/ACE5-Lite_rtl.xml                            : RTL view of the AMBA AXI Coherency Extension 5 Lite (ACE5-Lite) interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/Authentication/r0p0_0/Authentication.xml                   : CoreSight debug authentication interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/Authentication/r0p0_0/Authentication_rtl.xml               : RTL view of the CoreSight debug authentication interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/Authentication/r0p0_1/Authentication.xml                   : CoreSight debug authentication interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/Authentication/r0p0_1/Authentication_rtl.xml               : RTL view of the CoreSight debug authentication interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/ChannelPulse/r0p0_0/ChannelPulse.xml                       : CoreSight channel interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/ChannelPulse/r0p0_0/ChannelPulse_rtl.xml                   : RTL view of the CoreSight channel interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/WTimestamp/r0p0_0/WTimestamp.xml                           : CoreSight wide timestamp interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/WTimestamp/r0p0_0/WTimestamp_rtl.xml                       : RTL view of the CoreSight wide timestamp interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/WTimestamp/r1p0_0/WTimestamp.xml                           : CoreSight wide timestamp interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/WTimestamp/r1p0_0/WTimestamp_rtl.xml                       : RTL view of the CoreSight wide timestamp interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/WTimestamp/r1p0_1/WTimestamp.xml                           : CoreSight wide timestamp interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/WTimestamp/r1p0_1/WTimestamp_rtl.xml                       : RTL view of the CoreSight wide timestamp interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/CPWRUP/r0p0_0/CPWRUP.xml                                   : CoreSight power-up interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/CPWRUP/r0p0_0/CPWRUP_rtl.xml                               : RTL view of the CoreSight power-up interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/SWJ/r0p0_0/SWJ.xml                                         : CoreSight Serial Wire and JTAG (SWJ) interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/SWJ/r0p0_0/SWJ_rtl.xml                                     : RTL view of the CoreSight Serial Wire and JTAG (SWJ) interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/TracePort/r0p0_0/TracePort.xml                             : CoreSight Trace Port (TP) interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/TracePort/r0p0_0/TracePort_rtl.xml                         : RTL view of the CoreSight Trace Port (TP) interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/DPAbort/r0p0_0/DPAbort.xml                                 : CoreSight Debug Port Abort interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/CoreSight/DPAbort/r0p0_0/DPAbort_rtl.xml                             : RTL view of the CoreSight Debug Port Abort interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/dft/dft_control/r0p0_0/dft_control.xml                               : ARM IP core test interface
+  ../../../../../shared/ipxact/busdefs/arm.com/dft/dft_control/r0p0_0/dft_control_rtl.xml                           : RTL view of ARM IP core test interface
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/MBISTInterfac0/r0p0_0/MBISTInterface.xml                     : ARM DFT MBIST interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/MBISTInterface/r0p0_0/MBISTInterface_rtl.xml                 : RTL view of the ARM DFT MBIST interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/DynamicConfig/r0p0_0/DynamicConfig.xml                       : Generic dynamic configuration interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/DynamicConfig/r0p0_0/DynamicConfig_rtl.xml                   : RTL view of the generic dynamic configuration interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/Q-Channel/r0p0_0/Q-Channel.xml                               : Generic Q-Channel interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/Q-Channel/r0p0_0/Q-Channel_rtl.xml                           : RTL view of the generic Q-Channel interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/RESET/r0p0_0/RESET.xml                                       : Generic reset bus interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/RESET/r0p0_0/RESET_rtl.xml                                   : RTL view of the generic reset bus interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/Staticcfg/r0p0_0/Staticcfg.xml                               : Generic static configuration interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/Staticcfg/r0p0_0/Staticcfg_rtl.xml                           : RTL view of the generic static configuration interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/Status/r0p0_0/Status.xml                                     : Generic status interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/Status/r0p0_0/Status_rtl.xml                                 : RTL view of the generic status interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/clock/r0p0_0/clock.xml                                       : Generic clock bus interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/clock/r0p0_0/clock_rtl.xml                                   : RTL view of the generic clock bus interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/interrupt/r0p0_0/interrupt.xml                               : Generic interrupt bus interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/interrupt/r0p0_0/interrupt_rtl.xml                           : RTL view of the generic interrupt bus interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/SystemTimer/r0p0_0/SystemTimer.xml                           : Generic system timer interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/SystemTimer/r0p0_0/SystemTimer_rtl.xml                       : RTL view of the Generic system timer interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/SystemTimerGray/r0p0_0/SystemTimerGray.xml                   : Generic system timer gray interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/SystemTimerGray/r0p0_0/SystemTimerGray_rtl.xml               : RTL view of the Generic system timer gray interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/InterruptInterface/r0p0_0/InterruptInterface.xml             : Generic multi-bit interrupt interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/InterruptInterface/r0p0_0/InterruptInterface_rtl.xml         : RTL view of the Generic multi-bit interrupt interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/Wakeup/r0p0_0/Wakeup.xml                                     : Generic wake-up request interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/Wakeup/r0p0_0/Wakeup_rtl.xml                                 : RTL view of the Generic wake-up request interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/Uart/r0p0_0/Uart.xml                                         : UART interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/generic/Uart/r0p0_0/Uart_rtl.xml                                     : RTL view of the UART interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/PrimeCell/PL330_DMAA/r0p0_0/PL330_DMAA.xml                           : PrimeCell DMA acknowledge (DMA-A) interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/PrimeCell/PL330_DMAA/r0p0_0/PL330_DMAA_rtl.xml                       : RTL view of the PrimeCell DMA acknowledge (DMA-A) interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/PrimeCell/PL330_DMAR/r0p0_0/PL330_DMAR.xml                           : PrimeCell DMA request (DMA-R) interface description
+  ../../../../../shared/ipxact/busdefs/arm.com/PrimeCell/PL330_DMAR/r0p0_0/PL330_DMAR_rtl.xml                       : RTL view of the PrimeCell DMA request (DMA-R) interface description
+
+
+
+
+//---------------------------------------------------------------------------------------
+// Configuration
+//---------------------------------------------------------------------------------------
+
+top_sse710_r0_aontop_3.xml describes SSE-710 with all possible RTL parameter configuration.
+
+You can use the provided Build_Component script to generate a new
+description for a specific SSE-710 configuration. The 'configured' description
+has all configuration options resolved.
+
+For more details about Build_Component, see the section 'Using Build_Component'
+below.
+
+//---------------------------------------------------------------------------------------
+// Using Build_Component
+//---------------------------------------------------------------------------------------
+
+The Build_Component script can be used to generate a configured IP-XACT file
+from the provided component description. Running the scripts results in an IP-XACT component
+file that describes SSE-710 with the specific parameters (see Configuration above).
+
+You can run the Build_Component in the directory '/top_sse710_r0_3/top_sse710_r0_aontop_3/ipxact/arm.com/Corstone' with the following command:
+
+../../../../../shared/tools/ipxact/Build_Component <filename.xml> [<uniquifier>] [-config <config_file>]
+  
+Where: <filename.xml>
+         IP-XACT file to base configuration on
+
+       <uniquifier>
+         A unique string to potentially append to the configured component filename.
+
+       <config_file>
+         A file that contains a list of all the <parameter_name> = <parameter_value> pairs required to build a specific configuration of the component.
+         Each name and value pair must be on a different line.
+         Use this option if you have saved a configuration from a previous script invocation.
+  
+Example:
+
+../../../../../shared/tools/ipxact/Build_Component top_sse710_r0_aontop_3.xml configured -config sse710_ipxact_config
+
+The above example will produce a configured IP-XACT file 'top_sse710_r0_aontop_3_configured.xml'.
+
+
+Notes
+----- 
+
+1) You should make sure that the IP-XACT configuration file aligns with the 
+   RTL parameter settings when instantiating SSE-710 top-level module.

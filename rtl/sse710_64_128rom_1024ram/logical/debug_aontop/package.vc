@@ -1,0 +1,3 @@
+$LOGICAL_PATH/debug_aontop/css600_dpabortsyncbridge/verilog/css600_dpabortsyncbridge.v
+$LOGICAL_PATH/debug_aontop/debug_f0_aontop/verilog/debug_f0_aontop.v
+$LOGICAL_PATH/debug_aontop/debug_f0_aontop/verilog/gpio_apb.v

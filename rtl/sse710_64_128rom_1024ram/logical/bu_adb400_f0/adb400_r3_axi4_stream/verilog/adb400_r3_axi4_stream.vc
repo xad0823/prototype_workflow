@@ -1,0 +1,44 @@
+//-----------------------------------------------------------------------------
+// The confidential and proprietary information contained in this file may
+// only be used by a person authorised under and to the extent permitted
+// by a subsisting licensing agreement from ARM Limited or its affiliates.
+//
+// (C) COPYRIGHT 2015-2016 ARM Limited or its affiliates.
+// ALL RIGHTS RESERVED
+//
+// This entire notice must be reproduced on all copies of this file
+// and copies of this file may only be made by a person if such person is
+// permitted to do so under the terms of a subsisting license agreement
+// from ARM Limited or its affiliates.
+//
+// Checked In :  2016-01-04 17:05:23 +0000 (Mon, 04 Jan 2016)
+// Revision : 205159
+//
+// Release Information : PL405-r3p0-01rel0
+//
+//-----------------------------------------------------------------------------
+//  Purpose : Argument file for adb400_r3_axi4_stream top level
+//-----------------------------------------------------------------------------
+
++incdir+../../shared/verilog
+
+adb400_r3_axi4_stream.v
+adb400_r3_axi4_stream_mst.v
+adb400_r3_axi4_stream_slv.v
+
+../../shared/verilog/adb400_r3_slv_transport_f1.v
+../../shared/verilog/adb400_r3_mst_transport_f1.v
+../../shared/verilog/adb400_r3_dnstrm_payld.v
+../../shared/verilog/adb400_r3_ful_regd_slice.v
+../../shared/verilog/adb400_r3_mi_ctrl.v
+../../shared/verilog/adb400_r3_si_ctrl.v
+../../shared/verilog/adb400_r3_sar.v
+../../shared/verilog/adb400_r3_upstrm_payld.v
+../../shared/verilog/adb400_r3_muxn.v
+
+../../models/cells/generic/adb400_r3_nand2.v
+../../models/cells/generic/adb400_r3_or2.v
+../../models/cells/generic/adb400_r3_xor2.v
+../../models/cells/generic/adb400_r3_sync_flop.v
+../../models/cells/generic/adb400_r3_syncn.v
+

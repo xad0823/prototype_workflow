@@ -1,0 +1,555 @@
+#!/usr/bin/env sh
+set -e # Exit script upon error
+
+# -----------------------------------------------------------------------------
+#  The confidential and proprietary information contained in this file may
+#  only be used by a person authorised under and to the extent permitted
+#  by a subsisting licensing agreement from Arm Limited or its affiliates.
+#
+#         (C) COPYRIGHT 2019-2021 Arm Limited or its affiliates.
+#             ALL RIGHTS RESERVED
+#
+#  This entire notice must be reproduced on all copies of this file
+#  and copies of this file may only be made by a person if such person is
+#  permitted to do so under the terms of a subsisting license agreement
+#  from Arm Limited or its affiliates.
+#
+#
+#       Checked In          : 2020-03-17 08:49:03 +0000 (Tue, 17 Mar 2020) 
+#
+#       Revision            : 26791 
+#
+#       Release Information : r0p0-00eac0
+#
+# -----------------------------------------------------------------------------
+# Purpose : Configure script
+# -----------------------------------------------------------------------------
+
+## Set the configure common scripts path
+CONFIG_BIN_PATH=$LOGICAL_PATH/shared/tools/bin
+
+# -----------------------------------------------------------------------------
+# Initialization
+# -----------------------------------------------------------------------------
+
+initialize () {
+# Setup useful paths
+TEMPLATE_PATH=$(dirname "$0")
+TEMPLATE_PKG_PATH=$(echo "$TEMPLATE_PATH" | sed -re 's@^(.*)(/trunk|/branches/[^/]+|/tags/[^/]+)(/[^/])?$@\1@')
+
+# Setup template package ID
+TEMPLATE_PKG_ID=$(basename "$TEMPLATE_PKG_PATH")
+
+# Setup suffix
+SUFFIX=$(echo "$ELEMENT_INSTANCE_NAME" | sed -e "s/$TEMPLATE_PKG_ID//")
+}
+
+# -----------------------------------------------------------------------------
+# Bundle part/version and presence check
+# -----------------------------------------------------------------------------
+
+bundle_check () {
+# Extract used bundles from RTL cfg YAML
+BUNDLE_YAML=`perl  -MYAML\
+                       -MFile::Slurp\
+                       -e "my \\$i = Load scalar read_file('$CONFIGURATION_YAML_PATH');
+                           if ( @{ \\$i->{$ELEMENT_INSTANCE_NAME}->{bundle_dependency} }) {
+                             for ( @{ \\$i->{$ELEMENT_INSTANCE_NAME}->{bundle_dependency} }) {print \"\\$_ \";}
+                           };"`
+
+# Convert to array
+IFS=" " read -a BUNDLE_YAML_ARR <<< "${BUNDLE_YAML}"
+
+# Set source directory for rendering
+
+#
+IP_PATH="$ARM_IP_REPOSITORY/${BUNDLE_YAML_ARR[0]}"
+
+# ---------------------------------------------------
+# Checking if incoming bundle presents and backdoor 
+# ---------------------------------------------------
+if [ ! -e "$IP_PATH" ]; then
+   echo "Incoming bundle information is not valid"
+   echo "The $IP_PATH does not exist."
+   if [ ! -n "$BACKDOOR_ARM_IP_REPOSITORY" ]; then
+     echo "No backdoor info $BACKDOOR_ARM_IP_REPOSITORY"
+     exit 1   
+   fi 
+   
+   BUNDLE_YAML_FOUND="0"
+   # Checking backdoor path
+   for BD_ENTRY in $BACKDOOR_ARM_IP_REPOSITORY
+   do
+       if [ "$BUNDLE_YAML" == "$BD_ENTRY " ]; then
+          BUNDLE_YAML_FOUND="1"
+       else 
+          if [ "$BUNDLE_YAML_FOUND" == "1" ]; then 
+            echo "Backdoor path match for $BUNDLE_YAML"
+            echo "Setting bundle path for $BUNDLE_YAML to $BD_ENTRY"
+            IP_PATH="$BD_ENTRY"
+          fi
+          
+          BUNDLE_YAML_FOUND="0"
+       fi 
+    done
+
+   if [ ! -e "$IP_PATH" ]; then
+     echo "Set backdoor path is not valid: $IP_PATH"
+     exit 1
+   fi
+fi 
+
+# Extract supported bundles from supported_arm_ip_bundles
+if [ -f "$TEMPLATE_PATH/supported_arm_ip_bundles" ]; then
+  BUNDLE_FILE_ARR=()
+  while IFS= read -r line;
+  do
+    if [ "${line:0:1}" != "#" ]; then
+      BUNDLE_FILE_ARR=("${BUNDLE_FILE_ARR[@]}" $(sed 's|$ARM_IP_REPOSITORY/||' <<< $line));
+    fi
+  done < "$TEMPLATE_PATH"/supported_arm_ip_bundles
+fi
+
+# Check if bundle is supported
+if [ -n "$BUNDLE_YAML" ]; then
+   echo "Execute bundle part/version and presence check..."
+
+   for bundle_yaml in "${BUNDLE_YAML_ARR[@]}"
+   do
+     bundle_match=0;
+     for bundle_file in "${BUNDLE_FILE_ARR[@]}"
+     do
+       if [ "$bundle_yaml" = "$bundle_file" ]; then
+         bundle_match=1;
+       fi
+     done
+
+     if [ $bundle_match = 0 ]; then
+      echo "===================================================================================================="
+      echo "Warning: Bundle part and version check failed!"
+      echo "Warning: $bundle_yaml has not been tested during the product development and it may not be supported."
+      echo "Warning: Please check with customer support at support-subsystem-iot@arm.com!"
+     else
+      echo "===================================================================================================="
+      echo "Bundle part and version check passed!"
+      echo "$bundle_yaml is supported."
+     fi
+
+     if [ -d "$IP_PATH" ]; then
+      echo "Bundle presence check passed!"
+      echo "$bundle_yaml can be found in repository."
+      echo "Using bundle $bundle_yaml for rendering."
+      echo "===================================================================================================="
+     else
+      echo "Error: Bundle presence check failed!"
+      echo "Error: $IP_PATH can not be found in repository!"
+      echo "Error: Exiting due to missing bundle in repository!"
+      echo "===================================================================================================="
+      exit 1
+     fi
+   done
+fi
+}
+
+# -----------------------------------------------------------------------------
+# Convert configuration YAML into JSON
+# -----------------------------------------------------------------------------
+
+generate_cfg_json () {
+  echo "Convert $CONFIGURATION_YAML_PATH into ./configuration.json"
+  if [ -z "$SUFFIX" ]; then
+     perl  -MJSON\
+           -MYAML\
+           -MFile::Slurp\
+           -e "my \$i = Load scalar read_file('$CONFIGURATION_YAML_PATH');
+                  \$i->{$ELEMENT_INSTANCE_NAME}{SUFFIX} = undef;
+                  \$i->{$ELEMENT_INSTANCE_NAME}{TEMPLATE_PKG_ID} = $TEMPLATE_PKG_ID;
+               print encode_json \$i->{$ELEMENT_INSTANCE_NAME};" > ./configuration.json
+  else
+     perl  -MJSON\
+           -MYAML\
+           -MFile::Slurp\
+           -e "my \$i = Load scalar read_file('$CONFIGURATION_YAML_PATH');
+                  \$i->{$ELEMENT_INSTANCE_NAME}{SUFFIX} = $SUFFIX;
+                  \$i->{$ELEMENT_INSTANCE_NAME}{TEMPLATE_PKG_ID} = $TEMPLATE_PKG_ID;
+               print encode_json \$i->{$ELEMENT_INSTANCE_NAME};" > ./configuration.json
+  fi
+}
+
+# -----------------------------------------------------------------------------
+# Render 1 PHP file
+# -----------------------------------------------------------------------------
+
+render_php_file () {
+  PHP_RELATIVE_PATH=$(echo "$PHP_PATH" | sed -e "s|$TEMPLATE_PATH/||")
+  OUTPUT_DIR_PATH=$(dirname "$PHP_RELATIVE_PATH" | sed -re "s|([^/]+)(/.+)|\1$1\2|")
+
+  FILE_ID=$(basename "$PHP_PATH")
+  FILE_NAME=$(echo "$FILE_ID"| awk -F '.' '{print $1}')
+  FILE_TYPE=$(echo "$FILE_ID"| awk -F '.' '{print $2}')
+
+  if [ $FILE_TYPE = "php" ]; then
+    OUTPUT_FILE_PATH="$OUTPUT_DIR_PATH/${FILE_NAME}$1"
+  else
+    OUTPUT_FILE_PATH="$OUTPUT_DIR_PATH/${FILE_NAME}$1.${FILE_TYPE}"
+  fi
+
+  echo "Creating $OUTPUT_FILE_PATH"
+  mkdir -p "$OUTPUT_DIR_PATH"
+  php -d short_open_tag=false -d display_errors=stderr "$PHP_PATH" ./configuration.json > "$OUTPUT_FILE_PATH"
+
+  if [ ! -s "$OUTPUT_FILE_PATH" ]; then
+          echo "Removing $OUTPUT_FILE_PATH"
+          rm "$OUTPUT_FILE_PATH"
+  fi
+}
+
+# -----------------------------------------------------------------------------
+# Render all PHP files
+# -----------------------------------------------------------------------------
+
+render_all_php_files () {
+  for PHP_PATH in $(find "$TEMPLATE_PATH" -name "*.php"); do
+    render_php_file "$1"
+  done
+
+  if [ ! -z "$SUFFIX" ] && [ -d models"$SUFFIX" ]; then
+    rsync -rvm --exclude=".*" models"$SUFFIX"/* models
+    rm -rf models"$SUFFIX"
+  fi
+
+  rm configuration.json
+}
+
+# -----------------------------------------------------------------------------
+# Create file_list_package.vc
+# -----------------------------------------------------------------------------
+
+generate_file_list_package_vc () {
+  CDIR=$(pwd)
+  CDIR=$(basename "$CDIR")
+
+  VC_FILE="file_list_package.vc"
+
+  # Delete old file_list_package.vc
+  if [ -e $VC_FILE ]; then
+    rm -rf $VC_FILE
+  fi
+
+  echo "Generating file_list_package.vc."
+
+  if [ ! -z "$1" ]; then
+    cat $1  >> $VC_FILE
+  fi
+
+  grep -sr '`include' ./*/*/* |\
+          awk -F 'include'  '{print $2}' |\
+          sed -e 's/\.v.*/.v/' |\
+          sed -e 's/\.sv.*/.sv/' |\
+          sed -e 's/\.svh.*/.svh/' |\
+          sort -u  |\
+          sed -e "s/[ \"']//g"> include.file
+
+  if [ -s include.file ]; then
+    find . -type f -name '*.v' -o -name '*.sv' -o -name '*.svh' |\
+            grep -f include.file |\
+            sed -r 's|/[^/]+$||' |\
+            cut -c 3- |\
+            sort -u |\
+            xargs -L1 -I {} echo \+incdir\+\$LOGICAL_PATH/"$CDIR"/{} >> $VC_FILE
+  fi
+
+  if [ ! -z "$1" ]; then
+    find . -type f -name '*.v' -o -name '*.sv' -o -name '*.svh' |\
+            grep -vf include.file |\
+            cut -c 3- |\
+            xargs -L1 -I {} echo \$LOGICAL_PATH/"$CDIR"/{} |\
+            grep -vf "$1" >> $VC_FILE
+  else
+    find . -type f -name '*.v' -o -name '*.sv' -o -name '*.svh' |\
+            grep -vf include.file |\
+            cut -c 3- |\
+            xargs -L1 -I {} echo \$LOGICAL_PATH/"$CDIR"/{} >> $VC_FILE
+  fi
+
+  sed -i "/\/sva\//d" $VC_FILE
+
+  rm include.file
+}
+
+# -----------------------------------------------------------------------------
+# Create file_list_vc_list
+# -----------------------------------------------------------------------------
+
+generate_file_list_vc_list () {
+  CDIR=$(pwd)
+  CDIR=$(basename "$CDIR")
+
+  # Delete old file_list_vc_list
+  if [ -e file_list_vc_list ]; then
+    rm -rf file_list_vc_list
+  fi
+
+  echo "Generating file_list_vc_list."
+
+  echo "Running \"$CONFIG_BIN_PATH\"/generate_abs_vc_list.pl \"$CONFIGURATION_YAML_PATH\" \"$ELEMENT_INSTANCE_NAME\" > file_list_vc_list"
+  "$CONFIG_BIN_PATH"/generate_abs_vc_list.pl "$CONFIGURATION_YAML_PATH" "$ELEMENT_INSTANCE_NAME" > file_list_vc_list
+  echo "-f \$LOGICAL_PATH/$CDIR/file_list_package.vc" >> file_list_vc_list
+}
+
+# -----------------------------------------------------------------------------
+# Create package.vc
+# -----------------------------------------------------------------------------
+
+generate_package_vc () {
+  VC_FILE="package.vc"
+
+  # Delete old package.vc
+  if [ -e $VC_FILE ]; then
+    rm -rf $VC_FILE
+  fi
+
+  echo "Generating package.vc"
+
+  echo "+libext+.v+.sv+.svh" >> $VC_FILE
+
+  if [ ! -z "$1" ]; then
+    cat $1  >> $VC_FILE
+  fi
+
+  grep -sr '`include' ./*/*/* |\
+          awk -F 'include'  '{print $2}' |\
+          sed -e 's/\.v.*/.v/' |\
+          sed -e 's/\.sv.*/.sv/' |\
+          sed -e 's/\.svh.*/.svh/' |\
+          sort -u  |\
+          sed -e "s/[ \"']//g"> include.file
+
+  if [ -s include.file ]; then
+    find . -type f -name '*.v' -o -name '*.sv' -o -name '*.svh' |\
+            grep -f include.file |\
+            sed -r 's|/[^/]+$||' |\
+            cut -c 3- |\
+            sort -u | \
+            xargs -L1 -I {} echo \+incdir\+{} >> $VC_FILE
+  fi
+
+  find . -type f -name '*.v' -o -name '*.sv' -o -name '*.svh' |\
+          grep -vf include.file |\
+          sed -r 's|/[^/]+$||' |\
+          cut -c 3- |\
+          sort -u |\
+          xargs -L1 -I {} echo -y {} >> $VC_FILE
+
+  sed -i "/\/sva/d" $VC_FILE
+
+  rm include.file
+}
+
+# -----------------------------------------------------------------------------
+# Create vc_list
+# -----------------------------------------------------------------------------
+
+generate_vc_list () {
+  VC_FILE="vc_list"
+
+  # Delete old vc_list
+  if [ -e $VC_FILE ]; then
+    rm -rf $VC_FILE
+  fi
+
+  echo "Generating vc_list..."
+
+  echo "Running \"$CONFIG_BIN_PATH\"/generate_rel_vc_list.pl \"$CONFIGURATION_YAML_PATH\" \"$ELEMENT_INSTANCE_NAME\" > $VC_FILE"
+  "$CONFIG_BIN_PATH"/generate_rel_vc_list.pl "$CONFIGURATION_YAML_PATH" "$ELEMENT_INSTANCE_NAME" > $VC_FILE
+  echo "-F package.vc" >> $VC_FILE
+}
+
+# -----------------------------------------------------------------------------
+# Create top_package.vc
+# -----------------------------------------------------------------------------
+
+generate_top_package_vc () {
+  VC_FILE="top_package.vc"
+
+  # Delete old top_package.vc
+  if [ -e $VC_FILE ]; then
+    rm -rf $VC_FILE
+  fi
+
+  echo "Generating top_package.vc."
+
+  ELEMENT_SHORT_NAME=$(echo "${ELEMENT_INSTANCE_NAME/$SUFFIX/}")
+  cat vc_list > $VC_FILE
+  sed -i "/-F package\.vc/d" $VC_FILE
+
+  cat package.vc >> $VC_FILE
+  sed -i "/-y.*${ELEMENT_SHORT_NAME}_top/d" $VC_FILE
+
+  grep -r '`include' "./${ELEMENT_SHORT_NAME}_top${SUFFIX}"/verilog/* |\
+          awk -F 'include'  '{print $2}' |\
+          sed -e 's/\.v.*/.v/' |\
+          sed -e 's/\.sv.*/.sv/' |\
+          sed -e 's/\.svh.*/.svh/' |\
+          sort -u  |\
+          sed -e "s/[ \"']//g"> include.file
+
+  if [ -s include.file ]; then
+    find "./../$ELEMENT_INSTANCE_NAME/${ELEMENT_SHORT_NAME}_top${SUFFIX}" -type f -name "*.sv" |\
+           grep -vf include.file |\
+           cut  -c 6- |\
+           xargs -L1 -I {} echo \$LOGICAL_PATH/{} >> $VC_FILE
+
+  else
+    find "./../$ELEMENT_INSTANCE_NAME/${ELEMENT_SHORT_NAME}_top${SUFFIX}" -type f -name "*.sv" |\
+           cut  -c 6- |\
+           xargs -L1 -I {} echo \$LOGICAL_PATH/{} >> $VC_FILE
+  fi
+
+  sed -i "/\/sva\//d" $VC_FILE
+
+  rm -rf include.file
+}
+
+# -----------------------------------------------------------------------------
+# Create synthesys vc_list
+# -----------------------------------------------------------------------------
+# Old
+generate_syn_vc_list () {
+  # Delete old files
+  if [ -e syn_load_rtl.tcl ]; then
+    rm -rf syn_load_rtl.tcl
+  fi
+
+  if [ -e all.list ]; then
+    rm -rf all.list
+  fi
+
+  if [ -e incdir.list ]; then
+    rm -rf incdir.list
+  fi
+
+  if [ -e generic.list ]; then
+    rm -rf generic.list
+  fi
+
+  if [ -e rtl.list ]; then
+    rm -rf rtl.list
+  fi
+
+  echo "Creating syn_load_rtl.tcl..."
+
+  cp file_list_vc_list syn_list_vc_list
+  sed -i 's/-f* $LOGICAL_PATH\///' syn_list_vc_list
+
+  echo "Parsing all package files"
+  while read F ; do
+    cat "$LOGICAL_PATH/$F" >> all.list
+  done <syn_list_vc_list
+
+  grep 'incdir' all.list > incdir.list
+  grep 'models/cells/generic' all.list > generic.list
+  grep 'models/rams/generic' all.list >> generic.list
+  grep -vf incdir.list -vf generic.list all.list >> rtl.list
+
+  echo "set dir_list [list \\" > syn_load_rtl.tcl
+  sed -e "s/+incdir+//" incdir.list |\
+    sed -e "s/LOGICAL_PATH/INTEGRATION_PATH/" |\
+    xargs -L1 -I {} echo "  {} \\" >> syn_load_rtl.tcl
+  echo "]" >> syn_load_rtl.tcl
+
+  echo "" >> syn_load_rtl.tcl
+
+  echo "set hdl_file_list [list \\" >> syn_load_rtl.tcl
+  sed -e "s/LOGICAL_PATH/INTEGRATION_PATH/" rtl.list |\
+    xargs -L1 -I {} echo "  {} \\" >> syn_load_rtl.tcl
+  echo "]" >> syn_load_rtl.tcl
+
+  echo "" >> syn_load_rtl.tcl
+
+  echo "set generic_list [list \\" >> syn_load_rtl.tcl
+  cat generic.list |\
+    xargs -L1 -I {} echo "  {} \\" >> syn_load_rtl.tcl
+  echo "]" >> syn_load_rtl.tcl
+
+  rm -rf all.list
+  rm -rf incdir.list
+  rm -rf generic.list
+  rm -rf rtl.list
+  rm -rf syn_list_vc_list
+}
+
+# New
+generate_syn_load_rtl_tcl () {
+  echo "Creating syn_load_rtl.tcl..."
+
+  # Delete old files
+  if [ -e syn_load_rtl.tcl ]; then
+    rm -rf syn_load_rtl.tcl
+  fi
+
+  if [ -e all.list ]; then
+    rm -rf all.list
+  fi
+
+  if [ -e incdir.list ]; then
+    rm -rf incdir.list
+  fi
+
+  if [ -e generic.list ]; then
+    rm -rf generic.list
+  fi
+
+  if [ -e rtl.list ]; then
+    rm -rf rtl.list
+  fi
+
+
+  cp file_list_vc_list syn_list_vc_list
+  sed -i 's/-f* $LOGICAL_PATH\///' syn_list_vc_list
+
+  echo "Parsing all package files"
+  while read F ; do
+    cat "$LOGICAL_PATH/$F" >> all.list
+  done <syn_list_vc_list
+
+  grep 'incdir' all.list > incdir.list
+  grep 'models/cells/generic' all.list > generic.list
+  grep 'models/rams/generic' all.list >> generic.list
+  grep -vf incdir.list -vf generic.list all.list >> rtl.list
+
+  echo "set dir_list [list \\" > syn_load_rtl.tcl
+  sed -e "s/+incdir+//" incdir.list |\
+    sed -e "s/LOGICAL_PATH/INTEGRATION_PATH/" |\
+    xargs -L1 -I {} echo "  {} \\" >> syn_load_rtl.tcl
+  echo "]" >> syn_load_rtl.tcl
+
+  echo "" >> syn_load_rtl.tcl
+
+  echo "set hdl_file_list [list \\" >> syn_load_rtl.tcl
+  sed -e "s/LOGICAL_PATH/INTEGRATION_PATH/" rtl.list |\
+    xargs -L1 -I {} echo "  {} \\" >> syn_load_rtl.tcl
+  echo "]" >> syn_load_rtl.tcl
+
+  echo "" >> syn_load_rtl.tcl
+
+  echo "set generic_list [list \\" >> syn_load_rtl.tcl
+  cat generic.list |\
+    xargs -L1 -I {} echo "  {} \\" >> syn_load_rtl.tcl
+  echo "]" >> syn_load_rtl.tcl
+
+  rm -rf all.list
+  rm -rf incdir.list
+  rm -rf generic.list
+  rm -rf rtl.list
+  rm -rf syn_list_vc_list
+}
+
+# -----------------------------------------------------------------------------
+# Create qcdc_list.do (only for Arm internal use)
+# -----------------------------------------------------------------------------
+
+generate_qcdc_list () {
+   echo "Creating qcdc_list..."
+   "$CONFIG_BIN_PATH"/generate_qcdc_list.pl "$CONFIGURATION_YAML_PATH" "$ELEMENT_INSTANCE_NAME" > qcdc_list.do
+}

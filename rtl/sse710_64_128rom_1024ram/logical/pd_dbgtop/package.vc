@@ -1,0 +1,7 @@
+$LOGICAL_PATH/pd_dbgtop/pc_aon_f0_dbgtop/verilog/pc_aon_f0_dbgtop.v
+$LOGICAL_PATH/pd_dbgtop/pd_dbgtop_f0_top/verilog/pd_dbgtop_f0.v
+$LOGICAL_PATH/pd_dbgtop/pc_secenc_f0_dbgtop/verilog/pc_secenc_f0_dbgtop.v
+$LOGICAL_PATH/pd_dbgtop/pc_cpu_f0_dbgtop/verilog/pc_cpu_f0_dbgtop.v
+$LOGICAL_PATH/pd_dbgtop/pc_systop_f0_dbgtop/verilog/pc_systop_f0_dbgtop.v
+$LOGICAL_PATH/pd_dbgtop/pc_eh_f0_dbgtop/verilog/pc_eh_f0_dbgtop.v
+$LOGICAL_PATH/pd_dbgtop/debug_f0_dbgtop/verilog/debug_f0_dbgtop.v

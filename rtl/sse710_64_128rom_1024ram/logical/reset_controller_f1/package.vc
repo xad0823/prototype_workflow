@@ -1,0 +1,4 @@
+$LOGICAL_PATH/reset_controller_f1/reset_controller_f1_top/verilog/reset_controller_f1_top.v
+$LOGICAL_PATH/reset_controller_f1/reset_controller_f1_core/verilog/reset_controller_f1_core.v
+$LOGICAL_PATH/reset_controller_f1/reset_controller_f1_core/verilog/reset_controller_f1_fsm.v
+$LOGICAL_PATH/reset_controller_f1/reset_controller_f1_core/verilog/reset_controller_f1_extsys_fsm.v

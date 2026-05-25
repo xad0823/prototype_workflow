@@ -1,0 +1,35 @@
+#-----------------------------------------------------------------------------
+#   The confidential and proprietary information contained in this file may
+#   only be used by a person authorised under and to the extent permitted
+#   by a subsisting licensing agreement from ARM Limited or its affiliates.
+#
+#          (C) COPYRIGHT 2015-2016 ARM Limited or its affiliates.
+#              ALL RIGHTS RESERVED
+#
+#   This entire notice must be reproduced on all copies of this file
+#   and copies of this file may only be made by a person if such person is
+#   permitted to do so under the terms of a subsisting license agreement
+#   from ARM Limited or its affiliates.
+#
+#     Checked In          : Sun Sep 25 00:16:27 2016 +0100
+#     Revision            : 6e8b83e
+#
+#     Release Information : CoreLink SIE-200 System IP for Embedded - Global Bundle r3p2-00rel0
+#
+#-----------------------------------------------------------------------------
+.*UVM_WARNING :\s*[0-9]+\s*$
+Number of [A-Za-z]* UVM_WARNING reports:\s*[0-9]+\s*
+.*vip_ahb5_interface.svh\([0-9]+\): Index [0-9]+ into empty array is out of bounds.
+.*Errors: [0-9]+, Warnings: [0-9]+
+.*Enum type mismatch between operands of .* expression.*
+.*Unaligned start address, regenerating aligned address.*
+.*Index [0-9]+ into array dimension .* is out of bounds.*
+.*Use of class handles as logical operands is not portable.*
+.*Enum type mismatch between operands of inside expression.*
+.*DLWNEW: Intermediate file verilog_package.*
+.*UVM dpi code will not be loaded because of define UVM_NO_DPI.*
+.*Port size \(32\) does not match connection size \(64\) for port.*
+.*Covergroup object construction is disabled because of.*
+.*Port connection width mismatch.*
+.*W,DSEMEL: This SystemVerilog design will be simulated as per IEEE 1800-2009 SystemVerilog simulation semantics. Use -disable_sem2009 option for turning off SV 2009 simulation semantics.*
+.*Number of caught UVM_WARNING reports.*

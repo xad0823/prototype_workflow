@@ -1,0 +1,250 @@
+#-----------------------------------------------------------------------------
+# The confidential and proprietary information contained in this file may
+# only be used by a person authorised under and to the extent permitted
+# by a subsisting licensing agreement from ARM Limited.
+#
+#            (C) COPYRIGHT 2013-2014 ARM Limited.
+#                ALL RIGHTS RESERVED
+#
+# This entire notice must be reproduced on all copies of this file
+# and copies of this file may only be made by a person if such person is
+# permitted to do so under the terms of a subsisting license agreement
+# from ARM Limited.
+#
+#      SVN Information
+#
+#      Checked In          : $Date: 2014-07-25 11:01:14 +0100 (Fri, 25 Jul 2014) $
+#
+#      Revision            : $Revision: 285802 $
+#
+#      Release Information : CORTEXA53-r0p4-00rel0
+#-----------------------------------------------------------------------------
+
+################################################################################
+# Makefile for IMAGE0
+#
+# This makefile is used to generate the image file for Cortex-A53 
+# currently only GCC is supported.
+# 
+################################################################################
+#
+# Remove any current implicit rules and ensure intermediate files are kept
+.SUFFIXES:
+.SECONDARY:
+.IMPLICIT:
+
+
+################################################################################
+#
+# Set sensible default values - these should be overridden when called
+#
+TESTNAME 	:= helloworld
+OBJDIR		:= default_objdir
+TEST_ARCH       := aarch64
+
+################################################################################
+#
+# Image Creation
+#
+IMAGEPREFIX := IMAGE0
+
+#
+# Static Pattern rule to generate .bin, and .vhx files
+#
+$(TESTNAME): $(OBJDIR)/$(IMAGEPREFIX)_$(TESTNAME).bin $(OBJDIR)/$(IMAGEPREFIX)_$(TESTNAME).vhx
+
+
+# Create Object Dir if necessary
+$(OBJDIR):
+	@echo "Creating Object Dir"
+	mkdir -p $(OBJDIR)
+
+
+# Image specific common setup
+CPUOBJS	= $(OBJS) $(TESTNAME).o cx_nodap.o retarget-gcc.o output_trickbox.o bootcode.o stackheap.o pagetables.o vectors.o irqhandler.o
+
+################################################################################
+# Toolchains
+################################################################################
+# Toolchain names, you may have a different name for the toolchain
+ifeq ($(findstring +bigend, $(PLUSARGS) ), +bigend)
+GCC_TOOLCHAIN_AARCH32 := armeb-none-eabi
+GCC_TOOLCHAIN_AARCH64 := aarch64_be-none-elf
+else
+GCC_TOOLCHAIN_AARCH32 := arm-none-eabi
+GCC_TOOLCHAIN_AARCH64 := aarch64-none-elf
+endif
+
+# AArch32 toolchain executables
+AS32      := $(GCC_TOOLCHAIN_AARCH32)-as
+GCC32     := $(GCC_TOOLCHAIN_AARCH32)-gcc
+LD32      := $(GCC_TOOLCHAIN_AARCH32)-ld
+OBJCOPY32 := $(GCC_TOOLCHAIN_AARCH32)-objcopy
+
+# AArch64 toolchain executables
+AS64      := $(GCC_TOOLCHAIN_AARCH64)-as
+GCC64     := $(GCC_TOOLCHAIN_AARCH64)-gcc
+LD64      := $(GCC_TOOLCHAIN_AARCH64)-ld
+OBJCOPY64 := $(GCC_TOOLCHAIN_AARCH64)-objcopy
+################################################################################
+# Processor options
+################################################################################
+
+# CPU and architecture
+CPU  = cortex-a53
+ARCH = armv8-a
+
+# FPU types
+FPU_NONE      :=
+FPU_V8        := -mfpu=neon-fp-armv8
+FPU_V8_CRYPTO := -mfpu=crypto-neon-fp-armv8
+
+# Active FPU, can be overridden by tests
+FPU = $(FPU_V8)
+
+
+# Assembler setup
+ASM32            = $(AS32)
+ASM64            = $(AS64)
+ifeq ($(findstring +bigend, $(PLUSARGS) ), +bigend)
+ASM_OPTS_AARCH32 = -march=$(ARCH) $(FPU) --defsym BIGEND=1 -mbig-endian
+ASM_OPTS_AARCH64 = -march=$(ARCH) --defsym BIGEND=1 -mbig-endian
+else
+ASM_OPTS_AARCH32 = -march=$(ARCH) $(FPU)
+ASM_OPTS_AARCH64 = -march=$(ARCH)
+endif
+
+# C compiler setup
+CC32             = $(GCC32)
+CC64             = $(GCC64)
+ifeq ($(findstring +bigend, $(PLUSARGS) ), +bigend)
+CC_OPTS_AARCH32  = -march=$(ARCH) $(FPU) -c -DGCC -falign-functions=16 -falign-jumps=8 -falign-loops=8 -fomit-frame-pointer -g -mbig-endian
+CC_OPTS_AARCH64  = -march=$(ARCH)        -c -DGCC -falign-functions=16 -falign-jumps=8 -falign-loops=8 -fomit-frame-pointer -g -mbig-endian
+else
+CC_OPTS_AARCH32  = -march=$(ARCH) $(FPU) -c -DGCC -falign-functions=16 -falign-jumps=8 -falign-loops=8 -fomit-frame-pointer -g
+CC_OPTS_AARCH64  = -march=$(ARCH)        -c -DGCC -falign-functions=16 -falign-jumps=8 -falign-loops=8 -fomit-frame-pointer -g
+endif
+
+# Linker setup
+LINK32           = $(LD32)
+LINK64           = $(LD64)
+
+ifeq ($(findstring +bigend, $(PLUSARGS) ), +bigend)
+LINK_OPTS_32     = -EB --be8
+LINK_OPTS_64     = -EB
+else
+LINK_OPTS_32     =
+LINK_OPTS_64     =
+endif
+
+LINK_OPTS_NOBOOT_AARCH32 = $(LINK_OPTS_32)               -T $(CA53_RTL)/testbench/execution_tb/tests/link_noboot.ld
+LINK_OPTS_NOBOOT_AARCH64 = $(LINK_OPTS_64)               -T $(CA53_RTL)/testbench/execution_tb/tests/link_noboot.ld
+LINK_OPTS_ASM_AARCH32    = $(LINK_OPTS_32)               -T $(CA53_RTL)/testbench/execution_tb/tests/link_asm_aarch32.ld
+LINK_OPTS_ASM_AARCH64    = $(LINK_OPTS_64)               -T $(CA53_RTL)/testbench/execution_tb/tests/link_asm_aarch64.ld
+
+ifeq ($(findstring +bigend, $(PLUSARGS) ), +bigend)
+LINK_OPTS_CSRC_AARCH32 = $(LINK_OPTS_32:-%=-Wl,-%) -Wl,-T $(CA53_RTL)/testbench/execution_tb/tests/link_csrc_aarch32.ld -mbig-endian
+LINK_OPTS_CSRC_AARCH64 = $(LINK_OPTS_64:-%=-Wl,-%) -Wl,-T $(CA53_RTL)/testbench/execution_tb/tests/link_csrc_aarch64.ld -mbig-endian
+else
+LINK_OPTS_CSRC_AARCH32 = $(LINK_OPTS_32:-%=-Wl,-%) -Wl,-T $(CA53_RTL)/testbench/execution_tb/tests/link_csrc_aarch32.ld
+LINK_OPTS_CSRC_AARCH64 = $(LINK_OPTS_64:-%=-Wl,-%) -Wl,-T $(CA53_RTL)/testbench/execution_tb/tests/link_csrc_aarch64.ld
+endif
+# Image file generation
+ELF2BIN32 := $(OBJCOPY32)
+ELF2BIN64 := $(OBJCOPY64)
+BIN2VHX   := $(CA53_RTL)/testbench/shared/tools/bin/bin2vhx.pl
+
+
+
+#
+# Set up boot code directory
+#
+aarch32_shared := ../../../../testbench/execution_tb/tests/aarch32/shared
+aarch64_shared := ../../../../testbench/execution_tb/tests/aarch64/shared
+common_shared  := ../../../../testbench/execution_tb/tests/common/shared
+
+# Find common C files (the source files are not in the build target directory)
+vpath %.c $(common_shared)
+#
+# Build options for IMAGE0
+#
+CPU_TESTDEFINES  = $(TESTDEFINES)
+CPU_TESTDEFINES += -DTRACECODE_CORTEXA53
+CPU_TESTDEFINES += -DTESTIMAGE=0 
+# Enalbe Check CP14 registers for A/R cores in the discovery test
+# For the CoreSight SoC-400 r3p1 release, the CP14 register check can only 
+# support AARCH32 state. If you enable this check, you need to update the 
+# CP14 check function in the discovery test to support AARCH64
+#CPU_TESTDEFINES += -DCP14 
+
+ifeq ($(TEST_ARCH),aarch64)
+$(OBJDIR)/$(IMAGEPREFIX)_%.o: $(aarch64_shared)/%.s
+	@echo " [ASM ] $(TEST_ARCH) $<"
+	@$(ASM64) $(ASM_OPTS_AARCH64) -I$(common_shared) --defsym IK_MODE=1 $< -o $@
+
+$(OBJDIR)/$(IMAGEPREFIX)_irqhandler.o: irqhandler_a64.s 
+	@echo " [ASM ] $(TEST_ARCH) $<"
+	@$(ASM64) $(ASM_OPTS_AARCH64) -I$(common_shared) --defsym IK_MODE=1 $< -o $@
+
+
+$(OBJDIR)/$(IMAGEPREFIX)_%.o: %.c $(DEPS)
+	@echo " [CC  ] $(TEST_ARCH) $<"
+	@$(CC64) $(CC_OPTS_AARCH64) $(CPU_TESTDEFINES) -O1 -fno-inline-functions -fno-inline $(foreach inc,$(^D),-I$(inc)) -I$(common_shared) $< -o $@
+
+# Link.  For C-based tests this is done through GCC to make sure that all
+# standard libraries are set up correctly.
+$(OBJDIR)/$(IMAGEPREFIX)_$(TESTNAME).elf: $(addprefix $(OBJDIR)/$(IMAGEPREFIX)_, $(CPUOBJS))
+	@echo " [LK  ] $(TEST_ARCH)  $<"
+	@$(CC64) $(LINK_OPTS_CSRC_AARCH64)  -o $@ $^ 
+
+else	#aarch32
+$(OBJDIR)/$(IMAGEPREFIX)_%.o: $(aarch32_shared)/%.s
+	@echo " [ASM ] $(TEST_ARCH)  $<"
+	@$(ASM32) $(ASM_OPTS_AARCH32) -I$(common_shared) --defsym IK_MODE=1 $< -o $@
+
+$(OBJDIR)/$(IMAGEPREFIX)_irqhandler.o: irqhandler_a32.s 
+	@echo " [ASM ] $(TEST_ARCH)  $<"
+	@$(ASM32) $(ASM_OPTS_AARCH32) -I$(common_shared) --defsym IK_MODE=1 $< -o $@
+
+$(OBJDIR)/$(IMAGEPREFIX)_%.o: %.c $(DEPS)
+	@echo " [CC  ] $(TEST_ARCH) $<"
+	@$(CC32) $(CC_OPTS_AARCH32) $(CPU_TESTDEFINES) -O1 -fno-inline-functions -fno-inline $(foreach inc,$(^D),-I$(inc)) -I$(common_shared) $< -o $@
+
+# Link.  For C-based tests this is done through GCC to make sure that all
+# standard libraries are set up correctly.
+$(OBJDIR)/$(IMAGEPREFIX)_$(TESTNAME).elf:  $(addprefix $(OBJDIR)/$(IMAGEPREFIX)_, $(CPUOBJS))
+	@echo " [LK  ] $(TEST_ARCH) $<"
+	@$(CC32) $(LINK_OPTS_CSRC_AARCH32)  -o $@ $^
+
+endif
+
+
+
+################################################################################
+# Create binary and hex images
+################################################################################
+ifeq ($(TEST_ARCH),aarch64)
+$(OBJDIR)/$(IMAGEPREFIX)_%.bin: $(OBJDIR)/$(IMAGEPREFIX)_%.elf
+	@echo " [BIN ] $(TEST_ARCH) $<"
+	@$(ELF2BIN64) -O binary $< $@
+else
+$(OBJDIR)/$(IMAGEPREFIX)_%.bin: $(OBJDIR)/$(IMAGEPREFIX)_%.elf
+	@echo " [BIN ] $(TEST_ARCH) $<"
+	@$(ELF2BIN32) -O binary $< $@
+endif
+
+
+$(OBJDIR)/$(IMAGEPREFIX)_%.vhx: $(OBJDIR)/$(IMAGEPREFIX)_%.bin
+	@echo " [HEX ] $(TEST_ARCH) $<"
+	@$(BIN2VHX) --width=128 $< $@
+
+
+
+################################################################################
+#
+# Clean
+#
+clean:
+	rm -f $(OBJDIR)/$(IMAGEPREFIX)*
+
+# EOF

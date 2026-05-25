@@ -1,0 +1,77 @@
+//------------------------------------------------------------------------------
+// The confidential and proprietary information contained in this file may
+// only be used by a person authorised under and to the extent permitted
+// by a subsisting licensing agreement from Arm Limited or its affiliates.
+//
+//            (C) COPYRIGHT 2019-2021 Arm Limited or its affiliates.
+//                ALL RIGHTS RESERVED
+//
+// This entire notice must be reproduced on all copies of this file
+// and copies of this file may only be made by a person if such person is
+// permitted to do so under the terms of a subsisting license agreement
+// from Arm Limited or its affiliates.
+//
+//
+//      Release Information : SSE710-r0p0-00eac0
+//
+//------------------------------------------------------------------------------
+// Verilog-2001 (IEEE Std 1364-2001)
+//------------------------------------------------------------------------------
+
+
+module secenc_f1_rom_wrapper
+#(
+    parameter                               DATA_WIDTH      =   32,
+    parameter                               ADDR_WIDTH      =   3
+)
+(
+    input   wire                            clk,
+    input   wire    [ADDR_WIDTH-1:0]        a,
+    input   wire                            cena,
+    input   wire    [DATA_WIDTH/8-1:0]      wena,
+    output  wire    [DATA_WIDTH-1:0]        q,
+    input   wire    [DATA_WIDTH-1:0]        d
+);
+
+
+wire unused;
+
+assign unused = |{wena,d};
+
+`ifdef QL_FPGA
+ ram8x32 mem (
+       .clka  ( clk ),
+       .dina  ( d ),
+       .ena   ( ~((~cena)) ),
+       .addra ( a ),
+       .wea   (  ),
+       .douta ( q ));
+`else
+arm_element_sp_rom_pa
+#(
+    .DATA_WIDTH             (DATA_WIDTH         ),
+    .MEMORY_DEPTH           (1 << ADDR_WIDTH    ),
+    .ADDR_WIDTH             (ADDR_WIDTH         ),
+    .LANE_WIDTH             (8                  )
+)
+u_arm_element_sp_rom_pa
+(
+    .CLK                    (clk                ),
+    .RESETn                 (1'b1               ),
+`ifdef ARM_PA_MODE_ENABLE
+    .VDDE                  (                   ),
+    .VSSE                   (                   ),
+    .PGEN                   (                   ),
+    .PRDYN                  (                   ),
+`endif
+    .A                      (a                  ),
+    .CEN                    (~cena              ),
+    .Q                      (q                  )
+);
+`endif
+
+
+
+
+
+endmodule

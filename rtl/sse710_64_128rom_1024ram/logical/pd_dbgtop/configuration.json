@@ -1,0 +1,1 @@
+{"package_template":"$ARM_IP_LIBRARY/pd_dbgtop","package_dependency":["arm_element_tech_models","bu_css600_f0","bu_sdc600_f0","bu_stm500_f0","bu_pck600_f0","e_clk_f1_dbgtop","firewall_f0","nic400_sse710_dbg3s1m","sse710_adb400_r3_wrapper"],"NUM_EXP_MST":"2","NUM_EXT_SYS":"2","OCVM_EN":"1","NUM_EXP_SLV":"2"}

@@ -1,0 +1,1 @@
+{"CLK_NUM":"2","package_dependency":["arm_element_tech_models"],"SIMPLE_SEL":"FALSE","SUFFIX":"_2","package_template":"$ARM_IP_LIBRARY/clkselNway_f0","TEMPLATE_PKG_ID":"clkselNway_f0"}

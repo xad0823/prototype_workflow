@@ -1,0 +1,65 @@
+=============================================================================
+ The confidential and proprietary information contained in this file may
+ only be used by a person authorised under and to the extent permitted
+ by a subsisting licensing agreement from Arm Limited or its affiliates.
+
+ (C) COPYRIGHT 2018-2019 Arm Limited or its affiliates.
+ ALL RIGHTS RESERVED
+
+ This entire notice must be reproduced on all copies of this file
+ and copies of this file may only be made by a person if such person is
+ permitted to do so under the terms of a subsisting license agreement
+ from Arm Limited or its affiliates.
+
+=============================================================================
+
+The IP-XACT files are used to configure the pck600_ppu and the associated pck600_ppu_pcsm. The configuration options are:
+
+    - pck600_ppu:
+
+        DEV_PREQ_DLY          : Configures the delay between DEVPSTATE and DEVPREQ. Default value is fetched from the configuration yaml file at render time. Range is 0 to 3. This maps the DEV_PREQ_DLY verilog parameter.
+
+        PCSM_PREQ_DLY         : Configures the delay between PCSMPSTATE and PCSMPREQ. Default value is fetched from the configuration yaml file at render time. Range is 0 to 3. This maps the PCSM_PREQ_DLY verilog parameter.
+
+        ISO_CLKEN_DLY_CFG     : Configures the default value of ISO_CLKEN_DLY. Default value is fetched from the configuration yaml file at render time. Range is 0 to 255. This maps the ISO_CLKEN_DLY_CFG verilog parameter.
+
+        CLKEN_RST_DLY_CFG     : Configures the default value of CLKEN_RST_DLY. Default value is fetched from the configuration yaml file at render time. Range is 0 to 255. This maps the CLKEN_RST_DLY_CFG verilog parameter.
+
+        RST_HWSTAT_DLY_CFG    : Configures the default value of RST_HWSTAT_DLY. Default value is fetched from the configuration yaml file at render time. Range is 0 to 255. This maps the RST_HWSTAT_DLY_CFG verilog parameter.
+
+        CLKEN_ISO_DLY_CFG     : Configures the default value of CLKEN_ISO_DLY. Default value is fetched from the configuration yaml file at render time. Range is 0 to 255. This maps the CLKEN_ISO_DLY_CFG verilog parameter.
+
+        ISO_RST_DLY_CFG       : Configures the default value of ISO_RST_DLY. Default value is fetched from the configuration yaml file at render time. Range is 0 to 255. This maps the ISO_RST_DLY_CFG verilog parameter.
+
+
+    - pck600_ppu_pcsm:
+
+        LGC_OFF_ON_DLY        :  Configures delay in clock cycles after logic power switch is turned on. Default value is 8. Range is 0 to 255. This maps the LGC_OFF_ON_DLY verilog parameter.
+
+        LGC_ON_OFF_DLY        :  Configures delay in clock cycles after logic power switch is turned off when moving to off. Default value is 8. Range is 0 to 255. This maps the LGC_ON_OFF_DLY verilog parameter.
+
+        LGC_ON_ONRET_DLY      :  Configures delay in clock cycles after logic retention switch is turned on. Default value is 8. Range is 0 to 255. This maps the LGC_ON_ONRET_DLY verilog parameter.
+
+        LGC_ONRET_RET_DLY     :  Configures delay in clock cycles after logic power switch is turned off when moving to retention. Default value is 8. Range is 0 to 255. This maps the LGC_ONRET_RET_DLY verilog parameter.
+
+        LGC_ONRET_ON_DLY      :  Configures delay in clock cycles after logic retention switch is turned off when moving to on. Default value is 8. Range is 0 to 255. This maps the LGC_ONRET_ON_DLY verilog parameter.
+
+        LGC_RET_ONRET_DLY     :  Configures delay in clock cycles after logic power switch is turned on when moving to on from retention. Default value is 8. Range is 0 to 255. This maps the LGC_RET_ONRET_DLY verilog parameter.
+
+        RAM_OFF_ON_DLY        :  Configures delay in clock cycles after RAM power switch is turned on. Default value is 8. Range is 0 to 255. This maps the RAM_OFF_ON_DLY verilog parameter.
+
+        RAM_ON_OFF_DLY        :  Configures delay in clock cycles after RAM power switch is turned off when moving to off. Default value is 8. Range is 0 to 255. This maps the RAM_ON_OFF_DLY verilog parameter.
+
+        RAM_ON_ONRET_DLY      :  Configures delay in clock cycles after RAM retention switch is turned on. Default value is 8. Range is 0 to 255. This maps the RAM_ON_ONRET_DLY verilog parameter.
+
+        RAM_ONRET_RET_DLY     :  Configures delay in clock cycles after RAM power switch is turned off when moving to retention. Default value is 8. Range is 0 to 255. This maps the RAM_ONRET_RET_DLY verilog parameter.
+
+        RAM_ONRET_ON_DLY      :  Configures delay in clock cycles after RAM retention switch is turned off when moving to on. Default value is 8. Range is 0 to 255. This maps the RAM_ONRET_ON_DLY verilog parameter.
+
+        RAM_RET_ONRET_DLY     :  Configures delay in clock cycles after RAM power switch is turned on when moving to on from retention. Default value is 8. Range is 0 to 255. This maps the RAM_RET_ONRET_DLY verilog parameter.
+
+        RAM_OFF_RET_DLY       :  Configures delay in clock cycles after RAM retention switch is turned on when moving to retention from off. Default value is 8. Range is 0 to 255. This maps the RAM_OFF_RET_DLY verilog parameter.
+
+
+
+

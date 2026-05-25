@@ -1,0 +1,162 @@
+//------------------------------------------------------------------------------
+// The confidential and proprietary information contained in this file may
+// only be used by a person authorised under and to the extent permitted
+// by a subsisting licensing agreement from Arm Limited or its affiliates.
+//
+//            (C) COPYRIGHT 2019-2021 Arm Limited or its affiliates.
+//                ALL RIGHTS RESERVED
+//
+// This entire notice must be reproduced on all copies of this file
+// and copies of this file may only be made by a person if such person is
+// permitted to do so under the terms of a subsisting license agreement
+// from Arm Limited or its affiliates.
+//
+//
+//      Release Information : SSE710-r0p0-00eac0
+//
+//------------------------------------------------------------------------------
+// Verilog-2001 (IEEE Std 1364-2001)
+//------------------------------------------------------------------------------
+
+
+///////////////////////////////////////////////////////////////////////////////
+// FIXED FOR SSE710, NOT CUSTOMER MODIFIABLE SECTION
+///////////////////////////////////////////////////////////////////////////////
+
+// ********************************************************************
+// REGION CONFIGURATION PARAMETERS - valid when FC_PE_LVL = 1 only
+// ********************************************************************
+
+//Host System Debug
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN0_BASE_ADDR = 29'h10000000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN0_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN0_SIZE      = 8'h1b; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN0_MULNPO2   = 1'b0; 
+
+// HSE MHU0
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN1_BASE_ADDR = 29'h1b800000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN1_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN1_SIZE      = 8'h0c; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN1_MULNPO2   = 1'b0; 
+
+// SEH MHU0
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN2_BASE_ADDR = 29'h1b810000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN2_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN2_SIZE      = 8'h0c; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN2_MULNPO2   = 1'b0; 
+
+// HSE MHU1
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN3_BASE_ADDR = 29'h1b820000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN3_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN3_SIZE      = 8'h0c; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN3_MULNPO2   = 1'b0; 
+
+// SEH MHU1
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN4_BASE_ADDR = 29'h1b830000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN4_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN4_SIZE      = 8'h0c; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN4_MULNPO2   = 1'b0; 
+
+// Coresight SDC-600
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN5_BASE_ADDR = 29'h1b900000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN5_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN5_SIZE      = 8'h0c; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN5_MULNPO2   = 1'b0; 
+
+// CLUSTOP PPU
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN6_BASE_ADDR = 29'h1bc00000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN6_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN6_SIZE      = 8'h0c; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN6_MULNPO2   = 1'b0; 
+
+ 
+// CORE0 PPU
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN7_BASE_ADDR = 29'h1bc10000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN7_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN7_SIZE      = 8'h0c; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN7_MULNPO2   = 1'b0; 
+ 
+// CORE1 PPU
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN8_BASE_ADDR = 29'h1bc20000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN8_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN8_SIZE      = 8'h0c; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN8_MULNPO2   = 1'b0; 
+ 
+// CORE2 PPU
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN9_BASE_ADDR = 29'h1bc30000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN9_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN9_SIZE      = 8'h0c; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN9_MULNPO2   = 1'b0; 
+ 
+// CORE3 PPU
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN10_BASE_ADDR = 29'h1bc40000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN10_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN10_SIZE      = 8'h0c; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN10_MULNPO2   = 1'b0; 
+
+// HES0 MHU0
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN11_BASE_ADDR = 29'h1b000000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN11_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN11_SIZE      = 8'h0c; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN11_MULNPO2   = 1'b0; 
+
+// ESH0 MHU0
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN12_BASE_ADDR = 29'h1b010000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN12_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN12_SIZE      = 8'h0c; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN12_MULNPO2   = 1'b0; 
+
+// HES0 MHU1
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN13_BASE_ADDR = 29'h1b020000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN13_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN13_SIZE      = 8'h0c; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN13_MULNPO2   = 1'b0; 
+
+// ESH0 MHU1
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN14_BASE_ADDR = 29'h1b030000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN14_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN14_SIZE      = 8'h0c; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN14_MULNPO2   = 1'b0; 
+
+// HES1 MHU0
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN15_BASE_ADDR = 29'h1b040000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN15_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN15_SIZE      = 8'h0c; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN15_MULNPO2   = 1'b0; 
+
+// ESH1 MHU0
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN16_BASE_ADDR = 29'h1b050000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN16_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN16_SIZE      = 8'h0c; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN16_MULNPO2   = 1'b0; 
+
+// HES1 MHU1
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN17_BASE_ADDR = 29'h1b060000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN17_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN17_SIZE      = 8'h0c; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN17_MULNPO2   = 1'b0; 
+
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN18_BASE_ADDR = 29'h1b070000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN18_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN18_SIZE      = 8'h0c; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN18_MULNPO2   = 1'b0; 
+
+
+
+
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN19_BASE_ADDR = 29'h1c000000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN19_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN19_SIZE      = 8'h13; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN19_MULNPO2   = 1'b0; 
+
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN20_BASE_ADDR = 29'h1d000000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN20_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN20_SIZE      = 8'h18; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN20_MULNPO2   = 1'b0; 
+
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN21_BASE_ADDR = 29'h1e000000;
+localparam [28:0] FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN21_UPR_ADDR  = {29{1'b1}};
+localparam [7:0]  FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN21_SIZE      = 8'h14; 
+localparam        FIREWALL_F0_CFG_SSE710_SYSPERIPH_FC_RGN21_MULNPO2   = 1'b0; 
+
+

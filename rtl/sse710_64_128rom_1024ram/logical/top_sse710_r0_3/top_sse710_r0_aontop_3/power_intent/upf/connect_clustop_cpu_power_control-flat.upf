@@ -1,0 +1,63 @@
+
+#-----------------------------------------------------------------------------
+#    The confidential and proprietary information contained in this file may
+#    only be used by a person authorised under and to the extent permitted
+#    by a subsisting licensing agreement from Arm Limited or its affiliates.
+# 
+#           (C) COPYRIGHT 2018-2021 Arm Limited or its affiliates.
+#               ALL RIGHTS RESERVED
+# 
+#    This entire notice must be reproduced on all copies of this file
+#    and copies of this file may only be made by a person if such person is
+#    permitted to do so under the terms of a subsisting license agreement
+#    from Arm Limited or its affiliates.
+#-----------------------------------------------------------------------------
+#
+#
+#
+# Release Information : SSE710-r0p0-00eac0
+#
+# -----------------------------------------------------------------------------
+#
+# Description : CPU Power Control template
+# Vendor      : arm.com
+# Library     : Subsystem
+# Version     : 1
+#
+# -----------------------------------------------------------------------------
+# Unified Power Format ()
+# -----------------------------------------------------------------------------
+
+set current_scope $PD_CLUSTOP_path
+
+#  CPU control.
+#
+# ------------------------------------------------------------------------------
+# CPU0 
+# ------------------------------------------------------------------------------
+connect_logic_net LP_CPU0_rampwrn_i -ports [relative_path $PD_CPU0_memports(PGEN)] -reconnect
+connect_logic_net LP_CPU0_ramretn_i -ports [relative_path $PD_CPU0_memports(RET1N)] -reconnect
+connect_logic_net LP_CPU0_ramretn_i -ports [relative_path $PD_CPU0_memports(RET2N)] -reconnect
+
+# ------------------------------------------------------------------------------
+# CPU1 
+# ------------------------------------------------------------------------------
+connect_logic_net LP_CPU1_rampwrn_i -ports [relative_path $PD_CPU1_memports(PGEN)] -reconnect
+connect_logic_net LP_CPU1_ramretn_i -ports [relative_path $PD_CPU1_memports(RET1N)] -reconnect
+connect_logic_net LP_CPU1_ramretn_i -ports [relative_path $PD_CPU1_memports(RET2N)] -reconnect
+
+# ------------------------------------------------------------------------------
+# CPU2 
+# ------------------------------------------------------------------------------
+connect_logic_net LP_CPU2_rampwrn_i -ports [relative_path $PD_CPU2_memports(PGEN)] -reconnect
+connect_logic_net LP_CPU2_ramretn_i -ports [relative_path $PD_CPU2_memports(RET1N)] -reconnect
+connect_logic_net LP_CPU2_ramretn_i -ports [relative_path $PD_CPU2_memports(RET2N)] -reconnect
+
+# ------------------------------------------------------------------------------
+# CPU3 
+# ------------------------------------------------------------------------------
+connect_logic_net LP_CPU3_rampwrn_i -ports [relative_path $PD_CPU3_memports(PGEN)] -reconnect
+connect_logic_net LP_CPU3_ramretn_i -ports [relative_path $PD_CPU3_memports(RET1N)] -reconnect
+connect_logic_net LP_CPU3_ramretn_i -ports [relative_path $PD_CPU3_memports(RET2N)] -reconnect
+
+

@@ -1,0 +1,9 @@
+$LOGICAL_PATH/clkselNway_f0_3/clkselNway_f0_3/verilog/clkselNway_f0_3.v
+$LOGICAL_PATH/clkselNway_f0_3/models/modules/generic/clkselNway_f0_clkand2_3.v
+$LOGICAL_PATH/clkselNway_f0_3/models/modules/generic/clkselNway_f0_cdc_capt_sync_3.v
+$LOGICAL_PATH/clkselNway_f0_3/models/modules/generic/clkselNway_f0_clkinv_3.v
+$LOGICAL_PATH/clkselNway_f0_3/models/modules/generic/clkselNway_f0_rstsync_3.v
+$LOGICAL_PATH/clkselNway_f0_3/models/modules/generic/clkselNway_f0_clkgate_3.v
+$LOGICAL_PATH/clkselNway_f0_3/models/modules/generic/clkselNway_f0_clkbuf_3.v
+$LOGICAL_PATH/clkselNway_f0_3/models/modules/generic/clkselNway_f0_clkor2_3.v
+$LOGICAL_PATH/clkselNway_f0_3/models/modules/generic/clkselNway_f0_rstbuf_3.v

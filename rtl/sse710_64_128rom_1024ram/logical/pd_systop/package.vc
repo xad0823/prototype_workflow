@@ -1,0 +1,11 @@
+$LOGICAL_PATH/pd_systop/pc_debug_aon_f0_systop/verilog/pc_debug_aon_f0_systop.v
+$LOGICAL_PATH/pd_systop/pc_debug_f0_systop/verilog/pc_debug_f0_systop.v
+$LOGICAL_PATH/pd_systop/pc_secenc_f0_systop/verilog/pc_secenc_f0_systop.v
+$LOGICAL_PATH/pd_systop/pc_eh_f0_systop/verilog/pc_eh_f0_systop.v
+$LOGICAL_PATH/pd_systop/pc_sysctrl_f0_systop/verilog/pc_sysctrl_f0_systop.v
+$LOGICAL_PATH/pd_systop/pc_cpu_f0_systop/verilog/pactive_pulse_converter.v
+$LOGICAL_PATH/pd_systop/pc_cpu_f0_systop/verilog/sse710_l2flush_handshake.v
+$LOGICAL_PATH/pd_systop/pc_cpu_f0_systop/verilog/sse710_core_boot_up.v
+$LOGICAL_PATH/pd_systop/pc_cpu_f0_systop/verilog/pc_cpu_f0_systop.v
+$LOGICAL_PATH/pd_systop/base_f0_systop/verilog/base_f0_systop.v
+$LOGICAL_PATH/pd_systop/pd_systop_f0_top/verilog/pd_systop_f0.v

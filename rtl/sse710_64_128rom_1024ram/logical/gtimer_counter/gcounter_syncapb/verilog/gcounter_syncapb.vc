@@ -1,0 +1,6 @@
+$LOGICAL_ROOT/generic_counters_and_timers/gcounter_syncapb/verilog/gcounter_syncapb_revision.v
+$LOGICAL_ROOT/generic_counters_and_timers/gcounter_syncapb/verilog/gcounter_syncapb_sclktoggle.v
+$LOGICAL_ROOT/generic_counters_and_timers/gcounter_syncapb/verilog/gcounter_syncapb_counter.v
+$LOGICAL_ROOT/generic_counters_and_timers/gcounter_syncapb/verilog/gcounter_syncapb_counter_core.v
+$LOGICAL_ROOT/generic_counters_and_timers/gcounter_syncapb/verilog/gcounter_syncapb_apbif.v
+$LOGICAL_ROOT/generic_counters_and_timers/gcounter_syncapb/verilog/gcounter_syncapb.v

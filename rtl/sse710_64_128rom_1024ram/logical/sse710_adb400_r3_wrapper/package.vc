@@ -1,0 +1,3 @@
+$LOGICAL_PATH/sse710_adb400_r3_wrapper/verilog/sse710_adb400_r3_axi4_slv_wrapper.v
+$LOGICAL_PATH/sse710_adb400_r3_wrapper/verilog/sse710_adb400_r3_axi4_mst_wrapper.v
+$LOGICAL_PATH/sse710_adb400_r3_wrapper/verilog/sse710_adb400_r3_axi4_stream_mst_wrapper.v

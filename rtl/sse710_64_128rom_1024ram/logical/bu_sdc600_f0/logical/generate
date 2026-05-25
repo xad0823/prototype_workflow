@@ -1,0 +1,226 @@
+#!/usr/bin/env python
+#----------------------------------------------------------------------------
+# The confidential and proprietary information contained in this file may
+# only be used by a person authorised under and to the extent permitted
+# by a subsisting licensing agreement from Arm Limited or its affiliates.
+#
+# (C) COPYRIGHT 2017-2018 Arm Limited or its affiliates.
+# ALL RIGHTS RESERVED
+#
+# This entire notice must be reproduced on all copies of this file
+# and copies of this file may only be made by a person if such person is
+# permitted to do so under the terms of a subsisting license agreement
+# from Arm Limited or its affiliates.
+#
+#      Version Information
+#
+#      Checked In          : Thu May 10 22:43:28 2018 +0100
+#
+#      Revision            : ad5b238
+#
+#      Release Information : TM210-MN-70030-r0p2-00rel0
+#
+#----------------------------------------------------------------------------
+# STRIP_COMMENTS
+#----------------------------------------------------------------------------
+#   Description :
+#   Wrapper for build_ip.py
+#
+#----------------------------------------------------------------------------
+
+import optparse
+import os
+import re
+import errno
+import sys
+import subprocess
+
+sys.path.append(os.path.join(sys.path[0], "shared","tools", "bin", "build_ip"))
+sys.path.append(os.path.join(sys.path[0], "shared","tools", "lib"))
+import components
+from components import * # for modules
+
+compList = sorted(components.components)
+
+baseDir = sys.path[0]
+
+class configReader:
+
+    def __init__(self):
+        self.line = ""
+        self.fileHandle = None
+        self.config = {}
+
+    def parseConfig(self, configFile):
+        # Open the config file
+        try:
+            self.fileHandle = open(configFile, "r")
+        except IOError as err:
+            print "Unable to open file: %s" % (err)
+            sys.exit(1)
+        # Get the first line of the file
+        self.readNextLine()
+        # Start with parsing the top group
+        self.config = self.parseSubGroup(-1)
+        # Close the file
+        self.fileHandle.close()
+        # Set config_name to the default value if it was not defined in the file
+        if not "config_name" in self.config:
+            config_name_default = os.path.splitext(os.path.basename(configFile))[0]
+            self.config["config_name"] = config_name_default
+        return self.config
+
+    def parseKeyValue(self, expectedIndent, prevIndent):
+        # Check indentation level
+        indent = len(self.line) - len(self.line.lstrip(" "))
+        if indent != expectedIndent:
+            print "Indentation level not matching expected"
+            if (prevIndent == -1):
+                print "Expected: %s\tFound: %s" % (expectedIndent, indent)
+            else:
+                print "Expected: %s or %s\tFound: %s" % (expectedIndent, prevIndent, indent)
+            print self.line
+            sys.exit(1)
+        # Strip indentation
+        strippedLine = self.line.lstrip(" ")
+        # If this line is a full key:value pair collect everything and return them
+        match = re.match("(\w+)\s*:\s*(.+)", strippedLine)
+        if match:
+            # Get the next line as this key:value pair has been processed
+            self.readNextLine()
+            return match.group(1, 2)
+        # If this line is only a key collect the whole section of key:value pairs
+        match = re.match("(\w+)\s*:", strippedLine)
+        if match:
+            key = match.group(1)
+            # Get the next line as this key: has been processed
+            self.readNextLine()
+            value = self.parseSubGroup(prevIndent = indent)
+            return key, value
+        # Wrong format
+        print "Invalid config file format:"
+        print self.line
+        sys.exit(1)
+
+    def parseSubGroup(self, prevIndent):
+        subGroup = {};
+        if prevIndent == -1:
+            # Top level of the config file, expected indentation level is 0
+            groupIndent = 0
+        else:
+            # First line in subgroup is used to determine the indentation level of the subgroup
+            groupIndent = len(self.line) - len(self.line.lstrip(" "))
+        # check the minimum indentation
+        if (groupIndent < prevIndent + 1):
+            print "Indentation level not matching expected"
+            print "Expected minimum: %s\tFound: %s" % (prevIndent + 1, groupIndent)
+            print self.line
+            sys.exit(1)
+        # Go through all the lines in the subgroup
+        while True:
+            # Reached the end of file
+            if self.line == "":
+                break
+            # Check if the indentation to see if still in subgroup or reached the end of it
+            curIndent = len(self.line) - len(self.line.lstrip(" "))
+            if curIndent <= prevIndent:
+                return subGroup
+            else:
+                newKey, newValue = self.parseKeyValue(groupIndent, prevIndent)
+                # Check if the key is already defined
+                self.checkKey(subGroup, newKey, newValue)
+                # Store new key
+                subGroup[newKey] = newValue
+        # Reached end of file
+        return subGroup
+
+    def checkKey(self, inHash, key, value):
+        if key in inHash:
+            print "Warning: Key '%s' is already defined as: '%s'" % (key, inHash[key])
+            print "         Overriding to: %s" % (value)
+
+    def readNextLine(self):
+        while True:
+            self.line = self.fileHandle.readline()
+            # Reached the end of file
+            if self.line == "":
+                break
+            # Reached a non empty line
+            if not (re.match("\s*#", self.line) or re.match("\s*$", self.line)):
+                self.line = re.sub("\s*#.*", "",self.line)
+                break
+
+def readConfig(fileName, configReader=configReader):
+    configReader = configReader()
+    return configReader.parseConfig(fileName)
+
+def check_options(options):
+    if (not options.component):
+        print "ERROR: --component option is required\n"
+        return False
+    if (not options.component in compList):
+        print "ERROR: Unknown component specified (%s)\n" % (options.component)
+        return False
+    if (not options.configFile):
+        print "ERROR: --config option is required for configurable component %s\n" % (options.component)
+        return False
+    if (not options.outDir):
+        print "ERROR: --output option is required\n"
+        return False
+    if (os.path.realpath(os.path.join(options.outDir, "logical")).startswith(os.path.realpath(baseDir))):
+        print "ERROR: Output directory (%s) cannot point to or inside the non-rendered area (%s)\n" % (options.outDir, os.path.realpath(baseDir))
+        return False
+
+    return True
+
+
+def main():
+
+    parser = optparse.OptionParser(usage = "usage: %prog [options] --config <configuration_file> --output <output_dir> --component <component_name>", add_help_option = False)
+    parser.add_option("--config",     action = "store",      dest = "configFile", help = "Specifies the configuration file, required argument for configurable components")
+    parser.add_option("--output",     action = "store",      dest = "outDir",     help = "Specifies the output directory, required argument")
+    parser.add_option("--component",  action = "store",      dest = "component",  help = "Specifies the component name, required argument")
+    parser.add_option("--verbose",    action = "store_true", dest = "isVerbose",  help = "Turns on verbose mode")
+    parser.add_option("-h", "--help", action = "store_true", dest = "printHelp",  help = "Prints this help message")
+
+    options, args = parser.parse_args()
+
+    # Check for validity of options
+    if (not check_options(options) or options.printHelp):
+        parser.print_help()
+        print
+        print "Available components:"
+
+        for name in compList:
+            print "  " + name
+        return -1
+
+    # Verbose print function defined if verbosity is set, doing nothing else
+    if options.isVerbose:
+        def vprint(*args):
+            for arg in args:
+                print arg,
+            print
+    else:
+        vprint = lambda *a: None
+
+    # There is always a configuration.
+    config = readConfig(options.configFile)
+    # set config name from config if exists, else set it to None
+    c_name  = config["config_name"]
+
+    # Transform generate input arguments to build_ip arguments
+    arg_to_pass = "%s %s --cfgfile=%s --uniquifier=%s" % (options.component, options.outDir, options.configFile, c_name)
+    os.system("./testbench/shared/tools/bin/sdc600_build_ip.sh %s" % (arg_to_pass))
+
+    # Needed for all the components
+    # Copy over the busdefs
+    vprint("Copying IPXACT libraries...")
+    busdefInDir = os.path.normpath(os.path.join(baseDir, "shared", "ipxact"))
+    busdefOutDir = os.path.normpath(os.path.join(options.outDir, "logical", "shared"))
+    if not os.path.isdir(busdefOutDir):
+        os.makedirs(busdefOutDir)
+    subprocess.call(["cp", "-rf", busdefInDir, busdefOutDir])
+
+if __name__ == "__main__":
+    main()

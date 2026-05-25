@@ -1,0 +1,177 @@
+//-----------------------------------------------------------------------------
+// The confidential and proprietary information contained in this file may
+// only be used by a person authorised under and to the extent permitted
+// by a subsisting licensing agreement from ARM Limited.
+//
+//            (C) COPYRIGHT 2004-2014 ARM Limited.
+//                ALL RIGHTS RESERVED
+//
+// This entire notice must be reproduced on all copies of this file
+// and copies of this file may only be made by a person if such person is
+// permitted to do so under the terms of a subsisting license agreement
+// from ARM Limited.
+//
+//      SVN Information
+//
+//      Checked In          : $Date: 2011-06-05 20:29:23 +0100 (Sun, 05 Jun 2011) $
+//
+//      Revision            : $Revision: 174078 $
+//
+//      Release Information : CORTEXA53-r0p4-00rel0
+//
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+// ARM Cortex-A53 IP-XACT 1.4 description
+//-----------------------------------------------------------------------------
+
+This release includes the following level of description as defined by the
+IP-XACT specification:
+
+   * Bus interfaces
+   * Component model including:
+      - RTL view
+      - I/O signal interface
+      - RTL configuration parameters
+   * Memory-mapped register descriptions
+   * RTL filesets
+
+--------------------------------------------------------------------------------
+
+The distribution contains the following components relative to the directory
+'logical/cortexa53/ipxact' in the distribution:
+
+ ./README                                                                         : This document
+ ./CortexA53_unconfigured.xml                                                     : IP-XACT description of Unconfigured Cortex-A53
+ ./busdefs/amba.com/AMBA3/APB/r2p0_0/APB.xml                                      : AMBA Advanced Peripheral Bus (APB 3.0) interface description
+ ./busdefs/amba.com/AMBA3/APB/r2p0_0/APB_rtl.xml                                  : AMBA RTL view of the Advanced Peripheral Bus (APB 3.0) interface description
+ ./busdefs/amba.com/AMBA3/ATB/r2p0_0/ATB.xml                                      : AMBA Advanced Trace Bus (ATB) interface description
+ ./busdefs/amba.com/AMBA3/ATB/r2p0_0/ATB_rtl.xml                                  : AMBA RTL view of the Advanced Trace Bus (ATB) interface description
+ ./busdefs/amba.com/AMBA4/ACE/r0p0_0/ACE.xml                                      : AMBA ACE interface description
+ ./busdefs/amba.com/AMBA4/ACE/r0p0_0/ACE_rtl.xml                                  : AMBA RTL view of the AMBA ACE interface description
+ ./busdefs/amba.com/AMBA4/ACE-Lite/r0p0_0/ACE-Lite.xml                            : AMBA ACE-Lite interface description (referenced by the ACE interface)
+ ./busdefs/amba.com/AMBA4/ACE-Lite/r0p0_0/ACE-Lite_rtl.xml                        : AMBA RTL view of the AMBA ACE-Lite interface description (referenced by the ACE interface)
+ ./busdefs/amba.com/AMBA4/AXI4/r0p0_0/AXI4.xml                                    : AMBA Advanced eXtensible Interconnect Bus interface description (referenced by the ACE interface)
+ ./busdefs/amba.com/AMBA4/AXI4/r0p0_0/AXI4_rtl.xml                                : AMBA RTL view of the AMBA Advanced eXtensible Interconnect Bus interface description (referenced by the ACE interface)
+ ./busdefs/amba.com/AMBA4/ACP/r0p0_0/ACP.xml                                      : AMBA ACP interface description (referenced by the ACE interface)
+ ./busdefs/amba.com/AMBA4/ACP/r0p0_0/ACP_rtl.xml                                  : AMBA RTL view of the AMBA ACP interface description (referenced by the ACE interface) 
+ ./busdefs/amba.com/AMBA4/AXI4Stream/r0p0_1/AXI4Stream.xml                        : AMBA AXI4Stream interface description (referenced by the ACE interface)
+ ./busdefs/amba.com/AMBA4/AXI4Stream/r0p0_1/AXI4Stream_rtl.xml                    : AMBA RTL view of the AMBA AXI4Stream interface description (referenced by the ACE interface)
+ ./busdefs/amba.com/AMBA5/CHI/r0p0_0/CHI.xml                                      : AMBA CHI interface description (referenced by the ACE interface)
+ ./busdefs/amba.com/AMBA5/CHI/r0p0_0/CHI_rtl.xml                                  : AMBA RTL view of the AMBA CHI interface description (referenced by the ACE interface)
+ ./busdefs/arm.com/CoreSight/Authentication/r0p0_0/Authentication.xml             : CoreSight debug authentication interface description
+ ./busdefs/arm.com/CoreSight/Authentication/r0p0_0/Authentication_rtl.xml         : CoreSight RTL view of the debug authentication interface description
+ ./busdefs/arm.com/CoreSight/Authentication/r0p0_1/Authentication.xml             : CoreSight debug authentication interface description
+ ./busdefs/arm.com/CoreSight/Authentication/r0p0_1/Authentication_rtl.xml         : CoreSight RTL view of the debug authentication interface description
+ ./busdefs/arm.com/CoreSight/CDBGRST/r0p0_0/CDBGRST.xml                           : CoreSight debug CDBGRST interface description
+ ./busdefs/arm.com/CoreSight/CDBGRST/r0p0_0/CDBGRST_rtl.xml                       : CoreSight RTL view of the debug CDBGRST interface description
+ ./busdefs/arm.com/CoreSight/CPWRUP/r0p0_0/CPWRUP.xml                             : CoreSight debug CPWRUP interface description
+ ./busdefs/arm.com/CoreSight/CPWRUP/r0p0_0/CPWRUP_rtl.xml                         : CoreSight RTL view of the debug CPWRUP interface description  
+ ./busdefs/arm.com/CoreSight/Channel/r0p0_0/Channel.xml                           : CoreSight Channel interface description
+ ./busdefs/arm.com/CoreSight/Channel/r0p0_0/Channel_rtl.xml                       : CoreSight RTL view of the Channel interface description 
+ ./busdefs/arm.com/CoreSight/DAPinternal/r0p0_0/DAPinternal.xml                   : CoreSight debug DAPinternal interface description
+ ./busdefs/arm.com/CoreSight/DAPinternal/r0p0_0/DAPinternal_rtl.xml               : CoreSight RTL view of the debug DAPinternal interface description   
+ ./busdefs/arm.com/CoreSight/EVENT/r0p0_0/EVENT.xml                               : CoreSight EVENT cross-trigger interface description
+ ./busdefs/arm.com/CoreSight/EVENT/r0p0_0/EVENT_rtl.xml                           : CoreSight RTL view of the EVENT cross-trigger interface description
+ ./busdefs/arm.com/CoreSight/EVENT/r1p0_0/EVENT.xml                               : CoreSight EVENT cross-trigger interface description
+ ./busdefs/arm.com/CoreSight/EVENT/r1p0_0/EVENT_rtl.xml                           : CoreSight RTL view of the EVENT cross-trigger interface description 
+ ./busdefs/arm.com/CoreSight/NTimestamp/r0p0_0/NTimestamp.xml                     : CoreSight debug NTimestamp interface description
+ ./busdefs/arm.com/CoreSight/NTimestamp/r0p0_0/NTimestamp_rtl.xml                 : CoreSight RTL view of the debug NTimestamp interface description  
+ ./busdefs/arm.com/CoreSight/SWJ/r0p0_0/SWJ.xml                                   : CoreSight debug SWJ interface description
+ ./busdefs/arm.com/CoreSight/SWJ/r0p0_0/SWJ_rtl.xml                               : CoreSight RTL view of the debug SWJ interface description  
+ ./busdefs/arm.com/CoreSight/TracePort/r0p0_0/TracePort.xml                       : CoreSight debug TracePort interface description
+ ./busdefs/arm.com/CoreSight/TracePort/r0p0_0/TracePort_rtl.xml                   : CoreSight RTL view of the debug TracePort interface description  
+ ./busdefs/arm.com/CoreSight/WTimestamp/r0p0_0/WTimestamp.xml                     : CoreSight Wide Timestamp Interface description
+ ./busdefs/arm.com/CoreSight/WTimestamp/r0p0_0/WTimestamp_rtl.xml                 : CoreSight RTL view of the Wide Timestamp interface description
+ ./busdefs/arm.com/CoreSight/WTimestamp/r1p0_0/WTimestamp.xml                     : CoreSight Wide Timestamp Interface description
+ ./busdefs/arm.com/CoreSight/WTimestamp/r1p0_0/WTimestamp_rtl.xml                 : CoreSight RTL view of the Wide Timestamp interface description 
+ ./busdefs/arm.com/Cores/TimerEventInterface/r0p0_0/TimerEventInterface.xml       : Cortex-A53 Generic Timer interrupt interface description
+ ./busdefs/arm.com/Cores/TimerEventInterface/r0p0_0/TimerEventInterface_rtl.xml   : Cortex-A53 RTL view of the Generic Timer interrupt interface description
+ ./busdefs/arm.com/Cores/WFEventInterface/r0p0_0/WFEventInterface.xml             : Cortex-A53 Wait For Event interface description
+ ./busdefs/arm.com/Cores/WFEventInterface/r0p0_0/WFEventInterface_rtl.xml         : Cortex-A53 RTL view of the Wait For Event interface interface description
+ ./busdefs/arm.com/generic/InterruptInterface/r0p0_0/InterruptInterface.xml       : Generic 32-source interrupt interface description
+ ./busdefs/arm.com/generic/InterruptInterface/r0p0_0/InterruptInterface_rtl.xml   : Generic RTL view of the 32-source interrupt interface description
+ ./busdefs/arm.com/generic/MBISTInterface/r0p0_0/MBISTInterface.xml               : Generic Memory BIST interface description
+ ./busdefs/arm.com/generic/MBISTInterface/r0p0_0/MBISTInterface_rtl.xml           : Generic RTL view of the Memory BIST interface description
+ ./busdefs/arm.com/generic/RESET/r0p0_0/RESET.xml                                 : Generic RESET Bus interface description
+ ./busdefs/arm.com/generic/RESET/r0p0_0/RESET_rtl.xml                             : Generic RTL view of the Generic RESET Bus interface description
+ ./busdefs/arm.com/generic/Staticcfg/r0p0_0/Staticcfg.xml                         : Generic Static configuration interface description
+ ./busdefs/arm.com/generic/Staticcfg/r0p0_0/Staticcfg_rtl.xml                     : Generic RTL view of the Static configuration interface description 
+ ./busdefs/arm.com/generic/Status/r0p0_0/Status.xml                               : Generic Status Bus interface description
+ ./busdefs/arm.com/generic/Status/r0p0_0/Status_rtl.xml                           : Generic RTL view of the Generic Status Bus interface description
+ ./busdefs/arm.com/generic/clock/r0p0_0/clock.xml                                 : Generic Clock Bus interface description
+ ./busdefs/arm.com/generic/clock/r0p0_0/clock_rtl.xml                             : Generic RTL view of the Generic Clock Bus interface description
+ ./busdefs/arm.com/generic/Q-Channel/r0p0_0/Q-Channel.xml                         : Generic Q-Channel Bus interface description
+ ./busdefs/arm.com/generic/Q-Channel/r0p0_0/Q-Channel_rtl.xml                     : Generic RTL view of the Q-Channel Bus interface description 
+ ./busdefs/arm.com/generic/interrupt/r0p0_0/interrupt.xml                         : Generic interrupt Bus interface description
+ ./busdefs/arm.com/generic/interrupt/r0p0_0/interrupt_rtl.xml                     : Generic RTL view of the Generic interrupt Bus interface description 
+
+//---------------------
+// Configuration
+//---------------------
+
+The component description describes a CortexA53_unconfigured with all possible
+features implemented.
+
+Depending on the RTL configuration parameters used, some of these features may
+not be present in the configured design. For example, a configuration with no
+ACE does not include ACE Interface ports and bus definitions.
+
+To handle the configuration-dependent feature sets, 'ARM presence' vendor
+extensions are used in the IP-XACT description which mark when certain features
+should or should not be present.  Some tools can interpret these vendor
+extensions and allow configuration of the component within the tool.
+
+If your IP-XACT design tool cannot process the ARM vendor extensions, you can
+use the provided Build_Component script to generate a new description for a
+specific processor configuration.  The 'configured' description has all
+configuration options resolved and unimplemented features removed, and does not
+contain any ARM vendor extensions.  This description is suitable for using in
+any IP-XACT design environment.
+
+For more details about Build_Component, see the section 'Using Build_Component'
+below.
+
+//---------------------
+// Using Build_Component
+//---------------------
+
+The Build_Component script can be used to generate a configured IP-XACT file
+from the provided component description. This means that any ARM presence tags
+will be used to remove unimplemented features, resulting in an IP-XACT component
+file that describes a CortexA53_configured with the specific parameters (see
+Configuration above).
+
+The script requires the following tools:
+  Perl                     v5.8.8 or above   http://www.perl.org/
+  Libxml2                  v2.6.30 or above  http://www.xmlsoft.org/
+  XML::LibXML Perl module  v1.70 or above    http://search.cpan.org/dist/XML-LibXML/LibXML.pod
+
+   
+   You can run the BuildComponent with a selected configuration by using :  
+   
+   <RenderCORTEXA53.pl -ipxact> in the following directory <install dir>/logical/cortexa53/verilog/ 
+   
+   The configuration for rendering IP-XACT will be picked from :
+   
+   <install dir>/logical/cortexa53/config/CORTEXA53.cfg
+   
+   and will produce a configured IP-XACT file "CortexA53_configured.xml"
+
+//---------------------
+// NOTES
+//---------------------
+
+1) The IP-XACT description contains a file set named 'RTL' that
+   references generic RAMs and cells in the directories models/rams/generic and
+   models/cells/generic respectively and customers can replace 
+   with their own implementations.
+
+2) The IP-XACT description includes up to 4 CPUs in the multiprocessor cluster,
+   each with its own Debug, PMU, CTI and ETM registers assigned to the Debug APB
+   address space.
+
+3) Paths to source files are relative to the directory in which the IP-XACT
+   files appear when unpacked into the same directory structure as the bundled
+   product deliverables.
+

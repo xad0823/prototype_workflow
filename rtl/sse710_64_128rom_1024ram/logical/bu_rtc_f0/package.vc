@@ -1,0 +1,9 @@
++incdir+$LOGICAL_PATH/bu_rtc_f0/rtl_source
+$LOGICAL_PATH/bu_rtc_f0/rtl_source/RtcApbif.v
+$LOGICAL_PATH/bu_rtc_f0/rtl_source/RtcControl.v
+$LOGICAL_PATH/bu_rtc_f0/rtl_source/Rtc.v
+$LOGICAL_PATH/bu_rtc_f0/rtl_source/RtcUpdate.v
+$LOGICAL_PATH/bu_rtc_f0/rtl_source/RtcSynctoPCLK.v
+$LOGICAL_PATH/bu_rtc_f0/rtl_source/RtcRevAnd.v
+$LOGICAL_PATH/bu_rtc_f0/rtl_source/RtcInterrupt.v
+$LOGICAL_PATH/bu_rtc_f0/rtl_source/RtcCounter.v

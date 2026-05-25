@@ -1,0 +1,9 @@
+$LOGICAL_ROOT/generic_counters_and_timers/gct_misc/verilog/gct_synchronizer.v
+$LOGICAL_ROOT/generic_counters_and_timers/gct_misc/verilog/gct_syncpulse.v
+$LOGICAL_ROOT/generic_counters_and_timers/gct_misc/verilog/gct_syncpulse_on_rising.v
+$LOGICAL_ROOT/generic_counters_and_timers/gtimer_asyncapb/verilog/gtimer_asyncapb_revision.v
+$LOGICAL_ROOT/generic_counters_and_timers/gtimer_asyncapb/verilog/gtimer_asyncapb_core.v
+$LOGICAL_ROOT/generic_counters_and_timers/gtimer_asyncapb/verilog/gtimer_asyncapb_asyncreg_wr_logic.v
+$LOGICAL_ROOT/generic_counters_and_timers/gtimer_asyncapb/verilog/gtimer_asyncapb_regwrite_logic.v
+$LOGICAL_ROOT/generic_counters_and_timers/gtimer_asyncapb/verilog/gtimer_asyncapb_apbif.v
+$LOGICAL_ROOT/generic_counters_and_timers/gtimer_asyncapb/verilog/gtimer_asyncapb.v

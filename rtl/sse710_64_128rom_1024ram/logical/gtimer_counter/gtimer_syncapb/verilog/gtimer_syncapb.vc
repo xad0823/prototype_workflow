@@ -1,0 +1,4 @@
+$LOGICAL_ROOT/generic_counters_and_timers/gtimer_syncapb/verilog/gtimer_syncapb_revision.v
+$LOGICAL_ROOT/generic_counters_and_timers/gtimer_syncapb/verilog/gtimer_syncapb_core.v
+$LOGICAL_ROOT/generic_counters_and_timers/gtimer_syncapb/verilog/gtimer_syncapb_apbif.v
+$LOGICAL_ROOT/generic_counters_and_timers/gtimer_syncapb/verilog/gtimer_syncapb.v

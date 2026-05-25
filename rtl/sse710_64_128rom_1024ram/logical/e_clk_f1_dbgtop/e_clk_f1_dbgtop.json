@@ -1,0 +1,28 @@
+{
+   "SUFFIX" : "_dbgtop",
+   "package_dependency" : [
+      "arm_element_tech_models",
+      "clkrst_f1",
+      "clkselNway_f0_2"
+   ],
+   "clocks" : {
+      "DBGCLK" : {
+         "clk_source" : [
+            "REFCLK",
+            "SYSPLL"
+         ],
+         "rst_source" : "RESETN",
+         "internal_clk" : "false",
+         "divider" : {
+            "per_clk_divider" : {
+               "SYSPLL" : {
+                  "pipeline_depth" : "0",
+                  "divider_type" : "divider"
+               }
+            }
+         }
+      }
+   },
+   "package_template" : "$ARM_IP_LIBRARY/e_clk_f1",
+   "TEMPLATE_PKG_ID" : "e_clk_f1"
+}

@@ -1,0 +1,83 @@
+//-----------------------------------------------------------------------------
+// The confidential and proprietary information contained in this file may
+// only be used by a person authorised under and to the extent permitted
+// by a subsisting licensing agreement from ARM Limited.
+//
+//            (C) COPYRIGHT 2011-2014 ARM Limited.
+//                ALL RIGHTS RESERVED
+//
+// This entire notice must be reproduced on all copies of this file
+// and copies of this file may only be made by a person if such person is
+// permitted to do so under the terms of a subsisting license agreement
+// from ARM Limited.
+//
+//      SVN Information
+//
+//      Checked In          : $Date: 20012-08-24 10:46:13 +0100 (Fri, 24 Aug 2012) $
+//
+//      Revision            : $Revision: 107143 $
+//
+//      Release Information : CORTEXA53-r0p4-00rel0
+//
+//-----------------------------------------------------------------------------
+
++libext+.v+.vlib
+
+//-------------------------------------------------------------------------------//
+//*************************** USER EDITABLE PATHS *******************************//
+//-------------------------------------------------------------------------------//
+
+// Edit the following line and change 'generic' to the directory into 
+// which you performed RAM integration.
+-y ../../../logical/models/rams/generic
+
+// Edit the following line to point to the directory in which the verilog
+// models for your library RAMs exist (if different from above).
+//-y <ram_views>
+
+
+// Edit the following line and change 'generic' to the directory into 
+// which your cells wrapper are found.
+-y ../../../logical/models/cells/generic
+
+
+// Edit the following line to point to the directory in which the verilog
+// models for your library cells exist (if different from above).
+//-y <cell_views>
+
+// Edit the following line to point where the CortexA53 RTL
+// Top level verilog file can be found (Do not re-arrange or delete comment).
+-v ../../cortexa53/verilog/CORTEXA53.v
+
+//-------------------------------------------------------------------------------//
+//************************ DO NOT EDIT FOLLOWING PATHS **************************//
+//-------------------------------------------------------------------------------//
+
++incdir+./verilog
++incdir+../../../logical/shared/verilog
++incdir+../../../logical/ca53scu/verilog
++incdir+../../../logical/testbench/ram_integration_tb/verilog
+
+-v ../../cortexa53/verilog/ca53_cpu.v
+-v ../../cortexa53/verilog/ca53_l2.v
+-v ./verilog/ca53_noram_cache_ram_test.v
+-v ./verilog/ca53_l2noram_cache_ram_test.v
+-v ./verilog/ca53_d_dataram_tb.v
+-v ./verilog/ca53_d_tagram_tb.v
+-v ./verilog/ca53_i_dataram_tb.v
+-v ./verilog/ca53_i_tagram_tb.v
+-v ./verilog/ca53_dirtyram_tb.v
+-v ./verilog/ca53tlbram_tb.v
+-v ./verilog/ca53_btacram_stg0_tb.v
+-v ./verilog/ca53_btacram_stg1_tb.v
+-v ./verilog/ca53l1d_tagram_tb.v
+-v ./verilog/ca53l1d_tagram_clken_tb.v
+-v ./verilog/ca53_l2_tagram_tb.v
+-v ./verilog/ca53_l2_victimram_tb.v
+-v ./verilog/ca53_ramtest_number1.v
+-v ./verilog/ca53_ramtest_number2.v
+-v ./verilog/ca53_rambytetest_number3.v
+-v ./verilog/ca53_rambittest_number3.v
+-v ./verilog/ca53_l2_dataram_tb.v
+-v ./verilog/ca53_l2dataramtest_number1.v
+-v ./verilog/ca53_l2dataramtest_number2.v

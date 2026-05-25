@@ -1,0 +1,30 @@
+=============================================================================
+ The confidential and proprietary information contained in this file may
+ only be used by a person authorised under and to the extent permitted
+ by a subsisting licensing agreement from Arm Limited or its affiliates.
+
+ (C) COPYRIGHT 2018-2019 Arm Limited or its affiliates.
+ ALL RIGHTS RESERVED
+
+ This entire notice must be reproduced on all copies of this file
+ and copies of this file may only be made by a person if such person is
+ permitted to do so under the terms of a subsisting license agreement
+ from Arm Limited or its affiliates.
+
+=============================================================================
+
+The IP-XACT file is used to configure the pck600_clk_ctrl. The configuration options are:
+
+NUM_Q_CHL              : Configures the number of the device Q-Channel interfaces. Default value is 1. Range is 1 to 8. This maps to the NUM_Q_CHL verilog parameter.
+
+NUM_QACTIVE_ONLY       : Configures the number of the QACTIVE only device Q-Channel interfaces. Default value is 1. Range is 0 to 32. This maps to the NUM_QACTIVE_ONLY verilog parameter.
+
+HC_Q_CH_SYNC           : Includes or excludes synchronizers on HC Q-Channels. Default value is 1. Possible values are {0,1}. This maps to the HC_Q_CH_SYNC verilog parameter.
+
+PWR_Q_CH_SYNC          : Includes or excludes synchronizers on PWR Q-Channels. Default value is 1. Possible values are {0,1}. This maps to the HC_Q_CH_SYNC verilog parameter.
+
+CLK_Q_CH_SYNC          : Includes or excludes synchronizers on CLK Q-Channels. Default value is 1. Possible values are {0,1}. This maps to the HC_Q_CH_SYNC verilog parameter.
+
+CLK_QACTIVE_SYNC       : Includes or excludes synchronizers on CLK Qactive. Default value is 1. Possible values are {0,1}. This maps to the CLK_QACTIVE_SYNC verilog parameter.
+
+ACTIVE_DENY_EN         : Configures to support or not the use of CLK_QACTIVE as denies for quiescence request. Default value is 1. Possible values are {0,1}. This maps to the ACTIVE_DENY_EN verilog parameter.

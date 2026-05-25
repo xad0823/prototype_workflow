@@ -1,0 +1,3 @@
+$LOGICAL_ROOT/generic_counters_and_timers/gtimer_control/verilog/gtimer_control_revision.v
+$LOGICAL_ROOT/generic_counters_and_timers/gtimer_control/verilog/gtimer_control_apbif.v
+$LOGICAL_ROOT/generic_counters_and_timers/gtimer_control/verilog/gtimer_control.v

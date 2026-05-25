@@ -1,0 +1,555 @@
+
+#-----------------------------------------------------------------------------
+#    The confidential and proprietary information contained in this file may
+#    only be used by a person authorised under and to the extent permitted
+#    by a subsisting licensing agreement from Arm Limited or its affiliates.
+# 
+#           (C) COPYRIGHT 2018-2021 Arm Limited or its affiliates.
+#               ALL RIGHTS RESERVED
+# 
+#    This entire notice must be reproduced on all copies of this file
+#    and copies of this file may only be made by a person if such person is
+#    permitted to do so under the terms of a subsisting license agreement
+#    from Arm Limited or its affiliates.
+#-----------------------------------------------------------------------------
+#
+#
+#
+# Release Information : SSE710-r0p0-00eac0
+#
+# -----------------------------------------------------------------------------
+#
+# Description : Example Configuration UPF template for top_sse710
+# Vendor      : arm.com
+# Library     : IOT Kits
+# Version     : 1
+#
+# -----------------------------------------------------------------------------
+# Unified Power Format (IEEE Std 1801-2013)
+# -----------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
+# RAM connections
+#-------------------------------------------------------------------------------
+set memPorts             [ list PGEN RET1N RET2N VDDPE VDDCE VSSE VSS VDDE]
+set memories [list \
+    PD_AON           [list memories $PD_AON_mem] \
+    PD_SECENCTOP     [list memories $PD_SECENCTOP_mem] \
+    PD_SECENCTOP_rom [list memories $PD_SECENCTOP_rom] \
+    PD_CLUSTOP       [list memories $PD_CLUSTOP_mem] \
+]
+
+dict for {ram_type ram_info} $memories {
+    foreach port $memPorts {
+        set ports {}
+        foreach memory [dict get $ram_info memories] {
+            set ports [concat $ports $memory/$port]
+        }
+        set ${ram_type}_memports($port) $ports
+    }
+    set inputs {}
+    set outputs {}
+    foreach memory [dict get $ram_info memories] {
+        set inputs  [concat $inputs  {*}[find_objects $memory -object_type port -direction in  -pattern *]]
+        set outputs [concat $outputs {*}[find_objects $memory -object_type port -direction in  -pattern *]]
+    }
+    set ${ram_type}_memports(inputs) $inputs
+    set ${ram_type}_memports(outputs) $inputs
+}
+
+proc relative_path {paths} {
+    upvar current_scope prefix
+    set relative_paths {}
+    foreach path $paths {
+        if {[string first $prefix $path] == 0} {
+            lappend relative_paths [string range $path [string length $prefix]+1 end]
+        } else {
+            lappend relative_paths $path
+        }
+    }
+    return $relative_paths
+}
+
+#-------------------------------------------------------------------------------
+# LP Control signals
+#-------------------------------------------------------------------------------
+create_logic_net  LP_LPWRNSYSTOP
+connect_logic_net LP_LPWRNSYSTOP        -ports $PD_SYSTOP_pcsm_path/lgcpwrn_o -reconnect
+
+create_logic_net  LP_LPWRNCLUSTOP
+connect_logic_net LP_LPWRNCLUSTOP       -ports $PD_CLUSTOP_pcsm_path/lgcpwrn_o -reconnect
+
+create_logic_net  LP_RPWRNCLUSTOP
+connect_logic_net LP_RPWRNCLUSTOP       -ports [concat $PD_CLUSTOP_pcsm_path/rampwrn_o $PD_CLUSTOP_memports(PGEN)] -reconnect
+
+create_logic_net  LP_RRETNCLUSTOP
+connect_logic_net LP_RRETNCLUSTOP       -ports [concat $PD_CLUSTOP_pcsm_path/ramretn_o $PD_CLUSTOP_memports(RET1N) $PD_CLUSTOP_memports(RET2N)] -reconnect
+
+create_logic_net  LP_LPWRNSECENCTOP
+connect_logic_net LP_LPWRNSECENCTOP     -ports $PD_SECENCTOP_pcsm_path/lgcpwrn_o -reconnect
+
+create_logic_net  LP_RPWRNSECENCTOP
+connect_logic_net LP_RPWRNSECENCTOP     -ports [concat $PD_SECENCTOP_pcsm_path/rampwrn_o $PD_SECENCTOP_memports(PGEN) $PD_SECENCTOP_rom_memports(PGEN)] -reconnect
+
+create_logic_net  LP_RRETNSECENCTOP
+connect_logic_net LP_RRETNSECENCTOP     -ports [concat $PD_SECENCTOP_pcsm_path/ramretn_o $PD_SECENCTOP_memports(RET1N) $PD_SECENCTOP_memports(RET2N)] -reconnect
+
+create_logic_net  LP_LPWRNDBGTOP
+connect_logic_net LP_LPWRNDBGTOP        -ports $PD_DBGTOP_pcsm_path/lgcpwrn_o -reconnect
+
+create_logic_port LP_LPWRNEXTSYS0TOP
+create_logic_net  LP_LPWRNEXTSYS0TOP
+connect_logic_net LP_LPWRNEXTSYS0TOP    -ports LP_LPWRNEXTSYS0TOP
+
+create_logic_port LP_ISOLATENEXTSYS0TOP
+create_logic_net  LP_ISOLATENEXTSYS0TOP
+connect_logic_net LP_ISOLATENEXTSYS0TOP -ports LP_ISOLATENEXTSYS0TOP
+
+create_logic_port LP_LPWRNEXTSYS1TOP
+create_logic_net  LP_LPWRNEXTSYS1TOP
+connect_logic_net LP_LPWRNEXTSYS1TOP    -ports LP_LPWRNEXTSYS1TOP
+
+create_logic_port LP_ISOLATENEXTSYS1TOP
+create_logic_net  LP_ISOLATENEXTSYS1TOP
+connect_logic_net LP_ISOLATENEXTSYS1TOP -ports LP_ISOLATENEXTSYS1TOP
+
+set_port_attributes \
+    -ports {LP_LPWRNEXTSYS0TOP LP_ISOLATENEXTSYS0TOP} \
+    -driver_supply PD_AON.primary
+
+set_port_attributes \
+    -ports {LP_LPWRNEXTSYS1TOP LP_ISOLATENEXTSYS1TOP} \
+    -driver_supply PD_AON.primary
+
+load_upf $env(LOGICAL_PATH)/top_sse710_r0_3/top_sse710_r0_aontop_3/power_intent/upf/connect_fw_power_control.upf           -scope u_system_control_f0_aontop
+load_upf $env(LOGICAL_PATH)/top_sse710_r0_3/top_sse710_r0_aontop_3/power_intent/upf/create_systop_power_control_ports.upf  -scope $PD_SYSTOP_path
+load_upf $env(LOGICAL_PATH)/top_sse710_r0_3/top_sse710_r0_aontop_3/power_intent/upf/create_clustop_power_control_ports.upf -scope $PD_CLUSTOP_path
+
+load_upf $env(LOGICAL_PATH)/top_sse710_r0_3/top_sse710_r0_aontop_3/power_intent/upf/connect_systop_cpu_power_control-hier.upf  -scope $PD_SYSTOP_path
+load_upf $env(LOGICAL_PATH)/top_sse710_r0_3/top_sse710_r0_aontop_3/power_intent/upf/connect_clustop_cpu_power_control-hier.upf -scope $PD_CLUSTOP_path
+
+#-------------------------------------------------------------------------------
+# Isolation Strategy
+#-------------------------------------------------------------------------------
+
+unset -nocomplain rules
+array set rules [list]
+
+
+set iso "iso_PD_SYSTOP_Low"
+set rules($iso-domain) PD_SYSTOP
+set rules($iso-applies_to) outputs
+set rules($iso-clamp_value) 0
+set rules($iso-isolation_signal) $PD_SYSTOP_ppu_path/devemuisolaten_o
+set rules($iso-isolation_sense) low
+set rules($iso-source) PD_SYSTOP.primary
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~NOTE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Include the variable $PD_SYSTOP_iso_exclude in the below list while in system context.
+# Follow guidance in the parent UPF to define this variable.
+# It is necessary to exclude these signals from isolation cell insertion 
+# for correct system functionality.
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+set rules($iso-exclude_elements) [concat \
+                                   $PD_SYSTOP_ClampHigh \
+                                   $PD_SYSTOP_CPU_PCSMs_ClampLow \
+                                   $PD_SYSTOP_CPU_PCSMs_ClampHigh \
+                                   $PD_CLUSTOP_path \
+                                 ]
+
+set iso "iso_PD_SYSTOP_CLUSTOP_Low"
+set rules($iso-domain) PD_SYSTOP
+set rules($iso-applies_to) outputs
+set rules($iso-clamp_value) 0
+set rules($iso-isolation_signal) $PD_SYSTOP_ppu_path/devemuisolaten_o
+set rules($iso-isolation_sense) low
+set rules($iso-source) PD_CLUSTOP.primary
+set rules($iso-exclude_elements) [concat \
+                                   $PD_SYSTOP_ClampHigh \
+                                   $PD_SYSTOP_CPU_PCSMs_ClampLow \
+                                   $PD_SYSTOP_CPU_PCSMs_ClampHigh \
+                                 ]
+
+set iso "iso_PD_SYSTOP_High"
+set rules($iso-domain) PD_SYSTOP
+set rules($iso-clamp_value) 1
+set rules($iso-elements) $PD_SYSTOP_ClampHigh
+set rules($iso-isolation_signal) $PD_SYSTOP_ppu_path/devemuisolaten_o
+set rules($iso-isolation_sense) low
+
+set iso "iso_PD_SYSTOP_CPU_PCSMs_Low"
+set rules($iso-domain) PD_SYSTOP
+set rules($iso-clamp_value) 0
+set rules($iso-elements) $PD_SYSTOP_CPU_PCSMs_ClampLow
+set rules($iso-isolation_signal) $PD_SYSTOP_ppu_path/devemuisolaten_o
+set rules($iso-isolation_sense) low
+
+set iso "iso_PD_SYSTOP_CPU_PCSMs_High"
+set rules($iso-domain) PD_SYSTOP
+set rules($iso-clamp_value) 1
+set rules($iso-elements) $PD_SYSTOP_CPU_PCSMs_ClampHigh
+set rules($iso-isolation_signal) $PD_SYSTOP_ppu_path/devemuisolaten_o
+set rules($iso-isolation_sense) low
+
+
+
+set iso "iso_PD_CLUSTOP_Low"
+set rules($iso-domain) PD_CLUSTOP
+set rules($iso-applies_to) outputs
+set rules($iso-clamp_value) 0
+set rules($iso-isolation_signal) $PD_CLUSTOP_ppu_path/devemuisolaten_o
+set rules($iso-isolation_sense) low
+set rules($iso-source) PD_CLUSTOP.primary
+set rules($iso-exclude_elements) [concat \
+                                   $PD_CLUSTOP_mem \
+                                   $PD_CPU0_path \
+                                   $PD_CPU1_path \
+                                   $PD_CPU2_path \
+                                   $PD_CPU3_path \
+                                   $PD_CLUSTOP_ClampHigh \
+                                 ]
+
+set iso "iso_PD_CLUSTOP_High"
+set rules($iso-domain) PD_CLUSTOP
+set rules($iso-clamp_value) 1
+set rules($iso-elements) [concat $PD_CLUSTOP_ClampHigh]
+set rules($iso-isolation_signal) $PD_CLUSTOP_ppu_path/devemuisolaten_o
+set rules($iso-isolation_sense) low
+
+
+
+set iso "iso_PD_EXTSYS0TOP_Low"
+set rules($iso-domain) PD_EXTSYS0TOP
+set rules($iso-applies_to) outputs
+set rules($iso-clamp_value) 0
+set rules($iso-isolation_signal) LP_ISOLATENEXTSYS0TOP
+set rules($iso-isolation_sense) low
+set rules($iso-source) PD_EXTSYS0TOP.primary
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~NOTE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Include the variable $PD_EXTSYS0TOP_iso_exclude in the below list while in system context.
+# Follow guidance in the parent UPF to define this variable.
+# It is necessary to exclude these signals from isolation cell insertion 
+# for correct system functionality.
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+set rules($iso-exclude_elements) [concat $PD_EXTSYS0TOP_ClampHigh \
+                                         ]
+
+
+set iso "iso_PD_EXTSYS0TOP_High"
+set rules($iso-domain) PD_EXTSYS0TOP
+set rules($iso-clamp_value) 1
+set rules($iso-elements) [concat $PD_EXTSYS0TOP_ClampHigh]
+set rules($iso-isolation_signal) LP_ISOLATENEXTSYS0TOP
+set rules($iso-isolation_sense) low
+
+set iso "iso_PD_EXTSYS1TOP_Low"
+set rules($iso-domain) PD_EXTSYS1TOP
+set rules($iso-applies_to) outputs
+set rules($iso-clamp_value) 0
+set rules($iso-isolation_signal) LP_ISOLATENEXTSYS1TOP
+set rules($iso-isolation_sense) low
+set rules($iso-source) PD_EXTSYS1TOP.primary
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~NOTE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Include the variable $PD_EXTSYS1TOP_iso_exclude in the below list while in system context.
+# Follow guidance in the parent UPF to define this variable.
+# It is necessary to exclude these signals from isolation cell insertion 
+# for correct system functionality.
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+set rules($iso-exclude_elements) [concat $PD_EXTSYS1TOP_ClampHigh \
+                                         ]
+
+
+set iso "iso_PD_EXTSYS1TOP_High"
+set rules($iso-domain) PD_EXTSYS1TOP
+set rules($iso-clamp_value) 1
+set rules($iso-elements) [concat $PD_EXTSYS1TOP_ClampHigh]
+set rules($iso-isolation_signal) LP_ISOLATENEXTSYS1TOP
+set rules($iso-isolation_sense) low
+ 
+
+
+set iso "iso_PD_DBGTOP_Low"
+set rules($iso-domain) PD_DBGTOP
+set rules($iso-applies_to) outputs
+set rules($iso-clamp_value) 0
+set rules($iso-isolation_signal) $PD_DBGTOP_ppu_path/devemuisolaten_o
+set rules($iso-isolation_sense) low
+set rules($iso-source) PD_DBGTOP.primary
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~NOTE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Include the variable $PD_DBGTOP_iso_exclude in the below list while in system context.
+# Follow guidance in the parent UPF to define this variable.
+# It is necessary to exclude these signals from isolation cell insertion 
+# for correct system functionality.
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+set rules($iso-exclude_elements) [concat $PD_DBGTOP_ClampHigh \
+                                         ]
+
+set iso "iso_PD_DBGTOP_High"
+set rules($iso-domain) PD_DBGTOP
+set rules($iso-clamp_value) 1
+set rules($iso-elements) [concat $PD_DBGTOP_ClampHigh]
+set rules($iso-isolation_signal) $PD_DBGTOP_ppu_path/devemuisolaten_o
+set rules($iso-isolation_sense) low
+
+
+
+set iso "iso_PD_SECENCTOP_Low"
+set rules($iso-domain) PD_SECENCTOP
+set rules($iso-applies_to) outputs
+set rules($iso-clamp_value) 0
+set rules($iso-isolation_signal) $PD_SECENCTOP_ppu_path/devemuisolaten_o
+set rules($iso-isolation_sense) low
+set rules($iso-source) PD_SECENCTOP.primary
+
+set rules($iso-exclude_elements) [concat \
+                                   $PD_SECENCTOP_mem \
+                                   $PD_SECENCTOP_rom \
+                                   $PD_SECENCTOP_ClampHigh \
+                                     ]
+
+set iso "iso_PD_SECENCTOP_High"
+set rules($iso-domain) PD_SECENCTOP
+set rules($iso-clamp_value) 1
+set rules($iso-elements) [concat $PD_SECENCTOP_ClampHigh]
+set rules($iso-isolation_signal) $PD_SECENCTOP_ppu_path/devemuisolaten_o
+set rules($iso-isolation_sense) low
+
+
+
+set iso "iso_PD_CPU0_Low"
+set rules($iso-domain) PD_CPU0 
+set rules($iso-applies_to) outputs
+set rules($iso-clamp_value) 0
+set rules($iso-isolation_signal) $PD_CPU0_ppu_path/devemuisolaten_o
+set rules($iso-isolation_sense) low
+set rules($iso-source) PD_CPU0.primary
+set rules($iso-exclude_elements) [concat \
+                                   $PD_CPU0_ClampHigh \
+                                 ]
+
+set iso "iso_PD_CPU0_High"
+set rules($iso-domain) PD_CPU0 
+set rules($iso-clamp_value) 1
+set rules($iso-elements) [concat $PD_CPU0_ClampHigh]
+set rules($iso-isolation_signal) $PD_CPU0_ppu_path/devemuisolaten_o
+set rules($iso-isolation_sense) low
+
+
+set iso "iso_PD_CPU1_Low"
+set rules($iso-domain) PD_CPU1 
+set rules($iso-applies_to) outputs
+set rules($iso-clamp_value) 0
+set rules($iso-isolation_signal) $PD_CPU1_ppu_path/devemuisolaten_o
+set rules($iso-isolation_sense) low
+set rules($iso-source) PD_CPU1.primary
+set rules($iso-exclude_elements) [concat \
+                                   $PD_CPU1_ClampHigh \
+                                 ]
+
+set iso "iso_PD_CPU1_High"
+set rules($iso-domain) PD_CPU1 
+set rules($iso-clamp_value) 1
+set rules($iso-elements) [concat $PD_CPU1_ClampHigh]
+set rules($iso-isolation_signal) $PD_CPU1_ppu_path/devemuisolaten_o
+set rules($iso-isolation_sense) low
+
+
+set iso "iso_PD_CPU2_Low"
+set rules($iso-domain) PD_CPU2 
+set rules($iso-applies_to) outputs
+set rules($iso-clamp_value) 0
+set rules($iso-isolation_signal) $PD_CPU2_ppu_path/devemuisolaten_o
+set rules($iso-isolation_sense) low
+set rules($iso-source) PD_CPU2.primary
+set rules($iso-exclude_elements) [concat \
+                                   $PD_CPU2_ClampHigh \
+                                 ]
+
+set iso "iso_PD_CPU2_High"
+set rules($iso-domain) PD_CPU2 
+set rules($iso-clamp_value) 1
+set rules($iso-elements) [concat $PD_CPU2_ClampHigh]
+set rules($iso-isolation_signal) $PD_CPU2_ppu_path/devemuisolaten_o
+set rules($iso-isolation_sense) low
+
+
+set iso "iso_PD_CPU3_Low"
+set rules($iso-domain) PD_CPU3 
+set rules($iso-applies_to) outputs
+set rules($iso-clamp_value) 0
+set rules($iso-isolation_signal) $PD_CPU3_ppu_path/devemuisolaten_o
+set rules($iso-isolation_sense) low
+set rules($iso-source) PD_CPU3.primary
+set rules($iso-exclude_elements) [concat \
+                                   $PD_CPU3_ClampHigh \
+                                 ]
+
+set iso "iso_PD_CPU3_High"
+set rules($iso-domain) PD_CPU3 
+set rules($iso-clamp_value) 1
+set rules($iso-elements) [concat $PD_CPU3_ClampHigh]
+set rules($iso-isolation_signal) $PD_CPU3_ppu_path/devemuisolaten_o
+set rules($iso-isolation_sense) low
+
+
+# Tcl to apply isolation rules, dropping empty exclude_elements and skipping rules those for which no elements have been identified
+# This helper makes it much easier to specify the clamp rules in a way that avoids overlap (resolution by UPF precedence rules)
+
+foreach key [lsort [array names rules *-domain]] {
+  set iso [regsub {[-]domain$} $key ""]
+  set cmd "set_isolation $iso"
+  if {[info exists rules($iso-exclude_elements)] && [llength $rules($iso-exclude_elements)]==0} {
+    array unset rules $iso-exclude_elements
+  } 
+  if {[info exists rules($iso-elements)] && [llength $rules($iso-elements)]==0} {
+    puts "UPF_INFO: Isolation rule $iso skipped, no applicable elements"
+  } else {
+    if {[info exists rules($iso-elements)]} {
+      append cmd " \\\n  -elements \{[join $rules($iso-elements) " "]\}"
+    }
+    array unset rules $iso-elements
+    foreach iso_option [lsort [array names rules $iso-*]] {
+      if {[llength $rules($iso_option)]>1} {
+        append cmd " \\\n  [regsub "^$iso" $iso_option ""] \{[join $rules($iso_option) " "]\}"
+      } else {
+        append cmd " \\\n  [regsub "^$iso" $iso_option ""] $rules($iso_option)"
+      }
+    }
+    #puts "UPF_INFO: $cmd"
+    eval $cmd
+  }
+}
+array unset rules
+
+#-------------------------------------------------------------------------------
+# Retention Strategy
+#-------------------------------------------------------------------------------
+set_retention ret_SECENCTOP_mem \
+    -domain PD_SECENCTOP \
+    -elements $PD_SECENCTOP_mem \
+    -retention_supply_set PD_SECENCTOP.ram_c \
+    -save_signal [list $PD_SECENCTOP_pcsm_path/ramretn_o negedge] \
+    -restore_signal [list $PD_SECENCTOP_pcsm_path/ramretn_o posedge] 
+    
+set_retention ret_CLUSTOP_mem \
+    -domain PD_CLUSTOP \
+    -elements $PD_CLUSTOP_mem \
+    -retention_supply_set PD_CLUSTOP.ram_c \
+    -save_signal [list $PD_CLUSTOP_pcsm_path/ramretn_o negedge] \
+    -restore_signal [list $PD_CLUSTOP_pcsm_path/ramretn_o posedge] 
+
+#-------------------------------------------------------------------------------
+# Power State updates
+#-------------------------------------------------------------------------------
+
+if { $::env(QUESTA_PA) == 1 } {
+    add_power_state PD_SYSTOP.primary -update \
+        -state ON  {-logic_expr {LP_LPWRNSYSTOP==0}} \
+        -state OFF {-logic_expr {LP_LPWRNSYSTOP==1}}
+
+    add_power_state PD_CLUSTOP.primary -update \
+        -state ON  {-logic_expr {LP_LPWRNCLUSTOP==0}} \
+        -state OFF {-logic_expr {LP_LPWRNCLUSTOP==1}}
+
+    add_power_state PD_CLUSTOP.ram_p -update \
+        -state ON  [subst {-logic_expr {$PD_SYSTOP_path/LP_RPWRNCLUSTOP==0}}] \
+        -state OFF [subst {-logic_expr {$PD_SYSTOP_path/LP_RPWRNCLUSTOP==1}}]
+
+    add_power_state PD_CLUSTOP.ram_c -update \
+        -state ON  [subst {-logic_expr {$PD_SYSTOP_path/LP_RPWRNCLUSTOP==0 || $PD_SYSTOP_path/LP_RRETNCLUSTOP==0}}] \
+        -state OFF [subst {-logic_expr {$PD_SYSTOP_path/LP_RPWRNCLUSTOP==1 && $PD_SYSTOP_path/LP_RRETNCLUSTOP==1}}]
+
+    add_power_state PD_EXTSYS0TOP.primary -update \
+        -state ON  {-logic_expr {LP_LPWRNEXTSYS0TOP==0}} \
+        -state OFF {-logic_expr {LP_LPWRNEXTSYS0TOP==1}}
+
+    add_power_state PD_EXTSYS1TOP.primary -update \
+        -state ON  {-logic_expr {LP_LPWRNEXTSYS1TOP==0}} \
+        -state OFF {-logic_expr {LP_LPWRNEXTSYS1TOP==1}}
+
+    add_power_state PD_DBGTOP.primary -update \
+        -state ON  {-logic_expr {LP_LPWRNDBGTOP==0}} \
+        -state OFF {-logic_expr {LP_LPWRNDBGTOP==1}}
+
+    add_power_state PD_SECENCTOP.primary -update \
+        -state ON  {-logic_expr {LP_LPWRNSECENCTOP==0}} \
+        -state OFF {-logic_expr {LP_LPWRNSECENCTOP==1}}
+
+    add_power_state PD_SECENCTOP.ram_p -update \
+        -state ON  [subst {-logic_expr {LP_RPWRNSECENCTOP==0}}] \
+        -state OFF [subst {-logic_expr {LP_RPWRNSECENCTOP==1}}]
+
+    add_power_state PD_SECENCTOP.ram_c -update \
+        -state ON  [subst {-logic_expr {LP_RPWRNSECENCTOP==0 || LP_RRETNSECENCTOP==0}}] \
+        -state OFF [subst {-logic_expr {LP_RPWRNSECENCTOP==1 && LP_RRETNSECENCTOP==1}}]
+
+    add_power_state PD_CPU0.primary -update \
+        -state ON  [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU0_lgcpwrn_i==0}}] \
+        -state OFF [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU0_lgcpwrn_i==1}}]
+
+    add_power_state PD_CPU0.ram_p -update \
+        -state ON  [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU0_rampwrn_i==0}}] \
+        -state OFF [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU0_rampwrn_i==1}}]
+
+    add_power_state PD_CPU0.ram_c -update \
+        -state ON  [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU0_rampwrn_i==0 || $PD_CLUSTOP_path/LP_CPU0_ramretn_i==0}}] \
+        -state OFF [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU0_rampwrn_i==1 && $PD_CLUSTOP_path/LP_CPU0_ramretn_i==1}}]
+
+    add_power_state PD_CPU0.ret -update \
+        -state ON  [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU0_lgcretn_i==0 || $PD_CLUSTOP_path/LP_CPU0_lgcretn_i==1}}]
+
+    add_power_state PD_CPU1.primary -update \
+        -state ON  [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU1_lgcpwrn_i==0}}] \
+        -state OFF [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU1_lgcpwrn_i==1}}]
+
+    add_power_state PD_CPU1.ram_p -update \
+        -state ON  [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU1_rampwrn_i==0}}] \
+        -state OFF [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU1_rampwrn_i==1}}]
+
+    add_power_state PD_CPU1.ram_c -update \
+        -state ON  [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU1_rampwrn_i==0 || $PD_CLUSTOP_path/LP_CPU1_ramretn_i==0}}] \
+        -state OFF [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU1_rampwrn_i==1 && $PD_CLUSTOP_path/LP_CPU1_ramretn_i==1}}]
+
+    add_power_state PD_CPU1.ret -update \
+        -state ON  [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU1_lgcretn_i==0 || $PD_CLUSTOP_path/LP_CPU1_lgcretn_i==1}}]
+
+    add_power_state PD_CPU2.primary -update \
+        -state ON  [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU2_lgcpwrn_i==0}}] \
+        -state OFF [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU2_lgcpwrn_i==1}}]
+
+    add_power_state PD_CPU2.ram_p -update \
+        -state ON  [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU2_rampwrn_i==0}}] \
+        -state OFF [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU2_rampwrn_i==1}}]
+
+    add_power_state PD_CPU2.ram_c -update \
+        -state ON  [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU2_rampwrn_i==0 || $PD_CLUSTOP_path/LP_CPU2_ramretn_i==0}}] \
+        -state OFF [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU2_rampwrn_i==1 && $PD_CLUSTOP_path/LP_CPU2_ramretn_i==1}}]
+
+    add_power_state PD_CPU2.ret -update \
+        -state ON  [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU2_lgcretn_i==0 || $PD_CLUSTOP_path/LP_CPU2_lgcretn_i==1}}]
+
+    add_power_state PD_CPU3.primary -update \
+        -state ON  [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU3_lgcpwrn_i==0}}] \
+        -state OFF [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU3_lgcpwrn_i==1}}]
+
+    add_power_state PD_CPU3.ram_p -update \
+        -state ON  [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU3_rampwrn_i==0}}] \
+        -state OFF [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU3_rampwrn_i==1}}]
+
+    add_power_state PD_CPU3.ram_c -update \
+        -state ON  [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU3_rampwrn_i==0 || $PD_CLUSTOP_path/LP_CPU3_ramretn_i==0}}] \
+        -state OFF [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU3_rampwrn_i==1 && $PD_CLUSTOP_path/LP_CPU3_ramretn_i==1}}]
+
+    add_power_state PD_CPU3.ret -update \
+        -state ON  [subst {-logic_expr {$PD_CLUSTOP_path/LP_CPU3_lgcretn_i==0 || $PD_CLUSTOP_path/LP_CPU3_lgcretn_i==1}}]
+
+}
+
+puts ""
+puts "###########################################################################"
+puts "# Finished sse710_top configuration UPF"
+puts "###########################################################################"
+puts ""
+

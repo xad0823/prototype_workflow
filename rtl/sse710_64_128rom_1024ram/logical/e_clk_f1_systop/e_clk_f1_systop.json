@@ -1,0 +1,46 @@
+{
+   "SUFFIX" : "_systop",
+   "package_template" : "$ARM_IP_LIBRARY/e_clk_f1",
+   "package_dependency" : [
+      "arm_element_tech_models",
+      "clkrst_f1",
+      "clkselNway_f0_2"
+   ],
+   "TEMPLATE_PKG_ID" : "e_clk_f1",
+   "clocks" : {
+      "CTRLCLK" : {
+         "clk_source" : [
+            "REFCLK",
+            "SYSPLL"
+         ],
+         "rst_source" : "RESETN",
+         "divider" : {
+            "per_clk_divider" : {
+               "SYSPLL" : {
+                  "pipeline_depth" : "0",
+                  "divider_type" : "divider"
+               }
+            }
+         },
+         "internal_clk" : "false",
+         "dct_cg" : "false"
+      },
+      "ACLK" : {
+         "dct_cg" : "false",
+         "rst_source" : "RESETN",
+         "divider" : {
+            "per_clk_divider" : {
+               "SYSPLL" : {
+                  "pipeline_depth" : "0",
+                  "divider_type" : "divider"
+               }
+            }
+         },
+         "internal_clk" : "false",
+         "clk_source" : [
+            "REFCLK",
+            "SYSPLL"
+         ]
+      }
+   }
+}

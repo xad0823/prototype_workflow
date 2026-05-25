@@ -1,0 +1,11 @@
+$LOGICAL_PATH/acg/acg_axi/verilog/acg_axi.v
+$LOGICAL_PATH/acg/acg_axi/verilog/acg_axi_core_async.v
+$LOGICAL_PATH/acg/acg_axi/verilog/acg_axi_core.v
+$LOGICAL_PATH/acg/acg_axi/verilog/acg_axi_mask.v
+$LOGICAL_PATH/acg/acg_axi/verilog/acg_axi_default_slave.v
+$LOGICAL_PATH/acg/models/modules/generic/acg_or2.v
+$LOGICAL_PATH/acg/models/modules/generic/acg_synchronizer.v
+$LOGICAL_PATH/acg/models/modules/generic/acg_xor2.v
+$LOGICAL_PATH/acg/acg_ace/verilog/acg_ace.v
+$LOGICAL_PATH/acg/acg_ace/verilog/acg_ace_core.v
+$LOGICAL_PATH/acg/acg_ace/verilog/acg_ace_async.v

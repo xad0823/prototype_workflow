@@ -1,0 +1,7 @@
+$LOGICAL_PATH/system_control_aontop/system_control_f0_aontop/verilog/aonperip_mux.v
+$LOGICAL_PATH/system_control_aontop/system_control_f0_aontop/verilog/host_control.v
+$LOGICAL_PATH/system_control_aontop/system_control_f0_aontop/verilog/system_id.v
+$LOGICAL_PATH/system_control_aontop/system_control_f0_aontop/verilog/uart_subsys.v
+$LOGICAL_PATH/system_control_aontop/system_control_f0_aontop/verilog/ppu_aon.v
+$LOGICAL_PATH/system_control_aontop/system_control_f0_aontop/verilog/refclkq_bridge.v
+$LOGICAL_PATH/system_control_aontop/system_control_f0_aontop/verilog/system_control_f0_aontop.v

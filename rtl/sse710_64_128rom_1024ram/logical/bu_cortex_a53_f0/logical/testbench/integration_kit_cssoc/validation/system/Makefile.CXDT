@@ -1,0 +1,176 @@
+#-----------------------------------------------------------------------------
+# The confidential and proprietary information contained in this file may
+# only be used by a person authorised under and to the extent permitted
+# by a subsisting licensing agreement from ARM Limited.
+#
+#            (C) COPYRIGHT 2013-2014 ARM Limited.
+#                ALL RIGHTS RESERVED
+#
+# This entire notice must be reproduced on all copies of this file
+# and copies of this file may only be made by a person if such person is
+# permitted to do so under the terms of a subsisting license agreement
+# from ARM Limited.
+#
+#      SVN Information
+#
+#      Checked In          : $Date: 2014-07-02 16:52:21 +0100 (Wed, 02 Jul 2014) $
+#
+#      Revision            : $Revision: 283836 $
+#
+#      Release Information : CORTEXA53-r0p4-00rel0
+#-----------------------------------------------------------------------------
+
+################################################################################
+#
+# Makefile for CoreSight Debug Tester (CXDT)
+#
+# This will build a semihosted image using the armcc or gcc toolchain
+#
+# This Makefile requires additional variables to be defined in order
+# to build an image successfully. In normal use, this Makefile is called by
+# the validation/system/Makefile.
+#
+
+
+################################################################################
+#
+# Remove any current implicit rules and ensure intermediate files are kept
+.SUFFIXES:
+.SECONDARY:
+.IMPLICIT:
+
+
+################################################################################
+#
+# Set sensible default values - these should be overridden when called
+#
+TESTNAME 	:= helloworld
+OBJDIR		:= default_objdir
+TOOLCHAIN 	:= gcc
+
+
+################################################################################
+#
+# Image Creation
+#
+IMAGEPREFIX := CXDT
+
+#
+# Static Pattern rule to generate .bin, and .lst files
+#
+$(TESTNAME): $(OBJDIR)/$(IMAGEPREFIX)_$(TESTNAME).bin $(OBJDIR)/$(IMAGEPREFIX)_$(TESTNAME).lst
+
+
+#
+# Create Object Dir if necessary
+#
+$(OBJDIR):
+	@echo "Creating Object Dir"
+	mkdir -p $(OBJDIR)
+
+
+#
+# Common toolchain setup
+#
+CCFLAGS		= $(INCLUDES) $(TESTDEFINES) -g -c
+LDFLAGS		=
+
+
+#
+# Image specific common setup
+#
+CCFLAGS	    	+= -DTESTIMAGECXDT
+CCFLAGS		+= -DV6M_EXEC_ENGINE -DREGULATE_SWCLKTCK -DGENERATE_DOTGRAPH
+
+CXDTOBJS	= $(OBJS) $(TESTNAME).o cx_dap.o cx_dotgraph.o boot.o
+
+
+#
+# Common rules
+#
+$(OBJDIR)/$(IMAGEPREFIX)_%.o: %.c $(DEPS) | $(OBJDIR)
+	$(CC) $(CCFLAGS) -o $@ $<
+
+$(OBJDIR)/$(IMAGEPREFIX)_$(TESTNAME).elf: $(addprefix $(OBJDIR)/$(IMAGEPREFIX)_, $(CXDTOBJS))
+	$(LD) $(LDFLAGS) -o $@ $(addprefix $(OBJDIR)/$(IMAGEPREFIX)_, $(CXDTOBJS))
+
+
+#
+# ARMCC specific rules
+#
+ifeq ($(TOOLCHAIN),armcc)
+
+CC	= armcc
+LD	= armlink
+FROMELF	= fromelf
+BIN2HEX	= $(CSSOC_INSTALL_DIR)/shared/tools/bin/bin2hex
+
+CCFLAGS	+= --cpu=Cortex-M0 -O2
+LDFLAGS += --ro-base=0x0 --first="$(IMAGEPREFIX)_boot.o(startup)"
+
+$(OBJDIR)/$(IMAGEPREFIX)_boot.o: cxdt_boot_armcc.s $(DEPS) | $(OBJDIR)
+	$(CC) $(CCFLAGS) -o $@ $<
+endif
+
+
+#
+# GCC specific rules
+#
+ifeq ($(TOOLCHAIN),gcc)
+# Modify this to setup your own GCC tools for ARM Embedded Processors.
+GCC_PATH = /arm/tools/arm/gcc-arm-none-eabi/4_7-2012q4
+GCC_SAMPLE_PATH = $(GCC_PATH)/share/gcc-arm-none-eabi/samples
+
+CC 		= $(GCC_PATH)/bin/arm-none-eabi-gcc
+LD 		= $(GCC_PATH)/bin/arm-none-eabi-gcc
+
+CCFLAGS	+= -mcpu=cortex-m0 -mthumb -O3 --specs=rdimon.specs -D__NO_SYSTEM_INIT \
+	-Wl,--start-group -lgcc -lc -lm -lrdimon -Wl,--end-group \
+	-L $(GCC_SAMPLE_PATH)/ldscripts -T $(TESTDIR)/cxdt/v6m_exec.ld
+
+LDFLAGS	+= -mcpu=cortex-m0 -mthumb -O3 --specs=rdimon.specs -D__NO_SYSTEM_INIT \
+	-Wl,--start-group -lgcc -lc -lm -lrdimon -Wl,--end-group \
+	-L $(GCC_SAMPLE_PATH)/ldscripts -T $(TESTDIR)/cxdt/v6m_exec.ld
+
+$(OBJDIR)/$(IMAGEPREFIX)_boot.o: $(GCC_SAMPLE_PATH)/startup/startup_ARMCM0.S $(DEPS) | $(OBJDIR)
+	$(CC) $(CCFLAGS) -o $@ $<
+endif
+
+
+#
+# Pattern rules to generate binaries, list files and hex files
+#
+
+#
+# ARMCC
+#
+ifeq ($(TOOLCHAIN),armcc)
+$(OBJDIR)/%.bin:	$(OBJDIR)/%.elf
+	$(FROMELF) --bincombined -o $@ $<
+
+$(OBJDIR)/%.lst:  	$(OBJDIR)/%.elf
+	$(FROMELF) -c -d -e -s $< --output $@
+
+endif
+
+#
+# GCC
+#
+ifeq ($(TOOLCHAIN),gcc)
+$(OBJDIR)/%.bin:	$(OBJDIR)/%.elf
+	$(GCC_PATH)/bin/arm-none-eabi-objcopy -S $< -O binary $@
+
+$(OBJDIR)/%.lst:  	$(OBJDIR)/%.elf
+	$(GCC_PATH)/bin/arm-none-eabi-objdump -S $< > $@
+
+endif
+
+
+################################################################################
+#
+# Clean
+#
+clean:
+	rm -f $(OBJDIR)/$(IMAGEPREFIX)*
+
+# EOF

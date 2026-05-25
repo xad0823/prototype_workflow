@@ -1,0 +1,242 @@
+{
+    "clk_internal": [
+        "SECENCDIVCLK_I",
+        "SECENCDIVCLK_I_PREDIV",
+        "SECENCDIVCLK_I_HINTCLKEN_CLK"
+    ],
+    "clk_source": [
+        "SECENCREFCLK",
+        "SYSPLL"
+    ],
+    "clocks": [
+        {
+            "clk_buf_delay_value": 0,
+            "clk_buf_only_cgu": 0,
+            "clk_name": "SECENCDIVCLK_I",
+            "clk_name_l": "secencdivclk_i",
+            "clk_source": [
+                "SECENCCLK_AON"
+            ],
+            "clk_source_num": 1,
+            "dct_cg": 0,
+            "divider_type": "shared",
+            "dyn_cg": 0,
+            "dyn_cg_active_deny_en": 1,
+            "dyn_cg_clk_sync_en": 1,
+            "dyn_cg_entry_delay_value": "none",
+            "dyn_cg_free_clk": 0,
+            "dyn_cg_hc_q_channel_en": 0,
+            "dyn_cg_hc_sync_en": 1,
+            "dyn_cg_pwr_q_channel_en": 0,
+            "dyn_cg_pwr_sync_en": 1,
+            "dyn_cg_q_channel_num": 0,
+            "gen_clk": [
+                "SECENCDIVCLK_I",
+                "SECENCDIVCLK_I_PREDIV",
+                "SECENCDIVCLK_I_HINTCLKEN_CLK"
+            ],
+            "hintclk_gen": 1,
+            "internal_clk": 1,
+            "per_clk_divider": {},
+            "post_div_clk": 1,
+            "pre_div_clk": 1,
+            "rst_source": "SYSTOP_RESETn",
+            "shared_divider": {
+                "denominator_value": "8'h01",
+                "divider_value": "to_top",
+                "numerator_value": "8'h01",
+                "pipeline_depth": "0",
+                "stop_divider": "1'b0"
+            },
+            "suffix": "_secenc_clk"
+        },
+        {
+            "clk_buf_delay_value": "0",
+            "clk_buf_only_cgu": 0,
+            "clk_name": "SECENCCLK",
+            "clk_name_l": "secencclk",
+            "clk_source": [
+                "SECENCCLK_AON"
+            ],
+            "clk_source_num": 1,
+            "dct_cg": 1,
+            "divider_type": "none",
+            "dyn_cg": 0,
+            "dyn_cg_active_deny_en": 1,
+            "dyn_cg_clk_sync_en": 1,
+            "dyn_cg_entry_delay_value": "none",
+            "dyn_cg_free_clk": 0,
+            "dyn_cg_hc_q_channel_en": 0,
+            "dyn_cg_hc_sync_en": 1,
+            "dyn_cg_pwr_q_channel_en": 0,
+            "dyn_cg_pwr_sync_en": 1,
+            "dyn_cg_q_channel_num": 0,
+            "gen_clk": [
+                "SECENCCLK"
+            ],
+            "hintclk_gen": 0,
+            "internal_clk": 0,
+            "per_clk_divider": {},
+            "post_div_clk": 1,
+            "pre_div_clk": 0,
+            "rst_source": "SYSTOP_RESETn",
+            "shared_divider": {},
+            "suffix": "_secenc_clk"
+        },
+        {
+            "clk_buf_delay_value": "0",
+            "clk_buf_only_cgu": 0,
+            "clk_name": "HINTCLKEN_CLK",
+            "clk_name_l": "hintclken_clk",
+            "clk_source": [
+                "SECENCDIVCLK_I_HINTCLKEN_CLK"
+            ],
+            "clk_source_num": 1,
+            "dct_cg": 1,
+            "divider_type": "none",
+            "dyn_cg": 0,
+            "dyn_cg_active_deny_en": 1,
+            "dyn_cg_clk_sync_en": 1,
+            "dyn_cg_entry_delay_value": "none",
+            "dyn_cg_free_clk": 0,
+            "dyn_cg_hc_q_channel_en": 0,
+            "dyn_cg_hc_sync_en": 1,
+            "dyn_cg_pwr_q_channel_en": 0,
+            "dyn_cg_pwr_sync_en": 1,
+            "dyn_cg_q_channel_num": 0,
+            "gen_clk": [
+                "HINTCLKEN_CLK"
+            ],
+            "hintclk_gen": 0,
+            "internal_clk": 0,
+            "per_clk_divider": {},
+            "post_div_clk": 1,
+            "pre_div_clk": 0,
+            "rst_source": "SYSTOP_RESETn",
+            "shared_divider": {},
+            "suffix": "_secenc_clk"
+        },
+        {
+            "clk_buf_delay_value": "0",
+            "clk_buf_only_cgu": 0,
+            "clk_name": "SECENCDIVCLK",
+            "clk_name_l": "secencdivclk",
+            "clk_source": [
+                "SECENCDIVCLK_I"
+            ],
+            "clk_source_num": 1,
+            "dct_cg": 1,
+            "divider_type": "none",
+            "dyn_cg": 0,
+            "dyn_cg_active_deny_en": 1,
+            "dyn_cg_clk_sync_en": 1,
+            "dyn_cg_entry_delay_value": "none",
+            "dyn_cg_free_clk": 0,
+            "dyn_cg_hc_q_channel_en": 0,
+            "dyn_cg_hc_sync_en": 1,
+            "dyn_cg_pwr_q_channel_en": 0,
+            "dyn_cg_pwr_sync_en": 1,
+            "dyn_cg_q_channel_num": 0,
+            "gen_clk": [
+                "SECENCDIVCLK"
+            ],
+            "hintclk_gen": 0,
+            "internal_clk": 0,
+            "per_clk_divider": {},
+            "post_div_clk": 1,
+            "pre_div_clk": 0,
+            "rst_source": "SYSTOP_RESETn",
+            "shared_divider": {},
+            "suffix": "_secenc_clk"
+        },
+        {
+            "clk_buf_delay_value": 0,
+            "clk_buf_only_cgu": 0,
+            "clk_name": "SECENCCLK_AON",
+            "clk_name_l": "secencclk_aon",
+            "clk_source": [
+                "SECENCREFCLK",
+                "SYSPLL"
+            ],
+            "clk_source_num": 2,
+            "dct_cg": 0,
+            "divider_type": "per_clk",
+            "dyn_cg": 0,
+            "dyn_cg_active_deny_en": 1,
+            "dyn_cg_clk_sync_en": 1,
+            "dyn_cg_entry_delay_value": "none",
+            "dyn_cg_free_clk": 0,
+            "dyn_cg_hc_q_channel_en": 0,
+            "dyn_cg_hc_sync_en": 1,
+            "dyn_cg_pwr_q_channel_en": 0,
+            "dyn_cg_pwr_sync_en": 1,
+            "dyn_cg_q_channel_num": 0,
+            "gen_clk": [
+                "SECENCCLK_AON"
+            ],
+            "hintclk_gen": 0,
+            "internal_clk": 0,
+            "per_clk_divider": {
+                "SYSPLL": {
+                    "denominator_value": "8'h01",
+                    "divider_value": "to_top",
+                    "numerator_value": "8'h01",
+                    "pipeline_depth": "0",
+                    "stop_divider": "1'b0"
+                }
+            },
+            "post_div_clk": 1,
+            "pre_div_clk": 0,
+            "rst_source": "SYSTOP_RESETn",
+            "shared_divider": {},
+            "suffix": "_secenc_clk"
+        },
+        {
+            "clk_buf_delay_value": "0",
+            "clk_buf_only_cgu": 1,
+            "clk_name": "SECENCDIVCLK_AON",
+            "clk_name_l": "secencdivclk_aon",
+            "clk_source": [
+                "SECENCDIVCLK_I"
+            ],
+            "clk_source_num": 1,
+            "dct_cg": 0,
+            "divider_type": "none",
+            "dyn_cg": 0,
+            "dyn_cg_active_deny_en": 1,
+            "dyn_cg_clk_sync_en": 1,
+            "dyn_cg_entry_delay_value": "none",
+            "dyn_cg_free_clk": 0,
+            "dyn_cg_hc_q_channel_en": 0,
+            "dyn_cg_hc_sync_en": 1,
+            "dyn_cg_pwr_q_channel_en": 0,
+            "dyn_cg_pwr_sync_en": 1,
+            "dyn_cg_q_channel_num": 0,
+            "gen_clk": [
+                "SECENCDIVCLK_AON"
+            ],
+            "hintclk_gen": 0,
+            "internal_clk": 0,
+            "per_clk_divider": {},
+            "post_div_clk": 1,
+            "pre_div_clk": 0,
+            "rst_source": "SYSTOP_RESETn",
+            "shared_divider": {},
+            "suffix": "_secenc_clk"
+        }
+    ],
+    "rst_source": [
+        "SYSTOP_RESETn"
+    ],
+    "suffix": "_secenc_clk",
+    "temp_all_clk_gen": [
+        "SECENCDIVCLK_I",
+        "SECENCDIVCLK_I_PREDIV",
+        "SECENCDIVCLK_I_HINTCLKEN_CLK",
+        "SECENCCLK",
+        "HINTCLKEN_CLK",
+        "SECENCDIVCLK",
+        "SECENCCLK_AON",
+        "SECENCDIVCLK_AON"
+    ]
+}

@@ -1,0 +1,26 @@
+=============================================================================
+ The confidential and proprietary information contained in this file may
+ only be used by a person authorised under and to the extent permitted
+ by a subsisting licensing agreement from Arm Limited or its affiliates.
+
+ (C) COPYRIGHT 2018-2019 Arm Limited or its affiliates.
+ ALL RIGHTS RESERVED
+
+ This entire notice must be reproduced on all copies of this file
+ and copies of this file may only be made by a person if such person is
+ permitted to do so under the terms of a subsisting license agreement
+ from Arm Limited or its affiliates.
+
+=============================================================================
+
+The IP-XACT file is used to configure the pck600_p2q. The configuration options are:
+
+CTRL_P_CH_SYNC               :  Includes or excludes synchronizers on CTRL P-Channel. Default value is 1. Possible values are {0,1}. This maps to the CTRL_P_CH_SYNC verilog parameter.
+
+DEV_Q_CH_SYNC                :  Includes or excludes synchronizers on DEV P-Channel. Default value is 1. Possible values are {0,1}. This maps to the DEV_P_CH_SYNC verilog parameter.
+
+CTRL_P_CH_PWR_PSTATE_MAP     :  There is a bit in the parameter for each ctrl_pstate_i[3:0] power mode value; 0 - Q-Channel is quiescent for this power mode value, 1 - Q-Channel is in run for this power mode value. Default value is 0000000111110000. Range is 0000000000000000 to 1111111111111111. This maps to the CTRL_P_CH_PWR_PSTATE_MAP verilog parameter.
+
+CTRL_P_CH_OP_PSTATE_MAP      : There is a bit in the parameter for each ctrl_pstate_i[7:4] operating mode value; 0 - Q-Channel is quiescent for this operating mode value, 1 - Q-Channel is in run for this operating mode value. Default value is 0000000111110000. Range is 0000000000000000 to 1111111111111111. This maps to the CTRL_P_CH_OP_PSTATE_MAP verilog parameter.
+
+CTRL_P_CH_PACTIVE            :  There is a bit in the parameter for each ctrl_pactive_o bit, to indicate if the Q-Channel dev_active_i contributes to that ctrl_pactive_o bit; 0 - this ctrl_pactive_o bit is tied low, 1 - this ctrl_pactive_o bit is driven from dev_qactive_i. Default value is 11111111111111111111111111111111; Range is 00000000000000000000000000000000 to 11111111111111111111111111111111. This maps to the CTRL_P_CH_PACTIVE verilog parameter.

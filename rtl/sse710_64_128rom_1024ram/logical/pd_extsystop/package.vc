@@ -1,0 +1,8 @@
+$LOGICAL_PATH/pd_extsystop/pc_eh_f0_extsystop/verilog/pc_eh_f0_extsyscti.v
+$LOGICAL_PATH/pd_extsystop/pc_eh_f0_extsystop/verilog/pc_eh_f0_extsysextdbg.v
+$LOGICAL_PATH/pd_extsystop/pc_eh_f0_extsystop/verilog/pc_eh_f0_extsysmem.v
+$LOGICAL_PATH/pd_extsystop/pc_eh_f0_extsystop/verilog/pc_eh_f0_extsystrace.v
+$LOGICAL_PATH/pd_extsystop/pc_eh_f0_extsystop/verilog/pc_eh_f0_extsysdbg.v
+$LOGICAL_PATH/pd_extsystop/pc_eh_f0_extsystop/verilog/pc_eh_f0_extsysmhu.v
+$LOGICAL_PATH/pd_extsystop/pd_extsystop_f0_top/verilog/pd_extsys1top_f0.v
+$LOGICAL_PATH/pd_extsystop/pd_extsystop_f0_top/verilog/pd_extsys0top_f0.v

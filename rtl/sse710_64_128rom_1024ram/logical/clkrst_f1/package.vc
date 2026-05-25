@@ -1,0 +1,17 @@
+$LOGICAL_PATH/clkrst_f1/clkrst_f1/verilog/clkrst_f1_clkdiv_modulate_top.v
+$LOGICAL_PATH/clkrst_f1/clkrst_f1/verilog/clkrst_f1_clkdiv_hintclkengen.v
+$LOGICAL_PATH/clkrst_f1/clkrst_f1/verilog/clkrst_f1_rstdelay.v
+$LOGICAL_PATH/clkrst_f1/clkrst_f1/verilog/clkrst_f1_clkdiv_modulate.v
+$LOGICAL_PATH/clkrst_f1/clkrst_f1/verilog/clkrst_f1_clkdiv_cdc.v
+$LOGICAL_PATH/clkrst_f1/clkrst_f1/verilog/clkrst_f1_clkdiv_pipeline.v
+$LOGICAL_PATH/clkrst_f1/clkrst_f1/verilog/clkrst_f1_clkdiv_pipeline_enable.v
+$LOGICAL_PATH/clkrst_f1/models/modules/generic/clkrst_f1_rstsync.v
+$LOGICAL_PATH/clkrst_f1/models/modules/generic/clkrst_f1_cdc_comb_mux2.v
+$LOGICAL_PATH/clkrst_f1/models/modules/generic/clkrst_f1_clkinv.v
+$LOGICAL_PATH/clkrst_f1/models/modules/generic/clkrst_f1_cdc_capt_sync.v
+$LOGICAL_PATH/clkrst_f1/models/modules/generic/clkrst_f1_clkbuf.v
+$LOGICAL_PATH/clkrst_f1/models/modules/generic/clkrst_f1_clkand2.v
+$LOGICAL_PATH/clkrst_f1/models/modules/generic/clkrst_f1_clkgate.v
+$LOGICAL_PATH/clkrst_f1/models/modules/generic/clkrst_f1_rstbuf.v
+$LOGICAL_PATH/clkrst_f1/models/modules/generic/clkrst_f1_cdc_capt_sync_set.v
+$LOGICAL_PATH/clkrst_f1/models/modules/generic/clkrst_f1_clkor2.v

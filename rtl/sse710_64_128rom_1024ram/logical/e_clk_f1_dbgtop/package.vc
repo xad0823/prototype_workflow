@@ -1,0 +1,7 @@
+$LOGICAL_PATH/e_clk_f1_dbgtop/e_clk_f1_top_dbgtop/verilog/e_clk_f1_top_dbgtop.v
+$LOGICAL_PATH/e_clk_f1_dbgtop/e_clk_f1_top_dbgtop/verilog/e_clk_f1_unit_dbgclk_dbgtop.v
+$LOGICAL_PATH/e_clk_f1_dbgtop/models/modules/generic/e_clk_f1_reset_sync_dbgtop.v
+$LOGICAL_PATH/e_clk_f1_dbgtop/models/modules/generic/e_clk_f1_clock_buffer_dbgtop.v
+$LOGICAL_PATH/e_clk_f1_dbgtop/models/modules/generic/e_clk_f1_clock_gate_dbgtop.v
+$LOGICAL_PATH/e_clk_f1_dbgtop/models/modules/generic/e_clk_f1_reset_buffer_dbgtop.v
+$LOGICAL_PATH/e_clk_f1_dbgtop/models/modules/generic/e_clk_f1_cdc_capt_sync_dbgtop.v

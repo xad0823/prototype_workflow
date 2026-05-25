@@ -1,0 +1,58 @@
+{
+    "clk_internal": [],
+    "clk_source": [
+        "REFCLK",
+        "SYSPLL"
+    ],
+    "clocks": [
+        {
+            "clk_buf_delay_value": 0,
+            "clk_buf_only_cgu": 0,
+            "clk_name": "DBGCLK",
+            "clk_name_l": "dbgclk",
+            "clk_source": [
+                "REFCLK",
+                "SYSPLL"
+            ],
+            "clk_source_num": 2,
+            "dct_cg": 0,
+            "divider_type": "per_clk",
+            "dyn_cg": 0,
+            "dyn_cg_active_deny_en": 1,
+            "dyn_cg_clk_sync_en": 1,
+            "dyn_cg_entry_delay_value": "none",
+            "dyn_cg_free_clk": 0,
+            "dyn_cg_hc_q_channel_en": 0,
+            "dyn_cg_hc_sync_en": 1,
+            "dyn_cg_pwr_q_channel_en": 0,
+            "dyn_cg_pwr_sync_en": 1,
+            "dyn_cg_q_channel_num": 0,
+            "gen_clk": [
+                "DBGCLK"
+            ],
+            "hintclk_gen": 0,
+            "internal_clk": 0,
+            "per_clk_divider": {
+                "SYSPLL": {
+                    "denominator_value": "8'h01",
+                    "divider_value": "to_top",
+                    "numerator_value": "8'h01",
+                    "pipeline_depth": "0",
+                    "stop_divider": "1'b0"
+                }
+            },
+            "post_div_clk": 1,
+            "pre_div_clk": 0,
+            "rst_source": "RESETN",
+            "shared_divider": {},
+            "suffix": "_dbgtop"
+        }
+    ],
+    "rst_source": [
+        "RESETN"
+    ],
+    "suffix": "_dbgtop",
+    "temp_all_clk_gen": [
+        "DBGCLK"
+    ]
+}

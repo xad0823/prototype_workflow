@@ -1,0 +1,67 @@
+# =============================================================================
+# The confidential and proprietary information contained in this file may
+# only be used by a person authorised under and to the extent permitted
+# by a subsisting licensing agreement from ARM Limited or its affiliates.
+#
+#            (C) COPYRIGHT 2015-2016 ARM Limited or its affiliates.
+#                ALL RIGHTS RESERVED
+#
+# This entire notice must be reproduced on all copies of this file
+# and copies of this file may only be made by a person if such person is
+# permitted to do so under the terms of a subsisting license agreement
+# from ARM Limited or its affiliates.
+#
+#      Checked In          :  2016-01-21 14:10:43 +0000 (Thu, 21 Jan 2016)
+#      Revision            : 205786
+#      Release Information : PL405-r3p0-01rel0
+#
+# =============================================================================
+# File: ReadMe_configurable_parameters
+# =============================================================================
+# Purpose :
+#          Details the parameters for configuring an AMBA Domain bridge with 
+#          AXI4Stream interfaces.
+#
+# =============================================================================
+
+
+
+# Width of the TDATA signal
+# Range [8,16,32,64,128,256,512,1024]
+# Default 8
+DATA_WIDTH          = 8
+# Width of the TID signal
+# Range [0-32]
+# Default 1
+ID_WIDTH          = 1
+
+# Width of the TUSER signal
+# Range [0-256]
+# Default 1
+USER_WIDTH        = 1
+
+
+# Number of stages in Synchronisers
+# Range [2-4]
+# Default 2
+SI_SYNC_LEVELS      = 2
+MI_SYNC_LEVELS      = 2
+
+
+# Number of slots in the FIFO on the channel
+# Range [2-10]
+# Defaults:
+FIFO_DEPTH       = 4
+
+# Output Registering for Timing Closure 
+# Range [0 - not present, 1- present]
+OPREG            = 1
+
+# AXI4Stream optional signal selection 
+# Range 0 (absent), 1 (present)
+DEST_WIDTH          = 1
+LAST_WIDTH          = 1
+
+# ADB400 AXI4Stream  Power-down support
+# Range 0 (disabled), 1 (enabled)
+PWRDN_SUPPORT       = 0

@@ -1,0 +1,5 @@
+// QSPI file list
+rtl/chip/QSPI.sv
+rtl/qspi_hclk_gen/qspi_hclk_gen_top.v
+rtl/qspi_hclk_gen/qspi_hclk_gen.v
+rtl/chip/spi_inout_pad.sv

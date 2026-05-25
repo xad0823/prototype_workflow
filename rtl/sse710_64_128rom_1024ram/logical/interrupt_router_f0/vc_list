@@ -1,0 +1,3 @@
+$LOGICAL_PATH/arm_cells/package.vc
+$LOGICAL_PATH/arm_element_tech_models/package.vc
+$LOGICAL_PATH/interrupt_router_f0/package.vc

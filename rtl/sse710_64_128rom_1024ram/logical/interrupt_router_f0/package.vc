@@ -1,0 +1,5 @@
++incdir+$LOGICAL_PATH/interrupt_router_f0/shared/verilog
+$LOGICAL_PATH/interrupt_router_f0/interrupt_router_f0_async/verilog/interrupt_router_f0_tamper_logic_async.v
+$LOGICAL_PATH/interrupt_router_f0/interrupt_router_f0_async/verilog/interrupt_router_f0_core_logic_async.v
+$LOGICAL_PATH/interrupt_router_f0/interrupt_router_f0_reg_bank/verilog/interrupt_router_f0_reg_bank.v
+$LOGICAL_PATH/interrupt_router_f0/interrupt_router_f0_top/verilog/interrupt_router_f0_top.v

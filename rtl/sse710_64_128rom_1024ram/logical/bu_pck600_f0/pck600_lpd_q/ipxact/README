@@ -1,0 +1,32 @@
+=============================================================================
+ The confidential and proprietary information contained in this file may
+ only be used by a person authorised under and to the extent permitted
+ by a subsisting licensing agreement from Arm Limited or its affiliates.
+
+ (C) COPYRIGHT 2018-2019 Arm Limited or its affiliates.
+ ALL RIGHTS RESERVED
+
+ This entire notice must be reproduced on all copies of this file
+ and copies of this file may only be made by a person if such person is
+ permitted to do so under the terms of a subsisting license agreement
+ from Arm Limited or its affiliates.
+
+=============================================================================
+
+The IP-XACT file is used to configure the pck600_lpd_q. The configuration options are:
+
+SEQUENCER          :  Configures the lpd_q as a sequencer or expander. Default value is 0. Possible values are {0,1}. This maps to the SEQUENCER verilog parameter.
+
+NUM_QCHL           :  Configures the number of Q-Channel devices. Default value is 2. Range is 2 to 32. This maps to the NUM_QCHL verilog parameter.
+
+CTRL_Q_CH_SYNC     :  Includes or excludes synchronizers on CTRL Q-Channel. Default value is 1. Possible values are {0,1}. This maps to the CTRL_Q_CH_SYNC verilog parameter.
+
+DEV_Q_CH_SYNC      :  Includes or excludes synchronizers on DEV Q-Channel. Default value is 1. Possible values are {0,1}. This maps to the DEV_Q_CH_SYNC verilog parameter.
+
+DEV_QACTIVE_SYNC   : Includes or excludes synchronizers on Device Qactive. Default value is 1. Possible values are {0,1}. This maps to the DEV_QACTIVE_SYNC verilog parameter.
+
+ACTIVE_DENY        :  Enables or disables ACTIVE deny support. Default value is 1. Possible values are {0,1}. This maps to the ACTIVE_DENY verilog parameter.
+
+
+
+

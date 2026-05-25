@@ -1,0 +1,33 @@
+{
+    "clk_buf_delay_value": "0",
+    "clk_buf_only_cgu": 0,
+    "clk_name": "SECENCDIVCLK",
+    "clk_name_l": "secencdivclk",
+    "clk_source": [
+        "SECENCDIVCLK_I"
+    ],
+    "clk_source_num": 1,
+    "dct_cg": 1,
+    "divider_type": "none",
+    "dyn_cg": 0,
+    "dyn_cg_active_deny_en": 1,
+    "dyn_cg_clk_sync_en": 1,
+    "dyn_cg_entry_delay_value": "none",
+    "dyn_cg_free_clk": 0,
+    "dyn_cg_hc_q_channel_en": 0,
+    "dyn_cg_hc_sync_en": 1,
+    "dyn_cg_pwr_q_channel_en": 0,
+    "dyn_cg_pwr_sync_en": 1,
+    "dyn_cg_q_channel_num": 0,
+    "gen_clk": [
+        "SECENCDIVCLK"
+    ],
+    "hintclk_gen": 0,
+    "internal_clk": 0,
+    "per_clk_divider": {},
+    "post_div_clk": 1,
+    "pre_div_clk": 0,
+    "rst_source": "SYSTOP_RESETn",
+    "shared_divider": {},
+    "suffix": "_secenc_clk"
+}

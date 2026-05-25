@@ -1,0 +1,35 @@
+// component: (top level)
+// library: work
+// files:
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_cc_constants.vh
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_bcm_params.vh
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_all_includes.vh
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_ahb_cgen.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_ahb_cgen_logic.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_ahb_cpipe.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_ahb_fpipe.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_ahb_if.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_ahb_master.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_arb.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_cmd_queue.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_power_ctrl.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_read_data_buffer.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_resp_buffer.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_slave.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_write_data_buffer.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_bcm99.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_bcm57.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_bcm58.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_bcm21.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_bcm07_ef.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_bcm07_efes.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_bcm06.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_bcm05.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_bcm05_ef.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_bcm02.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_bcm66.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_bcm65.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h_trcnt.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h.v
+/datahdd/qinglongv100/zhangxiran/ql200/ip/x2h/src/DW_axi_x2h-undef.v
+

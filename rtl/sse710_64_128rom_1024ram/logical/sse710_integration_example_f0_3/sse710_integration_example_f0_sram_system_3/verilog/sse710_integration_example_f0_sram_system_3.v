@@ -1,0 +1,318 @@
+//------------------------------------------------------------------------------
+// The confidential and proprietary information contained in this file may
+// only be used by a person authorised under and to the extent permitted
+// by a subsisting licensing agreement from Arm Limited or its affiliates.
+//
+//            (C) COPYRIGHT 2019-2021 Arm Limited or its affiliates.
+//                ALL RIGHTS RESERVED
+//
+// This entire notice must be reproduced on all copies of this file
+// and copies of this file may only be made by a person if such person is
+// permitted to do so under the terms of a subsisting license agreement
+// from Arm Limited or its affiliates.
+//
+//
+//      Release Information : SSE710-r0p0-00eac0
+//
+//------------------------------------------------------------------------------
+// Verilog-2001 (IEEE Std 1364-2001)
+//------------------------------------------------------------------------------
+
+module sse710_integration_example_f0_sram_system (
+
+    input  wire           aclkout,
+
+    input  wire           systop_warmresetn_s,
+
+    input  wire           cvm_awakeup,     
+    input  wire [11:0]    cvm_awid,     
+    input  wire [31:0]    cvm_awaddr,   
+    input  wire [7:0]     cvm_awlen,    
+    input  wire [2:0]     cvm_awsize,   
+    input  wire [1:0]     cvm_awburst,  
+    input  wire           cvm_awlock,
+    input  wire [3:0]     cvm_awcache,
+    input  wire [2:0]     cvm_awprot,
+    input  wire           cvm_awvalid,
+    input  wire [1:0]     cvm_awuser,
+    input  wire [7:0]     cvm_awmmusid,
+    input  wire [3:0]     cvm_awqos,
+    output wire           cvm_awready,  
+                                       
+    input  wire [7:0]     cvm_wstrb,    
+    input  wire           cvm_wlast,    
+    input  wire           cvm_wvalid,   
+    input  wire [63:0]    cvm_wdata,    
+    output wire           cvm_wready,   
+                                       
+    output wire [11:0]    cvm_bid,      
+    output wire [1:0]     cvm_bresp,    
+    output wire           cvm_bvalid,   
+    input  wire           cvm_bready,   
+                                       
+    input  wire [11:0]    cvm_arid,     
+    input  wire [31:0]    cvm_araddr,   
+    input  wire [7:0]     cvm_arlen,    
+    input  wire [2:0]     cvm_arsize,   
+    input  wire [1:0]     cvm_arburst,
+    input  wire           cvm_arlock,
+    input  wire [3:0]     cvm_arcache,
+    input  wire [2:0]     cvm_arprot,    
+    input  wire           cvm_arvalid,
+    input  wire [1:0]     cvm_aruser,
+    input  wire [7:0]     cvm_armmusid,
+    input  wire [3:0]     cvm_arqos,
+    output wire           cvm_arready,  
+                                       
+    output wire [11:0]    cvm_rid,      
+    output wire [1:0]     cvm_rresp,    
+    output wire           cvm_rlast,    
+    output wire           cvm_rvalid,   
+    output wire [63:0]    cvm_rdata,    
+    input  wire           cvm_rready,
+
+    input  wire           sram_ctrl_clk_qreqn,
+    output wire           sram_ctrl_clk_qacceptn,
+    output wire           sram_ctrl_clk_qdeny,
+    output wire           sram_ctrl_clk_qactive,
+    
+    
+    input  wire           dftramhold
+  );
+
+
+  wire [11:0]    sram_ctrl_awid;     
+  wire [31:0]    sram_ctrl_awaddr;   
+  wire [7:0]     sram_ctrl_awlen;    
+  wire [2:0]     sram_ctrl_awsize;   
+  wire [1:0]     sram_ctrl_awburst;  
+  wire           sram_ctrl_awlock;
+  wire [3:0]     sram_ctrl_awcache;
+  wire [2:0]     sram_ctrl_awprot;
+  wire           sram_ctrl_awvalid;
+  wire           sram_ctrl_awready;  
+  wire [7:0]     sram_ctrl_wstrb;   
+  wire           sram_ctrl_wlast;    
+  wire           sram_ctrl_wvalid;  
+  wire [63:0]    sram_ctrl_wdata;    
+  wire           sram_ctrl_wready;   
+  wire [11:0]    sram_ctrl_bid;      
+  wire [1:0]     sram_ctrl_bresp;    
+  wire           sram_ctrl_bvalid;   
+  wire           sram_ctrl_bready;   
+  wire [11:0]    sram_ctrl_arid;     
+  wire [31:0]    sram_ctrl_araddr;   
+  wire [7:0]     sram_ctrl_arlen;    
+  wire [2:0]     sram_ctrl_arsize;   
+  wire [1:0]     sram_ctrl_arburst;
+  wire           sram_ctrl_arlock;
+  wire [3:0]     sram_ctrl_arcache;
+  wire [2:0]     sram_ctrl_arprot;    
+  wire           sram_ctrl_arvalid;
+  wire           sram_ctrl_arready;  
+  wire [11:0]    sram_ctrl_rid;      
+  wire [1:0]     sram_ctrl_rresp;    
+  wire           sram_ctrl_rlast;    
+  wire           sram_ctrl_rvalid;  
+  wire [63:0]    sram_ctrl_rdata;    
+  wire           sram_ctrl_rready;  
+  wire           sram_ctrl_awakeup;
+
+  wire           memcen;      
+  wire [7:0]     memwen;      
+  wire [21:0]    memaddr;     
+  wire [63:0]  memd; 
+  wire [63:0]  memq; 
+  
+  
+  wire           unused;  
+
+
+
+nic400_sse710_integration_example_f0_cvm u_nic400_sse710_integration_example_f0_cvm (
+ 
+    .AWID_cvm_master_if          (sram_ctrl_awid),
+    .AWADDR_cvm_master_if        (sram_ctrl_awaddr),
+    .AWLEN_cvm_master_if         (sram_ctrl_awlen),
+    .AWSIZE_cvm_master_if        (sram_ctrl_awsize),
+    .AWBURST_cvm_master_if       (sram_ctrl_awburst),
+    .AWLOCK_cvm_master_if        (sram_ctrl_awlock),
+    .AWCACHE_cvm_master_if       (sram_ctrl_awcache),
+    .AWPROT_cvm_master_if        (sram_ctrl_awprot),
+    .AWVALID_cvm_master_if       (sram_ctrl_awvalid),
+    .AWREADY_cvm_master_if       (sram_ctrl_awready),
+    .WDATA_cvm_master_if         (sram_ctrl_wdata),
+    .WSTRB_cvm_master_if         (sram_ctrl_wstrb),
+    .WLAST_cvm_master_if         (sram_ctrl_wlast),
+    .WVALID_cvm_master_if        (sram_ctrl_wvalid),
+    .WREADY_cvm_master_if        (sram_ctrl_wready),
+    .BID_cvm_master_if           (sram_ctrl_bid),
+    .BRESP_cvm_master_if         (sram_ctrl_bresp),
+    .BVALID_cvm_master_if        (sram_ctrl_bvalid),
+    .BREADY_cvm_master_if        (sram_ctrl_bready),
+    .ARID_cvm_master_if          (sram_ctrl_arid),
+    .ARADDR_cvm_master_if        (sram_ctrl_araddr),
+    .ARLEN_cvm_master_if         (sram_ctrl_arlen),
+    .ARSIZE_cvm_master_if        (sram_ctrl_arsize),
+    .ARBURST_cvm_master_if       (sram_ctrl_arburst),
+    .ARLOCK_cvm_master_if        (sram_ctrl_arlock),
+    .ARCACHE_cvm_master_if       (sram_ctrl_arcache),
+    .ARPROT_cvm_master_if        (sram_ctrl_arprot),
+    .ARVALID_cvm_master_if       (sram_ctrl_arvalid),
+    .ARREADY_cvm_master_if       (sram_ctrl_arready),
+    .RID_cvm_master_if           (sram_ctrl_rid),
+    .RDATA_cvm_master_if         (sram_ctrl_rdata),
+    .RRESP_cvm_master_if         (sram_ctrl_rresp),
+    .RLAST_cvm_master_if         (sram_ctrl_rlast),
+    .RVALID_cvm_master_if        (sram_ctrl_rvalid),
+    .RREADY_cvm_master_if        (sram_ctrl_rready),
+    
+    .AWID_cvm_slave_if           (cvm_awid),           
+    .AWADDR_cvm_slave_if         (cvm_awaddr),         
+    .AWLEN_cvm_slave_if          (cvm_awlen),          
+    .AWSIZE_cvm_slave_if         (cvm_awsize),         
+    .AWBURST_cvm_slave_if        (cvm_awburst),        
+    .AWLOCK_cvm_slave_if         (cvm_awlock),         
+    .AWCACHE_cvm_slave_if        (cvm_awcache),        
+    .AWPROT_cvm_slave_if         (cvm_awprot),         
+    .AWVALID_cvm_slave_if        (cvm_awvalid),        
+    .AWREADY_cvm_slave_if        (cvm_awready),        
+    .WDATA_cvm_slave_if          (cvm_wdata),          
+    .WSTRB_cvm_slave_if          (cvm_wstrb),          
+    .WLAST_cvm_slave_if          (cvm_wlast),          
+    .WVALID_cvm_slave_if         (cvm_wvalid),         
+    .WREADY_cvm_slave_if         (cvm_wready),         
+    .BID_cvm_slave_if            (cvm_bid),            
+    .BRESP_cvm_slave_if          (cvm_bresp),          
+    .BVALID_cvm_slave_if         (cvm_bvalid),         
+    .BREADY_cvm_slave_if         (cvm_bready),         
+    .ARID_cvm_slave_if           (cvm_arid),           
+    .ARADDR_cvm_slave_if         (cvm_araddr),         
+    .ARLEN_cvm_slave_if          (cvm_arlen),          
+    .ARSIZE_cvm_slave_if         (cvm_arsize),         
+    .ARBURST_cvm_slave_if        (cvm_arburst),        
+    .ARLOCK_cvm_slave_if         (cvm_arlock),         
+    .ARCACHE_cvm_slave_if        (cvm_arcache),        
+    .ARPROT_cvm_slave_if         (cvm_arprot),         
+    .ARVALID_cvm_slave_if        (cvm_arvalid),        
+    .ARREADY_cvm_slave_if        (cvm_arready),        
+    .RID_cvm_slave_if            (cvm_rid),            
+    .RDATA_cvm_slave_if          (cvm_rdata),          
+    .RRESP_cvm_slave_if          (cvm_rresp),          
+    .RLAST_cvm_slave_if          (cvm_rlast),          
+    .RVALID_cvm_slave_if         (cvm_rvalid),         
+    .RREADY_cvm_slave_if         (cvm_rready),         
+
+    .aclkoutclk                  (aclkout),
+    .aclkoutresetn               (systop_warmresetn_s)
+  );
+
+  
+  
+  sie300_axi5_sram_ctrl_cvm u_sie300_axi5_sram_ctrl_cvm
+  (
+    .aclk              (aclkout),
+    .aresetn           (systop_warmresetn_s),
+    .awvalid_s         (sram_ctrl_awvalid),
+    .awready_s         (sram_ctrl_awready),
+    .awid_s            (sram_ctrl_awid),
+    .awaddr_s          (sram_ctrl_awaddr[21:0]), 
+    .awlen_s           (sram_ctrl_awlen),
+    .awsize_s          (sram_ctrl_awsize),
+    .awburst_s         (sram_ctrl_awburst),
+    .awlock_s          (sram_ctrl_awlock),
+    .awprot_s          (sram_ctrl_awprot),
+    .awqos_s           (4'b0),
+    .wvalid_s          (sram_ctrl_wvalid),
+    .wready_s          (sram_ctrl_wready),
+    .wdata_s           (sram_ctrl_wdata),
+    .wstrb_s           (sram_ctrl_wstrb),
+    .wlast_s           (sram_ctrl_wlast),
+ 
+    .wpoison_s         (1'b0),
+ 
+    .bvalid_s          (sram_ctrl_bvalid),
+    .bready_s          (sram_ctrl_bready),
+    .bid_s             (sram_ctrl_bid),
+    .bresp_s           (sram_ctrl_bresp),
+    .arvalid_s         (sram_ctrl_arvalid),
+    .arready_s         (sram_ctrl_arready),
+    .arid_s            (sram_ctrl_arid),
+    .araddr_s          (sram_ctrl_araddr[21:0]), 
+    .arlen_s           (sram_ctrl_arlen),
+    .arsize_s          (sram_ctrl_arsize),
+    .arburst_s         (sram_ctrl_arburst),
+    .arlock_s          (sram_ctrl_arlock),
+    .arprot_s          (sram_ctrl_arprot),
+    .arqos_s           (4'b0),
+    .rvalid_s          (sram_ctrl_rvalid),
+    .rready_s          (sram_ctrl_rready),
+    .rid_s             (sram_ctrl_rid),
+    .rdata_s           (sram_ctrl_rdata),
+    .rresp_s           (sram_ctrl_rresp),
+    .rlast_s           (sram_ctrl_rlast),
+    .rpoison_s         (),
+    .awakeup_s         (sram_ctrl_awakeup),
+    .clk_qreqn         (sram_ctrl_clk_qreqn),
+    .clk_qacceptn      (sram_ctrl_clk_qacceptn),
+    .clk_qdeny         (sram_ctrl_clk_qdeny),
+    .clk_qactive       (sram_ctrl_clk_qactive),
+    .pwr_qreqn         (1'b1),
+    .pwr_qacceptn      (),
+    .pwr_qdeny         (),
+    .pwr_qactive       (),
+    .ext_gt_qreqn      (1'b1),
+    .ext_gt_qacceptn   (),
+    .cfg_gate_resp     (1'b0),
+    .memaddr           (memaddr),
+    .memd              (memd),
+    .memq              (memq),
+    .memcen            (memcen),
+    .memwen            (memwen)
+  );
+  
+  arm_element_or_tree #(
+    .NUM_OR_TREE_INPUTS (3)
+  ) u_arm_element_or_tree (
+    .or_tree_i  ({sram_ctrl_awvalid,sram_ctrl_arvalid,sram_ctrl_wvalid}),
+    .or_tree_o  (sram_ctrl_awakeup)
+  );
+
+  
+  `ifdef QL_FPGA
+ ram524288x64 mem (
+       .clka  ( aclkout ),
+       .dina  ( memd ),
+       .ena   ( ~((memcen | dftramhold)) ),
+       .addra ( memaddr[21:3] ),
+       .wea   ( ~((memwen)) ),
+       .douta ( memq ));
+`else
+arm_element_sp_ram_wstrb #(
+    .DATA_WIDTH       (64),
+    .MEMORY_DEPTH     (524288) 
+  ) u_arm_element_sp_ram_wstrb (
+      .CLK (aclkout),
+      .CEN (memcen | dftramhold),
+      .WEN (memwen),
+      .A   (memaddr[21:3]), 
+      .D   (memd),
+      .Q   (memq)
+    );
+`endif
+  
+  
+  assign unused = (|cvm_aruser)             |
+                  (|cvm_awuser)             |
+                  (|cvm_armmusid)           |
+                  (|cvm_awmmusid)           |
+                  (|cvm_arqos)              |
+                  (|cvm_awqos)              |
+                  (|memaddr[2:0])              |
+                  (|sram_ctrl_araddr[31:22]) |
+                  (|sram_ctrl_awaddr[31:22]) |
+                  (|sram_ctrl_awcache)       |
+                  (|sram_ctrl_arcache)       |
+                  ( cvm_awakeup);
+
+endmodule

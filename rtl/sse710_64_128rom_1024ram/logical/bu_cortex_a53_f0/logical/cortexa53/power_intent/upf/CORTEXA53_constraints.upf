@@ -1,0 +1,383 @@
+#-------------------------------------------------------------------------------
+# The confidential and proprietary information contained in this file may
+# only be used by a person authorised under and to the extent permitted
+# by a subsisting licensing agreement from ARM Limited.
+#
+#                 (C) COPYRIGHT 2013-2015 ARM Limited.
+#                       ALL RIGHTS RESERVED
+#
+# This entire notice must be reproduced on all copies of this file
+# and copies of this file may only be made by a person if such person is
+# permitted to do so under the terms of a subsisting license agreement
+# from ARM Limited.
+#
+#      SVN Information
+#
+#      Checked In          : $Date: 2012-09-28 11:48:18 +0100 (Fri, 28 Sep 2012) $
+#
+#      Revision            : $Revision: 224055 $
+#
+#      Release Information : CORTEXA53-r0p4-51rel0
+#
+#-------------------------------------------------------------------------------
+# Description:
+#  This UPF describes the constraints for CortexA53, it must always be used in any
+#  simulation or implementation when power aware is required.
+#  The unconfigured version needs to be rendered before it can be used.
+#  The configured version expects to be called with a scope set to CortexA53 
+#
+
+#
+# elements
+#
+set CPU0_hier g_ca53_cpu\[0\]/u_ca53_cpu
+
+set CPU1_hier g_ca53_cpu\[1\]/u_ca53_cpu
+
+set CPU2_hier g_ca53_cpu\[2\]/u_ca53_cpu
+
+set CPU3_hier g_ca53_cpu\[3\]/u_ca53_cpu
+
+set FPU0_hier g_ca53_cpu\[0\]/u_ca53_cpu/u_ca53_noram/u_ca53dpu/FPU1/u_dpu_fp
+
+set FPU1_hier g_ca53_cpu\[1\]/u_ca53_cpu/u_ca53_noram/u_ca53dpu/FPU1/u_dpu_fp
+
+set FPU2_hier g_ca53_cpu\[2\]/u_ca53_cpu/u_ca53_noram/u_ca53dpu/FPU1/u_dpu_fp
+
+set FPU3_hier g_ca53_cpu\[3\]/u_ca53_cpu/u_ca53_noram/u_ca53dpu/FPU1/u_dpu_fp
+
+set L2_hier   [list u_ca53_l2/g_l2_rams/u_ca53_l2_datarams \
+                    u_ca53_l2/g_l2_rams/u_ca53_l2_tagrams \
+		    u_ca53_l2/u_ca53scu_l1d_tagrams ]
+
+#
+# clamp high signals list
+#
+# Note: AWBURSTM[0] can be clamped 1 but current version of tools are not supporting it. 
+set CA53_CLAMP1 [list nVCPUMNTIRQ \
+                      nCNTPNSIRQ \
+                      nCNTPSIRQ\
+                      nCNTVIRQ \
+                      nCNTHPIRQ \
+                      STANDBYWFI \
+                      STANDBYWFIL2 \
+                      nINTERRIRQ \
+                      nEXTERRIRQ \
+                      nCOMMIRQ \
+                      COMMTX \
+                      nPMUIRQ \
+                      AFREADYM0 \
+                      AFREADYM1 \
+                      AFREADYM2 \
+                      AFREADYM3 \
+                      PREADYDBG \
+		      CTICHINACK \
+		      BREADYM \
+                      PSLVERRDBG ]
+
+set CPU0_CLAMP1 [list g_ca53_cpu\[0\]/u_ca53_cpu/dpu_commtx_o \
+			g_ca53_cpu\[0\]/u_ca53_cpu/stb_wfx_ready_o \
+			g_ca53_cpu\[0\]/u_ca53_cpu/biu_wfx_ready_o \
+			g_ca53_cpu\[0\]/u_ca53_cpu/dcu_wfx_ready_o \
+			g_ca53_cpu\[0\]/u_ca53_cpu/ifu_wfx_ready_o \
+			g_ca53_cpu\[0\]/u_ca53_cpu/tlb_wfx_ready_o \
+			g_ca53_cpu\[0\]/u_ca53_cpu/etm_wfx_ready_o \
+			g_ca53_cpu\[0\]/u_ca53_cpu/etm_afreadym_o \
+			g_ca53_cpu\[0\]/u_ca53_cpu/etm_oslock_o \
+			g_ca53_cpu\[0\]/u_ca53_cpu/dpu_ncommirq_o \
+			g_ca53_cpu\[0\]/u_ca53_cpu/dpu_npmuirq_o \
+			g_ca53_cpu\[0\]/u_ca53_cpu/dpu_pslverrdbg_o \
+			g_ca53_cpu\[0\]/u_ca53_cpu/dpu_preadydbg_o \
+			g_ca53_cpu\[0\]/u_ca53_cpu/etm_preadydbg_o \
+			g_ca53_cpu\[0\]/u_ca53_cpu/dpu_exception_level_o ]	
+
+set CPU1_CLAMP1 [list g_ca53_cpu\[1\]/u_ca53_cpu/dpu_commtx_o \
+			g_ca53_cpu\[1\]/u_ca53_cpu/stb_wfx_ready_o \
+			g_ca53_cpu\[1\]/u_ca53_cpu/biu_wfx_ready_o \
+			g_ca53_cpu\[1\]/u_ca53_cpu/dcu_wfx_ready_o \
+			g_ca53_cpu\[1\]/u_ca53_cpu/ifu_wfx_ready_o \
+			g_ca53_cpu\[1\]/u_ca53_cpu/tlb_wfx_ready_o \
+			g_ca53_cpu\[1\]/u_ca53_cpu/etm_wfx_ready_o \
+			g_ca53_cpu\[1\]/u_ca53_cpu/etm_afreadym_o \
+			g_ca53_cpu\[1\]/u_ca53_cpu/etm_oslock_o \
+			g_ca53_cpu\[1\]/u_ca53_cpu/dpu_ncommirq_o \
+			g_ca53_cpu\[1\]/u_ca53_cpu/dpu_npmuirq_o \
+			g_ca53_cpu\[1\]/u_ca53_cpu/dpu_pslverrdbg_o \
+			g_ca53_cpu\[1\]/u_ca53_cpu/dpu_preadydbg_o \
+			g_ca53_cpu\[1\]/u_ca53_cpu/etm_preadydbg_o \
+			g_ca53_cpu\[1\]/u_ca53_cpu/dpu_exception_level_o ]	
+
+set CPU2_CLAMP1 [list g_ca53_cpu\[2\]/u_ca53_cpu/dpu_commtx_o \
+			g_ca53_cpu\[2\]/u_ca53_cpu/stb_wfx_ready_o \
+			g_ca53_cpu\[2\]/u_ca53_cpu/biu_wfx_ready_o \
+			g_ca53_cpu\[2\]/u_ca53_cpu/dcu_wfx_ready_o \
+			g_ca53_cpu\[2\]/u_ca53_cpu/ifu_wfx_ready_o \
+			g_ca53_cpu\[2\]/u_ca53_cpu/tlb_wfx_ready_o \
+			g_ca53_cpu\[2\]/u_ca53_cpu/etm_wfx_ready_o \
+			g_ca53_cpu\[2\]/u_ca53_cpu/etm_afreadym_o \
+			g_ca53_cpu\[2\]/u_ca53_cpu/etm_oslock_o \
+			g_ca53_cpu\[2\]/u_ca53_cpu/dpu_ncommirq_o \
+			g_ca53_cpu\[2\]/u_ca53_cpu/dpu_npmuirq_o \
+			g_ca53_cpu\[2\]/u_ca53_cpu/dpu_pslverrdbg_o \
+			g_ca53_cpu\[2\]/u_ca53_cpu/dpu_preadydbg_o \
+			g_ca53_cpu\[2\]/u_ca53_cpu/etm_preadydbg_o \
+			g_ca53_cpu\[2\]/u_ca53_cpu/dpu_exception_level_o ]	
+
+set CPU3_CLAMP1 [list g_ca53_cpu\[3\]/u_ca53_cpu/dpu_commtx_o \
+			g_ca53_cpu\[3\]/u_ca53_cpu/stb_wfx_ready_o \
+			g_ca53_cpu\[3\]/u_ca53_cpu/biu_wfx_ready_o \
+			g_ca53_cpu\[3\]/u_ca53_cpu/dcu_wfx_ready_o \
+			g_ca53_cpu\[3\]/u_ca53_cpu/ifu_wfx_ready_o \
+			g_ca53_cpu\[3\]/u_ca53_cpu/tlb_wfx_ready_o \
+			g_ca53_cpu\[3\]/u_ca53_cpu/etm_wfx_ready_o \
+			g_ca53_cpu\[3\]/u_ca53_cpu/etm_afreadym_o \
+			g_ca53_cpu\[3\]/u_ca53_cpu/etm_oslock_o \
+			g_ca53_cpu\[3\]/u_ca53_cpu/dpu_ncommirq_o \
+			g_ca53_cpu\[3\]/u_ca53_cpu/dpu_npmuirq_o \
+			g_ca53_cpu\[3\]/u_ca53_cpu/dpu_pslverrdbg_o \
+			g_ca53_cpu\[3\]/u_ca53_cpu/dpu_preadydbg_o \
+			g_ca53_cpu\[3\]/u_ca53_cpu/etm_preadydbg_o \
+			g_ca53_cpu\[3\]/u_ca53_cpu/dpu_exception_level_o ]	
+
+		
+#-------------------------------------------------------------------------------
+# Power Domains
+#-------------------------------------------------------------------------------
+
+create_power_domain PDCORTEXA53   -include_scope \
+                                  -supply {primary} \
+				  -supply {default_isolation}
+
+create_power_domain PDL2          -elements "$L2_hier" \
+                                  -supply {primary} \
+				  -supply {default_retention}
+
+create_power_domain PDCPU0     -elements "$CPU0_hier" \
+                                  -supply {primary} \
+				  -supply {default_retention}
+
+create_power_domain PDCPU1     -elements "$CPU1_hier" \
+                                  -supply {primary} \
+				  -supply {default_retention}
+
+create_power_domain PDCPU2     -elements "$CPU2_hier" \
+                                  -supply {primary} \
+				  -supply {default_retention}
+
+create_power_domain PDCPU3     -elements "$CPU3_hier" \
+                                  -supply {primary} \
+				  -supply {default_retention}
+
+
+create_power_domain PDCPUADVSIMD0  -elements "$FPU0_hier" \
+                                     -supply {primary} \
+				     -supply {default_retention}
+
+
+create_power_domain PDCPUADVSIMD1  -elements "$FPU1_hier" \
+                                     -supply {primary} \
+				     -supply {default_retention}
+
+
+create_power_domain PDCPUADVSIMD2  -elements "$FPU2_hier" \
+                                     -supply {primary} \
+				     -supply {default_retention}
+
+
+create_power_domain PDCPUADVSIMD3  -elements "$FPU3_hier" \
+                                     -supply {primary} \
+				     -supply {default_retention}
+
+
+#-------------------------------------------------------------------------------
+# Retention Elements
+#-------------------------------------------------------------------------------
+set_retention ret_l2             -elements "$L2_hier"   -domain PDL2
+
+set_retention ret_cpu0           -elements "$CPU0_hier" -domain PDCPU0
+
+set_retention ret_cpu1           -elements "$CPU1_hier" -domain PDCPU1
+
+set_retention ret_cpu2           -elements "$CPU2_hier" -domain PDCPU2
+
+set_retention ret_cpu3           -elements "$CPU3_hier" -domain PDCPU3
+
+set_retention ret_cpuadvsimd0    -elements "$FPU0_hier" -domain PDCPUADVSIMD0
+
+set_retention ret_cpuadvsimd1    -elements "$FPU1_hier" -domain PDCPUADVSIMD1
+
+set_retention ret_cpuadvsimd2    -elements "$FPU2_hier" -domain PDCPUADVSIMD2
+
+set_retention ret_cpuadvsimd3    -elements "$FPU3_hier" -domain PDCPUADVSIMD3
+
+
+#-------------------------------------------------------------------------------
+# Isolation Elements
+#-------------------------------------------------------------------------------
+
+set_port_attributes {-domains PDCORTEXA53 -applies_to outputs}  -clamp_value 0
+set_port_attributes  -ports "$CA53_CLAMP1" -clamp_value 1
+
+set_port_attributes {-domains PDL2 -applies_to outputs} -clamp_value 0
+
+set_port_attributes {-domains PDCPU0 -applies_to outputs}   -clamp_value 0
+set_port_attributes  -ports "$CPU0_CLAMP1" -clamp_value 1
+
+set_port_attributes {-domains PDCPU1 -applies_to outputs}   -clamp_value 0
+set_port_attributes  -ports "$CPU1_CLAMP1" -clamp_value 1
+
+set_port_attributes {-domains PDCPU2 -applies_to outputs}   -clamp_value 0
+set_port_attributes  -ports "$CPU2_CLAMP1" -clamp_value 1
+
+set_port_attributes {-domains PDCPU3 -applies_to outputs}   -clamp_value 0
+set_port_attributes  -ports "$CPU3_CLAMP1" -clamp_value 1
+
+set_port_attributes {-domains PDCPUADVSIMD0 -applies_to outputs} -clamp_value 0
+
+set_port_attributes {-domains PDCPUADVSIMD1 -applies_to outputs} -clamp_value 0
+
+set_port_attributes {-domains PDCPUADVSIMD2 -applies_to outputs} -clamp_value 0
+
+set_port_attributes {-domains PDCPUADVSIMD3 -applies_to outputs} -clamp_value 0
+
+
+#-------------------------------------------------------------------------------
+# Power State
+#-------------------------------------------------------------------------------
+
+add_power_state PDCORTEXA53 \
+  -state RUN         {-logic_expr {primary == ON  && PDL2 == RUN}} \
+  -state L2_RET      {-logic_expr {primary == ON  && PDL2 == RET}} \
+  -state DMT         {-logic_expr {primary == OFF && PDL2 != SHD && PDCPU0 == SHD && PDCPU1 == SHD && PDCPU2 == SHD && PDCPU3 == SHD}} \
+  -state SHD         {-logic_expr {primary == OFF && PDL2 == SHD && PDCPU0 == SHD && PDCPU1 == SHD && PDCPU2 == SHD && PDCPU3 == SHD}}
+
+add_power_state PDCORTEXA53.primary \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL}
+  
+add_power_state PDCORTEXA53.default_isolation \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL}   
+
+add_power_state PDL2 \
+  -state RUN {-logic_expr {primary == ON  && default_retention == ON}} \
+  -state RET {-logic_expr {primary == OFF && default_retention == ON}} \
+  -state SHD {-logic_expr {primary == OFF && default_retention == OFF}}
+
+add_power_state PDL2.primary \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL}
+  
+add_power_state PDL2.default_retention \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL}  
+
+add_power_state PDCPU0 \
+  -state RUN {-logic_expr {primary == ON  && default_retention == ON && PDCPUADVSIMD0 != SHD}} \
+  -state RET {-logic_expr {primary == OFF && default_retention == ON && PDCPUADVSIMD0 == RET}} \
+  -state SHD {-logic_expr {primary == OFF && default_retention == OFF && PDCPUADVSIMD0 == SHD}}
+
+add_power_state PDCPU0.primary \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL}
+  
+add_power_state PDCPU0.default_retention \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL} 
+   
+add_power_state PDCPU1 \
+  -state RUN {-logic_expr {primary == ON  && default_retention == ON && PDCPUADVSIMD1 != SHD}} \
+  -state RET {-logic_expr {primary == OFF && default_retention == ON && PDCPUADVSIMD1 == RET}} \
+  -state SHD {-logic_expr {primary == OFF && default_retention == OFF && PDCPUADVSIMD1 == SHD}}
+
+add_power_state PDCPU1.primary \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL}
+  
+add_power_state PDCPU1.default_retention \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL} 
+   
+add_power_state PDCPU2 \
+  -state RUN {-logic_expr {primary == ON  && default_retention == ON && PDCPUADVSIMD2 != SHD}} \
+  -state RET {-logic_expr {primary == OFF && default_retention == ON && PDCPUADVSIMD2 == RET}} \
+  -state SHD {-logic_expr {primary == OFF && default_retention == OFF && PDCPUADVSIMD2 == SHD}}
+
+add_power_state PDCPU2.primary \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL}
+  
+add_power_state PDCPU2.default_retention \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL} 
+   
+add_power_state PDCPU3 \
+  -state RUN {-logic_expr {primary == ON  && default_retention == ON && PDCPUADVSIMD3 != SHD}} \
+  -state RET {-logic_expr {primary == OFF && default_retention == ON && PDCPUADVSIMD3 == RET}} \
+  -state SHD {-logic_expr {primary == OFF && default_retention == OFF && PDCPUADVSIMD3 == SHD}}
+
+add_power_state PDCPU3.primary \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL}
+  
+add_power_state PDCPU3.default_retention \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL} 
+   
+
+add_power_state PDCPUADVSIMD0 \
+  -state RUN {-logic_expr {primary == ON  && default_retention == ON}} \ 
+  -state RET {-logic_expr {primary == OFF && default_retention == ON}} \
+  -state SHD {-logic_expr {primary == OFF && default_retention == OFF}}
+
+add_power_state PDCPUADVSIMD0.primary \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL}
+  
+add_power_state PDCPUADVSIMD0.default_retention \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL}  
+  
+add_power_state PDCPUADVSIMD1 \
+  -state RUN {-logic_expr {primary == ON  && default_retention == ON}} \ 
+  -state RET {-logic_expr {primary == OFF && default_retention == ON}} \
+  -state SHD {-logic_expr {primary == OFF && default_retention == OFF}}
+
+add_power_state PDCPUADVSIMD1.primary \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL}
+  
+add_power_state PDCPUADVSIMD1.default_retention \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL}  
+  
+add_power_state PDCPUADVSIMD2 \
+  -state RUN {-logic_expr {primary == ON  && default_retention == ON}} \ 
+  -state RET {-logic_expr {primary == OFF && default_retention == ON}} \
+  -state SHD {-logic_expr {primary == OFF && default_retention == OFF}}
+
+add_power_state PDCPUADVSIMD2.primary \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL}
+  
+add_power_state PDCPUADVSIMD2.default_retention \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL}  
+  
+add_power_state PDCPUADVSIMD3 \
+  -state RUN {-logic_expr {primary == ON  && default_retention == ON}} \ 
+  -state RET {-logic_expr {primary == OFF && default_retention == ON}} \
+  -state SHD {-logic_expr {primary == OFF && default_retention == OFF}}
+
+add_power_state PDCPUADVSIMD3.primary \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL}
+  
+add_power_state PDCPUADVSIMD3.default_retention \
+  -state ON  {-simstate NORMAL} \
+  -state OFF {-simstate NOT_NORMAL}  
+  
+
+  
+  
+

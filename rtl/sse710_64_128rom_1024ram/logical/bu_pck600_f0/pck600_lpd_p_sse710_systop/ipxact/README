@@ -1,0 +1,28 @@
+=============================================================================
+ The confidential and proprietary information contained in this file may
+ only be used by a person authorised under and to the extent permitted
+ by a subsisting licensing agreement from Arm Limited or its affiliates.
+
+ (C) COPYRIGHT 2018-2019 Arm Limited or its affiliates.
+ ALL RIGHTS RESERVED
+
+ This entire notice must be reproduced on all copies of this file
+ and copies of this file may only be made by a person if such person is
+ permitted to do so under the terms of a subsisting license agreement
+ from Arm Limited or its affiliates.
+
+=============================================================================
+
+The IP-XACT file is used to configure the pck600_lpd_p. The configuration options are:
+
+SEQUENCER                :  Configures the lpd_p as a sequencer or expander. Its value is fetched from the yaml configuration file. Possible values are {0.1}. This maps to the SEQUENCER verilog parameter.
+
+CTRL_P_CH_SYNC           :  Includes or excludes synchronizers on CTRL P-Channel. Its value is fetched from the yaml configuration file. Possible values are {0,1}. This maps to the CTRL_P_CH_SYNC verilog parameter.
+
+DEV_P_CH_SYNC            :  Includes or excludes synchronizers on DEV P-Channel. Its value is fetched from the yaml configuration file. Possible values are {0,1}. This maps to the DEV_P_CH_SYNC verilog parameter.
+
+DEV_P_CH_PREQ_DLY        :  Configures the number of clock cycles between Device PSTATE set and Device PREQ assertion. Its value is fetched from the yaml configuration file. Possible values are {0,1}. This maps to the DEV_P_CH_PREQ_DLY verilog parameter.
+
+DEV_P_CH_<X>_SAME_EN     :  Configures whether or not a P-Channel request is issued when the PSATTE value is the same as the PSTATE that the component <X> is currently in. Its value is fetched from the yaml configuration file. Possible values are {0,1}. This maps to the DEV_P_CH_<X>_SAME_EN verilog parameter. <X> is the component P-Channel number.
+
+

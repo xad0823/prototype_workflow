@@ -1,0 +1,248 @@
+#!/usr/bin/env python
+#-----------------------------------------------------------------------------
+#  The confidential and proprietary information contained in this file may
+#  only be used by a person authorised under and to the extent permitted
+#  by a subsisting licensing agreement from ARM Limited or its affiliates.
+#
+#             (C) COPYRIGHT 2016 ARM Limited or its affiliates.
+#                 ALL RIGHTS RESERVED
+#
+#  This entire notice must be reproduced on all copies of this file
+#  and copies of this file may only be made by a person if such person is
+#  permitted to do so under the terms of a subsisting license agreement
+#  from ARM Limited or its affiliates.
+#
+#     Checked In : Fri Nov 25 14:15:59 2016 +0000
+#     Revision   : 5a3cc4c
+#     Release    : CoreLink SIE-200 System IP for Embedded - Global Bundle r3p2-00rel0
+#
+# ----------------------------------------------------------------------------
+#  Purpose : Generator script for SIE-200
+# ----------------------------------------------------------------------------
+
+import optparse
+import os
+import errno
+import sys
+import shutil
+import subprocess
+import stat
+import xml.etree.ElementTree as ET
+
+sys.path.append(os.path.join(sys.path[0], "shared","tools", "bin", "build_ip"))
+sys.path.append(os.path.join(sys.path[0], "shared","tools", "lib"))
+import components
+from components import * # for modules
+import configReader
+
+baseDir = sys.path[0]
+scriptPath = os.path.join(baseDir, "shared", "tools", "bin")
+busmatrixPath = os.path.join(baseDir, "sie200_ahb5_busmatrix")
+buildipName = os.path.join("build_ip", "build_ip.py")
+busmatrixOobPath = os.path.join(baseDir, "testbench","shared","tools","bin","busmatrix_oob_test")
+busmatrixGenRtlScriptName = os.path.join("bin","generate_busmatrix_sie200.pl")
+busmatrixGenOobTBScript_bus_matrix  = os.path.join(".","gen_busmatrix_tb.pl")
+busmatrixGenOobTBScript_ref_model   = os.path.join(".","gen_ref_model.pl")
+staticComp = ["sie200_ahb5_eg_slave", "sie200_ahb5_default_slave"]
+compList = sorted(components.__comps__ + ["sie200_ahb5_busmatrix"])
+
+def check_options(options):
+    if (not options.component):
+        print "ERROR: --component option is required\n"
+        return False
+    if (not options.component in compList):
+        print "ERROR: Unknown component specified (%s)\n" % (options.component)
+        return False
+    if (not options.component in staticComp):
+        if (not options.configFile):
+            print "ERROR: --config option is required for configurable component %s\n" % (options.component)
+            return False
+    if (not options.outDir):
+        print "ERROR: --output option is required\n" % (options.component)
+        return False
+    if (os.path.realpath(os.path.join(options.outDir, "logical")).startswith(os.path.realpath(baseDir))):
+        print "ERROR: Output directory (%s) cannot point to or inside the non-rendered area (%s)\n" % (options.outDir, os.path.realpath(baseDir))
+        return False
+
+    return True
+
+def main():
+
+    parser = optparse.OptionParser(usage = "usage: %prog [options] --config <configuration_file> --output <output_dir> --component <component_name>", add_help_option = False)
+    parser.add_option("--config", action = "store", dest = "configFile", help = "Specifies the configuration file, required argument for configurable components")
+    parser.add_option("--output", action = "store", dest = "outDir", help = "Specifies the output directory, required argument")
+    parser.add_option("--component", action = "store", dest = "component", help = "Specifies the component name, required argument")
+    parser.add_option("--verbose", action = "store_true", dest = "isVerbose", help = "Turns on verbose mode")
+    parser.add_option("-h", "--help", action = "store_true", dest = "printHelp", help = "Prints this help message")
+
+    options, args = parser.parse_args()
+
+    # Check for validity of options
+    if (not check_options(options) or options.printHelp):
+        parser.print_help()
+        print
+        print "Available components:"
+
+        for name in compList:
+            print "  " + name
+        return -1
+
+    # Verbose print function defined if verbosity is set, doing nothing else
+    if options.isVerbose:
+        def vprint(*args):
+            for arg in args:
+                print arg,
+            print
+    else:
+        vprint = lambda *a: None
+
+    print "Configuring component '%s'..." % (options.component)
+    # Common components
+    if options.component in components.__comps__:
+        component = eval("%s.%s()" % (options.component, options.component))
+        component.Configure("")
+        # Read in the configuration
+        config = None
+        if options.configFile != None:
+            config = configReader.readConfig(options.configFile)
+        # Get the directory names, assuming that the ipxact is placed on the same level as verilog files
+        verilogInDir = os.path.normpath(os.path.join(baseDir, options.component, "verilog"))
+        verilogOutDir = os.path.normpath(os.path.join(options.outDir,"logical", options.component, "verilog"))
+        vprint("Copying verilog files to: %s" % (verilogOutDir))
+        # copy each file of the component filelist and vc file list to the outDir
+        for fileName in component.files + component.vc_files:
+            # Check if output directory exists, create it if not
+            inFile  = os.path.normpath(os.path.join(verilogInDir, fileName))
+            outFile = os.path.normpath(os.path.join(verilogOutDir, fileName))
+            outDir  = os.path.normpath(os.path.dirname(outFile))
+            if not os.path.isdir(outDir):
+                os.makedirs(outDir)
+            # if os.path.isfile(outFile):
+            try:
+                os.chmod(outFile, stat.S_IWUSR)
+                os.remove(outFile)
+            except IOError as err:
+                print "Unable to remove already present target file: '%s', please check your permissions" % (err)
+                sys.exit(1)
+            except OSError as err:
+                if err.errno == errno.ENOENT:
+                    pass
+                else:
+                    print "Unable to remove already present target file: '%s', please check your permissions" % (err)
+            shutil.copy2(inFile, outFile)
+        # Call the build_ip script for IP-XACT generation
+        if (config):
+            vprint("Generating IP-XACT for configuration: %s" % (config["config_name"]))
+        else:
+            vprint("Generating IP-XACT")
+        if options.configFile != None:
+            buildIpCmd = [os.path.join(scriptPath, buildipName), "--ipxact", "--config=" + options.configFile, options.component, options.outDir]
+        else:
+            buildIpCmd = [os.path.join(scriptPath, buildipName), "--ipxact", options.component, options.outDir]
+        if (subprocess.call(buildIpCmd)):
+            print "ERROR: Build IP command failed"
+            return -1
+
+        # Copy over the UPF fils
+        upfInDir = os.path.normpath(os.path.join(baseDir, options.component, "power_intent", "upf"))
+        if os.path.isdir(upfInDir):
+            upfOutDir = os.path.normpath(os.path.join(options.outDir,"logical", options.component, "power_intent"))
+            vprint("Copying UPF files...")
+            if not os.path.isdir(upfOutDir):
+                os.makedirs(upfOutDir)
+            subprocess.call(["cp", "-rf", upfInDir, upfOutDir])
+
+    # Busmatrix has a separate generation flow
+    elif options.component == "sie200_ahb5_busmatrix":
+        origDir = os.getcwd()
+        os.chdir(busmatrixPath)
+
+        # Call the Perl script
+        tgtDir  = os.path.normpath(os.path.join(origDir, options.outDir, "logical"))
+        cfgFile = os.path.normpath(os.path.join(origDir, options.configFile))
+        if not os.path.isdir(tgtDir):
+            os.makedirs(tgtDir)
+        busmatrixGenRtlCmd = [busmatrixGenRtlScriptName, "-ipxact", "-overwrite", "-tgtdir", tgtDir, "-cfg", cfgFile]
+        if options.isVerbose:
+            busmatrixGenRtlCmd.append("-verbose")
+        if (subprocess.call(busmatrixGenRtlCmd)):
+            print "ERROR: Busmatrix generation command failed"
+            return -1
+
+        os.chdir(tgtDir)
+
+        #get module name and addr width from xml
+        tree = ET.parse(cfgFile)
+        root = tree.getroot()
+
+        for child in root.findall('bus_matrix_name'):
+            os.environ['MODULE_NAME'] = child.text
+        modulename = child.text
+
+        for child in root.findall('routing_address_width'):
+            os.environ['ADDR_WIDTH'] = child.text
+
+        os.environ['TGTDIR'] = tgtDir
+
+        #remove the same generated testbench if exsits
+        if os.path.isdir(os.path.join(tgtDir, "testbench", "execution_tb", "verilog", modulename)):
+              shutil.rmtree(os.path.join(tgtDir, "testbench", "execution_tb", "verilog", modulename))
+
+        print "Creating bus matrix OoB testbench...\n"
+
+        #copy over testbench scripts, etc
+        if not os.path.isdir(os.path.join(tgtDir, "testbench")):
+            os.makedirs(os.path.join(tgtDir, "testbench"))
+        subprocess.call(["cp", "-rf", os.path.join(baseDir, "testbench"), os.path.join(tgtDir)])
+
+        #generate testbench for the given config
+        busmatrixOobPath = os.path.join(tgtDir, "testbench","shared","tools","bin","busmatrix_oob_test")
+        os.chdir(busmatrixOobPath)
+
+        busmatrixGenOobTbCmd = [busmatrixGenOobTBScript_bus_matrix, "-xml", cfgFile]
+        if (subprocess.call(busmatrixGenOobTbCmd)):
+            print "ERROR: Busmatrix OOB generation command failed"
+            return -1
+
+        busmatrixGenOobTbCmd = [busmatrixGenOobTBScript_ref_model, "-xml", cfgFile]
+        if (subprocess.call(busmatrixGenOobTbCmd)):
+            print "ERROR: Busmatrix OOB Ref Model generation command failed"
+            return -1
+
+        #copy over makefile
+        shutil.copy(os.path.join(baseDir, "testbench","shared","tools","bin","busmatrix_oob_test","templates","ggve_makefile"), os.path.join(tgtDir, "testbench","execution_tb","verilog","", os.environ['MODULE_NAME']))
+
+        print "Done!"
+        print "\nOutput directory: %s/testbench" %(tgtDir)
+        print "\nTo run testbench execute following two commands:"
+        print "\n>>>>>>> cd %s/testbench/shared/tools/bin/busmatrix_oob_test" %(tgtDir)
+        print ">>>>>>> ./oob_test.bash --config %s --tool mti --cmode 64 " %(cfgFile)
+        print "or:"
+        print ">>>>>>> ./oob_test.csh --config %s --tool mti --cmode 64 " %(cfgFile)
+
+        os.chdir(origDir)
+
+    else:
+        print "ERROR: Unknown component defined"
+        print
+        print "Available components:"
+        for name in components.__comps__:
+            print "  " + name
+        print "  sie200_ahb5_busmatrix"
+        return -1
+
+    # Needed for all the components
+    # Copy over the busdefs
+    vprint("Copying IPXACT libraries...")
+    busdefInDir = os.path.normpath(os.path.join(baseDir, "shared", "ipxact"))
+    busdefOutDir = os.path.normpath(os.path.join(options.outDir, "logical", "shared"))
+    if not os.path.isdir(busdefOutDir):
+        os.makedirs(busdefOutDir)
+    subprocess.call(["cp", "-rf", busdefInDir, busdefOutDir])
+
+if __name__ == "__main__":
+    main()
+
+
+
+

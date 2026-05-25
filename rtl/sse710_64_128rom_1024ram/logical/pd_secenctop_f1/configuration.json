@@ -1,0 +1,1 @@
+{"package_dependency":["secenc_f1"],"TEMPLATE_PKG_ID":"pd_secenctop_f1","NUM_EXT_SYS":"2","package_template":"$ARM_IP_LIBRARY/pd_secenctop_f1","EXT_SYS2_TZ_SPT":"1","HAS_CRYPTO":"0","EXT_SYS0_TZ_SPT":"1","SUFFIX":null,"EXT_SYS3_TZ_SPT":"1","EXT_SYS1_TZ_SPT":"1"}

@@ -1,0 +1,210 @@
+ 
+//-----------------------------------------------------------------------------
+// The confidential and proprietary information contained in this file may
+// only be used by a person authorised under and to the extent permitted
+// by a subsisting licensing agreement from Arm Limited or its affiliates.
+//
+//        (C) COPYRIGHT 2021 Arm Limited or its affiliates.
+//            ALL RIGHTS RESERVED
+//
+// This entire notice must be reproduced on all copies of this file
+// and copies of this file may only be made by a person if such person is
+// permitted to do so under the terms of a subsisting license agreement
+// from Arm Limited or its affiliates.
+//
+//
+//
+//
+//------------------------------------------------------------------------------
+// Purpose : SSE-710 IP-XACT configuration file
+// -----------------------------------------------------------------------------
+
+SOC_RST_DLY               = 1 
+CLUSTOP_CORE_RST_DLY      = 0 
+HOST_EXP_ROM_ENTRY        = 0 
+ 
+EXT_SYS0_ROM_ENTRY        = 1900567 
+ 
+EXT_SYS1_ROM_ENTRY        = 2949159 
+ 
+ 
+MHU_HES00_NUM_CH          = 2 
+MHU_ES0H0_NUM_CH          = 2 
+   
+MHU_HES01_NUM_CH          = 2 
+MHU_ES0H1_NUM_CH          = 2 
+   
+ 
+MHU_HES10_NUM_CH          = 2 
+MHU_ES1H0_NUM_CH          = 2 
+   
+MHU_HES11_NUM_CH          = 2 
+MHU_ES1H1_NUM_CH          = 2 
+   
+ 
+MHU_HSE0_NUM_CH           = 2 
+MHU_SEH0_NUM_CH           = 2 
+
+MHU_HSE1_NUM_CH           = 2 
+MHU_SEH1_NUM_CH           = 2 
+ 
+MHU_SEES00_NUM_CH         = 2 
+MHU_ES0SE0_NUM_CH         = 2 
+   
+MHU_SEES01_NUM_CH         = 2 
+MHU_ES0SE1_NUM_CH         = 2 
+   
+ 
+MHU_SEES10_NUM_CH         = 2 
+MHU_ES1SE0_NUM_CH         = 2 
+   
+MHU_SEES11_NUM_CH         = 2 
+MHU_ES1SE1_NUM_CH         = 2 
+   
+ 
+DEV_PREQ_DLY_DBG          = 0 
+PCSM_PREQ_DLY_DBG         = 0 
+ISO_CLKEN_DLY_CFG_DBG     = 0 
+CLKEN_RST_DLY_CFG_DBG     = 0 
+RST_HWSTAT_DLY_CFG_DBG    = 0 
+CLKEN_ISO_DLY_CFG_DBG     = 0 
+ISO_RST_DLY_CFG_DBG       = 0 
+
+DEV_PREQ_DLY_SYS          = 0 
+PCSM_PREQ_DLY_SYS         = 0 
+ISO_CLKEN_DLY_CFG_SYS     = 0 
+CLKEN_RST_DLY_CFG_SYS     = 0 
+RST_HWSTAT_DLY_CFG_SYS    = 0 
+CLKEN_ISO_DLY_CFG_SYS     = 0 
+ISO_RST_DLY_CFG_SYS       = 0 
+
+DEV_PREQ_DLY_SECENC       = 0 
+PCSM_PREQ_DLY_SECENC      = 0 
+ISO_CLKEN_DLY_CFG_SECENC  = 0 
+CLKEN_RST_DLY_CFG_SECENC  = 0 
+RST_HWSTAT_DLY_CFG_SECENC = 0 
+CLKEN_ISO_DLY_CFG_SECENC  = 0 
+ISO_RST_DLY_CFG_SECENC    = 0 
+
+DEV_PREQ_DLY_FWRAM        = 0 
+PCSM_PREQ_DLY_FWRAM       = 0 
+ISO_CLKEN_DLY_CFG_FWRAM   = 0 
+CLKEN_RST_DLY_CFG_FWRAM   = 0 
+RST_HWSTAT_DLY_CFG_FWRAM  = 0 
+CLKEN_ISO_DLY_CFG_FWRAM   = 0 
+ISO_RST_DLY_CFG_FWRAM     = 0 
+
+DEV_PREQ_DLY_CLUS         = 1 
+PCSM_PREQ_DLY_CLUS        = 1 
+ISO_CLKEN_DLY_CFG_CLUS    = 0 
+CLKEN_RST_DLY_CFG_CLUS    = 0 
+RST_HWSTAT_DLY_CFG_CLUS   = 0 
+CLKEN_ISO_DLY_CFG_CLUS    = 0 
+ISO_RST_DLY_CFG_CLUS      = 0 
+
+DEV_PREQ_DLY_CPU0         = 1 
+PCSM_PREQ_DLY_CPU0        = 1 
+ISO_CLKEN_DLY_CFG_CPU0    = 0 
+CLKEN_RST_DLY_CFG_CPU0    = 0 
+RST_HWSTAT_DLY_CFG_CPU0   = 0 
+CLKEN_ISO_DLY_CFG_CPU0    = 0 
+ISO_RST_DLY_CFG_CPU0      = 0 
+
+ 
+
+DEV_PREQ_DLY_CPU1         = 1 
+PCSM_PREQ_DLY_CPU1        = 1 
+ISO_CLKEN_DLY_CFG_CPU1    = 0 
+CLKEN_RST_DLY_CFG_CPU1    = 0 
+RST_HWSTAT_DLY_CFG_CPU1   = 0 
+CLKEN_ISO_DLY_CFG_CPU1    = 0 
+ISO_RST_DLY_CFG_CPU1      = 0 
+
+ 
+ 
+
+DEV_PREQ_DLY_CPU2         = 1 
+PCSM_PREQ_DLY_CPU2        = 1 
+ISO_CLKEN_DLY_CFG_CPU2    = 0 
+CLKEN_RST_DLY_CFG_CPU2    = 0 
+RST_HWSTAT_DLY_CFG_CPU2   = 0 
+CLKEN_ISO_DLY_CFG_CPU2    = 0 
+ISO_RST_DLY_CFG_CPU2      = 0 
+
+ 
+ 
+
+DEV_PREQ_DLY_CPU3         = 1 
+PCSM_PREQ_DLY_CPU3        = 1 
+ISO_CLKEN_DLY_CFG_CPU3    = 0 
+CLKEN_RST_DLY_CFG_CPU3    = 0 
+RST_HWSTAT_DLY_CFG_CPU3   = 0 
+CLKEN_ISO_DLY_CFG_CPU3    = 0 
+ISO_RST_DLY_CFG_CPU3      = 0 
+
+ 
+
+FW2SYSTOP_FIFO_DEPTH      = 4 
+FW2DBGTOP_FIFO_DEPTH      = 4 
+
+CPU_AW_FIFO_DEPTH         = 4 
+CPU_W_FIFO_DEPTH          = 6 
+CPU_B_FIFO_DEPTH          = 2 
+CPU_AR_FIFO_DEPTH         = 4 
+CPU_R_FIFO_DEPTH          = 6 
+
+GIC_AW_FIFO_DEPTH         = 4 
+GIC_W_FIFO_DEPTH          = 6 
+GIC_B_FIFO_DEPTH          = 2 
+GIC_AR_FIFO_DEPTH         = 4 
+GIC_R_FIFO_DEPTH          = 6 
+
+ 
+
+EXT_SYS0_MEM_AW_FIFO_DEPTH = 4 
+EXT_SYS0_MEM_W_FIFO_DEPTH  = 6 
+EXT_SYS0_MEM_B_FIFO_DEPTH  = 2 
+EXT_SYS0_MEM_AR_FIFO_DEPTH = 4 
+EXT_SYS0_MEM_R_FIFO_DEPTH  = 6 
+
+ 
+
+EXT_SYS1_MEM_AW_FIFO_DEPTH = 4 
+EXT_SYS1_MEM_W_FIFO_DEPTH  = 6 
+EXT_SYS1_MEM_B_FIFO_DEPTH  = 2 
+EXT_SYS1_MEM_AR_FIFO_DEPTH = 4 
+EXT_SYS1_MEM_R_FIFO_DEPTH  = 6 
+
+ 
+
+SECENC_AW_FIFO_DEPTH      = 2 
+SECENC_W_FIFO_DEPTH       = 2 
+SECENC_B_FIFO_DEPTH       = 2 
+SECENC_AR_FIFO_DEPTH      = 2 
+SECENC_R_FIFO_DEPTH       = 2 
+
+FW_AXI_AW_FIFO_DEPTH      = 2 
+FW_AXI_W_FIFO_DEPTH       = 2 
+FW_AXI_B_FIFO_DEPTH       = 2 
+FW_AXI_AR_FIFO_DEPTH      = 2 
+FW_AXI_R_FIFO_DEPTH       = 2 
+
+DBG_AW_FIFO_DEPTH         = 2 
+DBG_W_FIFO_DEPTH          = 6 
+DBG_B_FIFO_DEPTH          = 2 
+DBG_AR_FIFO_DEPTH         = 2 
+DBG_R_FIFO_DEPTH          = 2 
+
+STM_AW_FIFO_DEPTH         = 2 
+STM_W_FIFO_DEPTH          = 2 
+STM_B_FIFO_DEPTH          = 2 
+STM_AR_FIFO_DEPTH         = 2 
+STM_R_FIFO_DEPTH          = 2 
+
+IIDR_PRODUCT_ID           = 1890 
+IIDR_VARIANT_ID           = 0 
+IIDR_REVISION             = 0 
+IIDR_IMPLEMENTER          = 1083 
+
+CAAON2CA_WIDTH            = 289 
+CA2CAAON_WIDTH            = 300 

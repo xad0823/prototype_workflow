@@ -1,0 +1,26 @@
+{
+   "SUFFIX" : "_secenc_32k",
+   "TEMPLATE_PKG_ID" : "e_clk_f1",
+   "package_dependency" : [
+      "arm_element_tech_models",
+      "clkrst_f1"
+   ],
+   "package_template" : "$ARM_IP_LIBRARY/e_clk_f1",
+   "clocks" : {
+      "S32KCLK_AON" : {
+         "clk_buf_only_cgu" : "true",
+         "clk_buf_delay_value" : "0",
+         "clk_source" : [
+            "S32KCLK"
+         ]
+      },
+      "S32KCLK_SECENC" : {
+         "clk_buf_delay_value" : "0",
+         "rst_source" : "RESETn",
+         "dct_cg" : "true",
+         "clk_source" : [
+            "S32KCLK"
+         ]
+      }
+   }
+}

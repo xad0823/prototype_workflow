@@ -1,0 +1,10 @@
++incdir+$LOGICAL_PATH/bu_cortex_a53_crypto_f0/logical/ca53dpu/verilog
++incdir+$LOGICAL_PATH/bu_cortex_a53_crypto_f0/logical/shared/verilog
+$LOGICAL_PATH/bu_cortex_a53_crypto_f0/logical/ca53dpu/verilog/ca53dpu_crypto_aes_sbox.v
+$LOGICAL_PATH/bu_cortex_a53_crypto_f0/logical/ca53dpu/verilog/ca53dpu_crypto_pmull64.v
+$LOGICAL_PATH/bu_cortex_a53_crypto_f0/logical/ca53dpu/verilog/ca53dpu_crypto_sha256h.v
+$LOGICAL_PATH/bu_cortex_a53_crypto_f0/logical/ca53dpu/verilog/ca53dpu_crypto.v
+$LOGICAL_PATH/bu_cortex_a53_crypto_f0/logical/ca53dpu/verilog/ca53dpu_crypto_sha256su1.v
+$LOGICAL_PATH/bu_cortex_a53_crypto_f0/logical/ca53dpu/verilog/ca53dpu_crypto_aes_mixcol.v
+$LOGICAL_PATH/bu_cortex_a53_crypto_f0/logical/ca53dpu/verilog/ca53dpu_crypto_sha1cpm.v
+$LOGICAL_PATH/bu_cortex_a53_crypto_f0/logical/ca53dpu/verilog/ca53dpu_crypto_alu_sha.v

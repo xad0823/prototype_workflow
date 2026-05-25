@@ -1,0 +1,14 @@
+"clock","internal","sync module","select module","select default","source0","enable module","enable default","divide module","divide max","divide default","test module","test clock","polarity","outbuf module","delay module","delay chain","debug clock","clock group","generate clock","divide in CC","freqCC","comment","loader","path loader"
+"hclk","FALSE","NONE","NONE","0","aclk","NONE","0","divideModule","8","4","NONE","","FALSE","NONE","NONE","0","FALSE","","TRUE","0","","","",""
+
+Clock Constrain
+create clock,source clock,freq(MHz),insert buffer,virtual source,path
+
+#module#
+divide module,port,dir,width,func
+divideModule,SE,input,1,scan_en
+,resetn,input,1,resetn
+,clk_in,input,1,clock_i
+,divisor,input,DIV_WIDTH,div
+,out_clk,output,1,clock_o
+,#DIV_WIDTH#,4,,

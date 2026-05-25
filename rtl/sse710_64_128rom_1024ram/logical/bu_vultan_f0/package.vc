@@ -1,0 +1,17 @@
++incdir+$LOGICAL_PATH/bu_vultan_f0/logical/vultan_top/verilog
+$LOGICAL_PATH/bu_vultan_f0/logical/vultan_top/verilog/vultan_apb_reg_bank.v
+$LOGICAL_PATH/bu_vultan_f0/logical/vultan_top/verilog/vultan_apb_mux.v
+$LOGICAL_PATH/bu_vultan_f0/logical/vultan_top/verilog/vultan_top.v
+$LOGICAL_PATH/bu_vultan_f0/logical/vultan_top/verilog/vultan_gfb_arbiter.v
+$LOGICAL_PATH/bu_vultan_f0/logical/vultan_top/verilog/vultan_pchan_mstr.v
+$LOGICAL_PATH/bu_vultan_f0/logical/vultan_top/verilog/vultan_qchan_ctrl.v
+$LOGICAL_PATH/bu_vultan_f0/logical/vultan_top/verilog/vultan_ahb_if.v
+$LOGICAL_PATH/bu_vultan_f0/logical/models/cells/generic/vultan_xor.v
+$LOGICAL_PATH/bu_vultan_f0/logical/models/cells/generic/vultan_mux.v
+$LOGICAL_PATH/bu_vultan_f0/logical/models/cells/generic/vultan_ecorevnum_bit.v
+$LOGICAL_PATH/bu_vultan_f0/logical/models/cells/generic/vultan_or.v
+$LOGICAL_PATH/bu_vultan_f0/logical/models/cells/generic/vultan_flop.v
+$LOGICAL_PATH/bu_vultan_f0/logical/models/cells/generic/vultan_sync.v
+$LOGICAL_PATH/bu_vultan_f0/logical/models/cells/generic/vultan_and.v
+$LOGICAL_PATH/bu_vultan_f0/logical/models/cells/generic/vultan_flop_en.v
+$LOGICAL_PATH/bu_vultan_f0/logical/models/cells/generic/vultan_ecorevnum.v

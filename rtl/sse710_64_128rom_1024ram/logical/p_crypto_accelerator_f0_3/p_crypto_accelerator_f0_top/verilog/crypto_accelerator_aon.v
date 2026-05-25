@@ -1,0 +1,58 @@
+//------------------------------------------------------------------------------
+// The confidential and proprietary information contained in this file may
+// only be used by a person authorised under and to the extent permitted
+// by a subsisting licensing agreement from Arm Limited or its affiliates.
+//
+//            (C) COPYRIGHT 2019-2021 Arm Limited or its affiliates.
+//                ALL RIGHTS RESERVED
+//
+// This entire notice must be reproduced on all copies of this file
+// and copies of this file may only be made by a person if such person is
+// permitted to do so under the terms of a subsisting license agreement
+// from Arm Limited or its affiliates.
+//
+//
+//      Release Information : SSE710-r0p0-00eac0
+//
+//------------------------------------------------------------------------------
+// Verilog-2001 (IEEE Std 1364-2001)
+//------------------------------------------------------------------------------
+
+module crypto_accelerator_aon #(
+
+  parameter                 CAAON2CA_WIDTH     = 289, 
+  parameter                 CA2CAAON_WIDTH     = 300  
+
+ )(
+
+  input  wire         CRYPTOAONCLKOUT,
+
+  input  wire         CRYPTOAONRESETn,
+
+  output wire [CAAON2CA_WIDTH-1:0] CAAON2CA,
+  input  wire [CA2CAAON_WIDTH-1:0] CA2CAAON,
+
+  input  wire         CALC,
+
+  output wire [127:0] SCB,
+
+  input  wire         CAPWRQREQn,
+  output wire         CAPWRQACCEPTn,
+  output wire         CAPWRQDENY,
+  output wire         CAPWRQACTIVE,
+  
+  input  wire         MBISTREQ,
+  input  wire         DFTCGEN,
+  input  wire         DFTSE,
+  input  wire         DFTTESTMODE
+);
+
+  assign CAAON2CA = 289'h0;
+
+  assign SCB = 128'hFFFF_FFFF_FFFF_FFFF_8007_03FF_FFFF_E7FC;
+
+  assign CAPWRQACCEPTn = CAPWRQREQn;
+  assign CAPWRQDENY    = 1'b0;
+  assign CAPWRQACTIVE  = 1'b0;
+
+endmodule

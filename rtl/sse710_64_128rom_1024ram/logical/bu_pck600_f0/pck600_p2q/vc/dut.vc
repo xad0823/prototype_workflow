@@ -1,0 +1,6 @@
++libext+.v+.vlib
+// RTL Directories
+-y /datahdd/qinglongv100/lidongsheng/proj/socrates1_7_7/corstone100/logical/sse710_3/logical/bu_pck600_f0/temp_build_area/current_build/logical/pck600_p2q/verilog
+-y /datahdd/qinglongv100/lidongsheng/proj/socrates1_7_7/corstone100/logical/sse710_3/logical/bu_pck600_f0/temp_build_area/current_build/logical/models/cells/generic
+// Block Top
+   /datahdd/qinglongv100/lidongsheng/proj/socrates1_7_7/corstone100/logical/sse710_3/logical/bu_pck600_f0/temp_build_area/current_build/logical/pck600_p2q/verilog/pck600_p2q.v
